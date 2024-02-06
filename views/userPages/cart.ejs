@@ -1,0 +1,306 @@
+<%- include('../userLayouts/userHeader.ejs') %>
+
+
+
+    <!-- breadcrumb area start -->
+    <div class="page-layout" data-background="assets/img/slider/shop.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div class="breadcrumb-area text-center">
+                        <h2 class="page-title">Cart</h2>
+                        <div class="breadcrumb-menu">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb justify-content-center">
+                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="cart.html">cart</a></li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+
+    <div class="f_cart_area pt-110 mb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-12">
+                    <div class="cart_table">
+                        <table>
+                            <tr>
+                                <td>Product Image</td>
+                                <td>Product Name</td>
+                                <td>price</td>
+                                <td>Quantity</td>
+                                <td>Total</td>
+                                <td>Action</td>
+
+                            </tr>
+                            <tbody>
+                                <% if(locals.cartData){ %>
+                                    <%locals.cartData.forEach(el=>{%>
+                                        <tr class="max-width-set">
+                                            <td>
+                                                <img src="/public/images/<%=el.productId.imageurl[0]%>" alt="">
+                                            </td>
+                                            <td>
+                                                <%= el.productId.producttitle %>
+                                            </td>
+                                            <td id="price">₹<%= el.productId.price %>
+                                            </td>
+
+                                            <td>
+                                                <div class="viewcontent__action single_action pt-30">
+                                                    <span><input type="number" data-price="<%=el.productId.price%>"
+                                                            data-id="<%=el.productId._id%>" class="quantityField"
+                                                            value="<%=el.quantity%>" min="0" max="10"></span>
+                                                </div>
+                                            </td>
+                                            <td class="totalField">₹<%= el.productId.price %>
+                                            </td>
+
+
+                                            <td><button type="button" class="btn btn-danger removeBtn"
+                                                    data-id="<%=el.productId._id%>">Remove</button></td>
+
+                                        </tr>
+                                        <input type="hidden" value="<%=el.productId._id  %>" class="hiddenField">
+                                        <% })%>
+
+                                            <% } %>
+
+                            </tbody>
+                            <!-- <tfoot>
+                                <tr class="design-footer">
+                                    <td>
+                                        <input type="text" placeholder="Coupon Code">
+                                    </td>
+                                    <td><button type="submit">Apply Coupon</button></td>
+                                    <td colspan="3"><a href="#">update cart</a></td>
+                                </tr>
+                            </tfoot> -->
+                        </table>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12">
+                    <div class="cart__acount">
+                        <h5>Cart totals:</h5>
+                        <% if(locals.cart) { %>
+
+                            <table>
+
+
+                                <tr class="first-child">
+
+                                    <td id="subTotal">₹<%= cart.total %>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <a href="/checkout?cartid=<%= cart._id %>"><input type="submit"
+                                                value="proceed to checkout"></a>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <% } %>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- popup area start -->
+    <div class="overlay"></div>
+    <div class="product-popup">
+        <div class="view-background">
+            <div class="row">
+                <div class="col-xl-5 col-lg-5 col-md-5">
+                    <div class="quickview">
+                        <div class="quickview__thumb">
+                            <img src="assets/img/quick_view/25.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-7 col-lg-7 col-md-7">
+                    <div class="viewcontent">
+                        <div class="viewcontent__header">
+                            <h2>Brown Leather Bags</h2>
+                            <a class="view_close product-p-close" href="javascript:void(0)"><i
+                                    class="fal fa-times-circle"></i></a>
+                        </div>
+                        <div class="viewcontent__rating">
+                            <i class="fal fa-star ratingcolor"></i>
+                            <i class="fal fa-star ratingcolor"></i>
+                            <i class="fal fa-star ratingcolor"></i>
+                            <i class="fal fa-star"></i>
+                        </div>
+                        <div class="viewcontent__price">
+                            <h4><span>$</span>99.00</h4>
+                        </div>
+                        <div class="viewcontent__stock">
+                            <h4>Available :<span> In stock</span></h4>
+                        </div>
+                        <div class="viewcontent__details">
+                            <p>Anlor sit amet, consectetur adipiscing elit. Fusce condimentum est lacus, non pretium
+                                risus lacinia vel. Fusce eget turpis orci.</p>
+                        </div>
+                        <div class="viewcontent__action">
+                            <span>Qty</span>
+                            <span><input type="number" placeholder="1"></span>
+                            <span><a href="#">add to cart</a></span>
+                            <span><i class="fal fa-heart"></i></span>
+                            <span><i class="fal fa-info-circle"></i></span>
+                        </div>
+                        <div class="viewcontent__footer">
+                            <ul>
+                                <li>Category:</li>
+                                <li>SKU:</li>
+                                <li>Brand:</li>
+                            </ul>
+                            <ul>
+                                <li>Watches</li>
+                                <li>2584-MK63</li>
+                                <li>Brenda</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- popup area end -->
+
+    <!-- footer area start -->
+    <footer class="footer_area fix">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info  wow fadeInUp " data-wow-duration=".s" data-wow-delay=".3s">
+                        <h3 class="f-title">contact info</h3>
+                        <ul>
+                            <li>Add: 734 Riverwood Drive, Suite 245 Cottonwood </li>
+                            <li>Beverly Hill, Melbourne, USA.</li>
+                            <li>Email: <a href="https://wphix.com/cdn-cgi/l/email-protection" class="__cf_email__"
+                                    data-cfemail="13507c7d67727067537661767d677b767e763d707c7e">[email&#160;protected]</a>
+                            </li>
+                            <li>Fax: (+100) 123 456 7890 - (+100) 123 456 7891</li>
+                        </ul>
+                        <div class="social__media mb-30">
+                            <h3 class="f-title">FOLLOW US ON</h3>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".7s" data-wow-delay=".4s">
+                        <h3 class="f-title">Get Help</h3>
+                        <ul>
+                            <li><a href="contact.html">Contact Us</a></li>
+                            <li><a href="accordion.html">Delivery Information</a></li>
+                            <li><a href="accordion.html">Sale Terms & Conditions</a></li>
+                            <li><a href="accordion.html">Privacy Notice</a></li>
+                            <li><a href="accordion.html">Shopping FAQs</a></li>
+                            <li><a href="accordion.html">Returns & Refundss</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".8s" data-wow-delay=".5s">
+                        <h3 class="f-title">Popular categories</h3>
+                        <ul>
+                            <li><a href="shop.html">Sneaker</a></li>
+                            <li><a href="shop.html">Clothing & Stools</a></li>
+                            <li><a href="shop.html">Helmet for Women’s</a></li>
+                            <li><a href="shop.html">Basketball</a></li>
+                            <li><a href="shop.html">Mens Running</a></li>
+                            <li><a href="shop.html">Footwear</a></li>
+                            <li><a href="shop.html">Outerwears</a></li>
+                            <li><a href="shop.html">Men’s</a></li>
+                            <li><a href="shop.html">Kids & Young</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-3 offset-xl-1 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".9s" data-wow-delay=".6s">
+                        <h3 class="f-title">get in touch</h3>
+                        <p>Sign up for all the news about our latest arrivals and<br>
+                            get an exclusive early access shopping. Join <br>
+                            <span>60.000+ Subscribers</span> and get a new discount coupon<br> on every Saturday.
+                        </p>
+                        <div class="subscribe pt-20">
+                            <form action="#">
+                                <input type="email" placeholder="Enter your email here..." />
+                                <button>Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer__bottom pb-10 mt-60">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 ">
+                        <p>Copyright © <span>Gota Store</span> All Rights Reserved. Powered by <span><a
+                                    href="themepure.html">theme_pure</a></span>
+                        </p>
+                    </div>
+                    <div class="col-xl-5 offset-xl-2 col-lg-4 col-md-6 col-sm-12">
+                        <div class="footer-menu">
+                            <ul class="text-end">
+                                <li><a href="contact.html">Site Map</a></li>
+                                <li><a href="accordion.html">Search Terms</a></li>
+                                <li><a href="shop.html">Advanced Search </a></li>
+                                <li><a href="contact.html">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer area end -->
+
+
+    <!-- JS here -->
+    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+    <script src="assets/js/one-page-nav-min.js"></script>
+    <script src="assets/js/slick.min.js"></script>
+    <script src="assets/js/jquery.meanmenu.min.js"></script>
+    <script src="assets/js/countdown.js"></script>
+    <script src="assets/js/ajax-form.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/jquery.scrollUp.min.js"></script>
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+    <script src="../public/js/cartScript.js"></script>
+    </body>
+
+
+    <!-- Mirrored from wphix.com/template/gota/gota/cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Dec 2023 18:27:49 GMT -->
+
+    </html>

@@ -1,0 +1,294 @@
+<%- include('../userLayouts/userHeader.ejs') %>
+    <!-- breadcrumb area start -->
+    <div class="page-layout about" data-background="assets/img/slider/shop.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div class="breadcrumb-area text-center">
+                        <h2 class="page-title">My account</h2>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+
+    <div class="login_register_area">
+        <div class="container">
+            <div class="row gx-5">
+                <div class="col-xl-5 col-lg-6 col-md-12 col-sm-12 offset-xl-1">
+                    <h3 class="title-7">My Credentials</h3>
+                    <div class="login_wrapper">
+
+                        <%if(locals.userdata){%>
+                            <form action="/editUserProfile" method="get">
+                                <div class="input_wrap">
+                                    <label>Username </label>
+                                    <input type="email" value="<%=userdata.name%>" disabled>
+                                </div>
+                                <div class="input_wrap">
+                                    <label>Email</label>
+                                    <input type="email" value="<%=userdata.email%>" disabled>
+                                </div>
+                                <div class="input_wrap">
+                                    <label>Mobile</label>
+                                    <input type="Number" value="<%=userdata.mobile%>" disabled>
+                                </div>
+                                <div class="input_wrap">
+                                    <label>Password </label>
+                                    <% var len=locals.userdata.password.length %>
+
+                                        <input type="password" value="<%= '*'.repeat(len) %>" disabled>
+                                        <span class="show-pass"><i class="far fa-eye-slash"></i></span>
+                                </div>
+
+                                <div class="input_wrap">
+                                    <button type="submit">Edit Credentials</button>
+                                </div>
+
+                            </form>
+
+                            <%}%>
+
+
+                    </div>
+                </div>
+
+                <div class="col-xl-5 col-lg-6 col-md-12 col-sm-12">
+                    <h3 class="title-7">Address</h3>
+                    <div class="login_wrapper login_wrapper_2 p-4">
+
+                        <%if(locals.addressData){%>
+                            <%locals.addressData.address.forEach(el=> { %>
+                                <div class="card p-3 input_wrap input_wrap_3">
+
+                                    <p class="mb-10"><span>Name : </span>
+                                        <%=el.uname%>
+                                    </p>
+                                    <p class="mb-10"><span>Mobile: </span>
+                                        <%=el.mobile%>
+                                    </p>
+                                    <p class="mb-10"><span>Address: </span>
+                                        <%=el.address%>
+                                    </p>
+                                    <p class="mb-10"><span>Locality: </span>
+                                        <%=el.locality%>
+                                    </p>
+                                    <p class="mb-10"><span>City: </span>
+                                        <%=el.city%>
+                                    </p>
+                                    <p class="mb-10"><span>Pincode: </span>
+                                        <%=el.pincode%>
+                                    </p>
+                                    <p class="mb-10"><span>State: </span>
+                                        <%=el.state%>
+                                    </p>
+
+
+                                    <a href="/editAddress?addressId=<%=el._id%>"><button type="submit">Edit</button></a>
+                                    <br>
+
+                                    <input type="hidden" value="<%=el._id%>" id="hiddenfield">
+                                    <input type="button" class="btn-danger removebtn" value="Delete" onClick="deleteConfirm()">
+
+
+                                </div>
+                                <% })%>
+                                    <%}%>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- footer area start -->
+    <footer class="footer_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info">
+                        <h3 class="f-title">contact info</h3>
+                        <ul>
+                            <li>Add: 734 Riverwood Drive, Suite 245 Cottonwood </li>
+                            <li>Beverly Hill, Melbourne, USA.</li>
+                            <li>Email: <a href="https://wphix.com/cdn-cgi/l/email-protection" class="__cf_email__"
+                                    data-cfemail="f7b4989983969483b792859299839f929a92d994989a">[email&#160;protected]</a>
+                            </li>
+                            <li>Fax: (+100) 123 456 7890 - (+100) 123 456 7891</li>
+                        </ul>
+                        <div class="social__media mb-30">
+                            <h3 class="f-title">FOLLOW US ON</h3>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info">
+                        <h3 class="f-title">Get Help</h3>
+                        <ul>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Delivery Information</a></li>
+                            <li><a href="#">Sale Terms & Conditions</a></li>
+                            <li><a href="#">Privacy Notice</a></li>
+                            <li><a href="#">Shopping FAQs</a></li>
+                            <li><a href="#">Returns & Refundss</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info">
+                        <h3 class="f-title">Popular categories</h3>
+                        <ul>
+                            <li><a href="#">Sneaker</a></li>
+                            <li><a href="#">Clothing & Stools</a></li>
+                            <li><a href="#">Helmet for Women’s</a></li>
+                            <li><a href="#">Basketball</a></li>
+                            <li><a href="#">Mens Running</a></li>
+                            <li><a href="#">Footwear</a></li>
+                            <li><a href="#">Outerwears</a></li>
+                            <li><a href="#">Men’s</a></li>
+                            <li><a href="#">Kids & Young</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-3 offset-xl-1 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info">
+                        <h3 class="f-title">get in touch</h3>
+                        <p>Sign up for all the news about our latest arrivals and<br>
+                            get an exclusive early access shopping. Join <br>
+                            <span>60.000+ Subscribers</span> and get a new discount coupon<br> on every Saturday.
+                        </p>
+                        <div class="subscribe pt-20">
+                            <form action="#">
+                                <input type="email" placeholder="Enter your email here..." />
+                                <button>Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer__bottom pb-10 mt-60">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 ">
+                        <p>Copyright © <span>Gota Store</span> All Rights Reserved. Powered by <span><a
+                                    href="themepure.html">theme_pure</a></span></p>
+                    </div>
+                    <div class="col-xl-5 offset-xl-2 col-lg-4 col-md-6 col-sm-12">
+                        <div class="footer-menu">
+                            <ul class="text-end">
+                                <li><a href="#">Site Map</a></li>
+                                <li><a href="#">Search Terms</a></li>
+                                <li><a href="#">Advanced Search </a></li>
+                                <li><a href="#">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer area end -->
+
+
+    <!-- JS here -->
+    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+    <script src="assets/js/one-page-nav-min.js"></script>
+    <script src="assets/js/slick.min.js"></script>
+    <script src="assets/js/jquery.meanmenu.min.js"></script>
+    <script src="assets/js/ajax-form.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/jquery.scrollUp.min.js"></script>
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/countdown.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+    <script>
+        const addressid = document.getElementById('hiddenfield').value
+        const button = document.getElementsByClassName('removebtn')
+
+        function deleteConfirm() {
+
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You want to delete this Address!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteAddress();
+                    Swal.fire({
+                        title: "Deleted Successfully!",
+                        text: "The product has been deleted.",
+                        icon: "success"
+                    }).then(() => {
+                    location.reload(); // Reload the page after successful deletion
+                })
+                } else {
+                    Swal.fire({
+                        title: "Product deletion Cancelled!",
+                        text: "The product addition  has been cancelled.",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+
+
+
+
+        async function deleteAddress() {
+            url = `http://localhost:3003/deleteAddress?addressId=${addressid}`
+
+            const result = await fetch(url)
+            if (result) {
+
+            }
+
+
+            var data = await result.json()
+            console.log(data.success);
+        }
+
+
+        for (let i = 0; i <= button.length; i++) {
+
+
+button[i].addEventListener('click', function (event) {
+ 
+    
+    // url = `http://localhost:3003/deleteCartItem?productid=${productid}`
+    // const result = fetch(url)
+    const buttonClicked = event.target
+
+    buttonClicked.parentElement.parentElement.remove()
+
+
+})
+}
+    </script>
+
+    </body>
+
+    <!-- Mirrored from wphix.com/template/gota/gota/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Dec 2023 18:27:50 GMT -->
+
+    </html>

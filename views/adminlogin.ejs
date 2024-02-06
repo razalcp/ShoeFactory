@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Admin Login </title>
+<style>
+    @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+header .header{
+  background-color: #fff;
+  height: 45px;
+}
+header a img{
+  width: 134px;
+margin-top: 4px;
+}
+.login-page {
+  width: 360px;
+  padding: 8% 0 0;
+  margin: auto;
+}
+.login-page .form .login{
+  margin-top: -31px;
+margin-bottom: 26px;
+}
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 360px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: center;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+.form input {
+  font-family: "Roboto", sans-serif;
+  outline: 0;
+  background: #f2f2f2;
+  width: 100%;
+  border: 0;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.form button {
+  font-family: "Roboto", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  background-color: #328f8a;
+  background-image: linear-gradient(45deg,#328f8a,#08ac4b);
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.form .message {
+  margin: 15px 0 0;
+  color: #b3b3b3;
+  font-size: 12px;
+}
+.form .message a {
+  color: #4CAF50;
+  text-decoration: none;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+body {
+  background-color: #328f8a;
+  background-image: linear-gradient(45deg,#328f8a,#08ac4b);
+  font-family: "Roboto", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+  <body>
+    <div class="login-page">
+      <div class="form">
+        <div class="login">
+          <div class="login-header">
+            <h3>LOGIN</h3>
+            <p>Please enter your credentials to login.</p>
+          </div>
+        </div>
+        <form id="logform" class="login-form" method="post" action="/admin" >
+          <% if(locals.errmessage) { %>
+            <div class="alert alert-danger">
+              <%= locals.errmessage %>
+            </div>
+            <% } %>
+
+          <input type="text" placeholder="Username" name="uname" id="email">
+          <p>
+            <div id="error1" style="display: none;" class="alert alert-danger err"></div>
+            </p>
+
+          <input type="password" placeholder="Password" name="pwd" id="password">
+          <p>
+            <div id="error2" style="display: none;" class="alert alert-danger err"></div>
+            </p>
+
+          <button type="submit">login</button>
+
+        </form>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+
+    <script>
+      const email=document.getElementById('email')
+      const password=document.getElementById('password')
+      const error1 = document.getElementById('error1')
+      const error2 = document.getElementById('error2')
+
+
+
+      
+function emailValidate(e){
+
+const emailval = email.value
+const emailpattern = /^([a-zA-Z][a-zA-Z0-9._-]*)@(gmail\.com|yahoo\.com|outlook\.com)$/
+
+if(!emailpattern.test(emailval))
+{   
+    console.log("Invalid format"); 
+    error1.style.display = "block"
+    error1.innerHTML = "Invalid Format!!"
+}
+else{
+    error1.style.display = "none"
+    error1.innerHTML = ""
+}
+}
+
+
+function passwordValidate(e){
+const passval = password.value
+const alpha = /[a-zA-Z]/
+const digit = /\d/
+if(passval.length < 8)
+{   
+    error2.style.display = "block"
+    error2.innerHTML = "Must have atleast 8 characters"
+}
+else if(!alpha.test(passval) || !digit.test(passval) )
+{
+    error2.style.display = "block"
+    error2.innerHTML = "Should contain Numbers and Alphabets!!"
+}
+else if(passval.trim() === ""){
+    error2.style.display = "block"
+    error2.innerHTML = "Please Enter the password."
+}
+else{
+
+    error2.style.display = "none"
+    error2.innerHTML = ""
+}
+}
+
+
+      email.addEventListener('blur',emailValidate)
+      password.addEventListener('blur',passwordValidate)
+
+
+      logForm.addEventListener('submit',function(e){
+        emailValidate();
+        passwordValidate();
+
+        if(!error1.innerHTML === '' || !error2.innerHTML === ''){
+          e.preventDefault()
+        }
+      })
+    </script>
+</body>
+</body>
+</html>

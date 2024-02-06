@@ -1,0 +1,381 @@
+<%-include('../userLayouts/userHeader') %>
+
+  <!-- cart area start  --> 
+  <div class="cart__sidebar">
+    <div class="container">
+        <div class="cart__content">
+            <div class="cart-text">
+                <h3 class="mb-40">Shopping cart</h3>
+                <div class="add_cart_product">
+                    <div class="add_cart_product__thumb">
+                        <img src="assets/img/product/29-3.jpg" alt="">
+                    </div>
+                    <div class="add_cart_product__content">
+                        <h5><a href="shop.html">Running 3-Stripes</a></h5>
+                        <p>1 × $66.00</p>
+                        <button class="cart_close"><i class="fal fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="add_cart_product">
+                    <div class="add_cart_product__thumb">
+                        <img src="assets/img/product/17.jpg" alt="">
+                    </div>
+                    <div class="add_cart_product__content">
+                        <h5><a href="shop.html">Buddy non Stripes</a></h5>
+                        <p>1 × $40.00</p>
+                        <button class="cart_close"><i class="fal fa-times"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-icon">
+                <i class="fal fa-times"></i>
+            </div>
+            <div class="cart-bottom">
+                <div class="cart-bottom__text">
+                    <span>Subtotal:</span>
+                    <span class="end">$121.00</span>
+                    <a href="cart.html">view cart</a>
+                    <a href="checkout.html">checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="cart-offcanvas-overlay"></div>
+<!-- cart area end  -->
+
+
+    <div class="checkout_area pt-80">
+        <div class="container">
+            <div class="notification__message">
+                <p><i class="fal fa-window-maximize"></i>Returning customer? Click here to <a href="login.html">login</a></p>
+                <p><i class="fal fa-window-maximize"></i>Have a coupon? Click here to enter your code</p>
+            </div>
+            <div class="row">
+                <div class="col-xl-7 col-lg-7 col-md-12">
+                    <div class="checkout_form mb-100">
+                        <form action="#">
+                            <div class="row mb-30">
+                                <div class="col-xl-6 col-lg-6 col-md-6">
+                                    <div class="checkout__wrap">
+                                        <label>First name <span>*</span></label>
+                                        <input type="text" name="fname">
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-6">
+                                    <div class="checkout__wrap">
+                                        <label>Last name <span>*</span></label>
+                                        <input type="text" name="lname">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="checkout__wrap">
+                                <label>Company name (optional) <span></span></label>
+                                <input type="text" name="cname">
+                            </div>
+                            <div class="checkout__wrap">
+                                <label>Country / Region <span>*</span></label>
+                                <select name="country">
+                                    <option value="Bangladesh">Bangladesh</option>
+                                    <option value="Bangladesh">Pakistan</option>
+                                    <option value="Bangladesh">Arab</option>
+                                    <option value="Bangladesh">America</option>
+                                    <option value="Bangladesh">Saudi Arabia</option>
+                                    <option value="Bangladesh">Israil</option>
+                                    <option value="Bangladesh">Irak</option>
+                                    <option value="Bangladesh">Netherland</option>
+                                </select>
+                            </div>
+                            <div class="checkout__wrap">
+                                <label>Street address <span>*</span></label>
+                                <input class="mb-20" type="text" name="add1" placeholder="house number and street number">
+                                <input type="text" name="add2" placeholder="apartment,suite,unit,etc.(optional)">
+                            </div>
+                            <div class="checkout__wrap">
+                                <label>Town / City *<span></span></label>
+                                <input type="text" name="town">
+                            </div>
+                            <div class="checkout__wrap">
+                                <label>County (optional)<span></span></label>
+                                <input type="text" name="country">
+                            </div>
+                            <div class="checkout__wrap">
+                                <label>Postcode<span>*</span></label>
+                                <input type="text" name="postcode">
+                            </div>
+                            <div class="checkout__wrap">
+                                <label>Phone <span>*</span></label>
+                                <input type="text" name="phone">
+                            </div>
+                            <div class="checkout__wrap">
+                                <label>Email address <span>*</span></label>
+                                <input type="email" name="email">
+                            </div>
+                            <div class="checkout__wrap-2 pt-20">
+                                <input type="checkbox" name="check1">
+                                <span>Create an account?</span>
+                            </div>
+                            <div class="checkout__wrap-2 pt-20">
+                                <input type="checkbox" name="check2">
+                                <span>Ship to a different address?</span>
+                            </div>
+                            <div class="checkout__wrap">
+                                <label>Order notes (optional) <span></span></label>
+                                <textarea  name="ordernote" placeholder="Note about your order, e.g special note for delivery"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-xl-5 col-lg-5 col-md-12">
+                    <div class="cart__acount ml-50">
+                        <h5>Your order</h5>
+                      <table>
+                       <% if(locals.product){ %>
+                        <tr class="first-child-2">
+                            <td>product</td>
+                            <td><%= product.producttitle %> <span>× 1</span></td>
+                        </tr>
+                        
+                        <tr class="first-child-2">
+                            <td>Total</td>
+                            <td class="lightbluee">$47.00</td>
+                        </tr>
+                       <% } %>
+                          
+                          <!-- <tr class="first-child lastchild">
+                              <td>Shipping</td>
+                              <td>Enter your address to view shipping options. </td>
+                          </tr> -->
+                         
+                      </table>
+                      <div class="checkout__accordion mt-30">
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Check payments 
+                                </button>
+                              </h2>
+                              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.
+                                </div>
+                              </div>
+                            </div>
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Cash on delivery 
+                                </button>
+                              </h2>
+                              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    Pay with cash upon delivery.
+                                </div>
+                              </div>
+                            </div>
+                            <div class="accordion-item">
+                              <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                    PayPal
+                                </button>
+                              </h2>
+                              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    Cash on delivery 
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    <div class="terms pt-50 pb-20">
+                        <p>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy</p>
+                        <div class="check_term">
+                            <input type="checkbox">
+                            <p>I have read and agree to the website terms and conditions <span>*</span></p>
+                        </div>
+                        <div class="order-button">
+                            <button type="submit">place order</button>
+                        </div>
+                    </div>
+                    </div>    
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- popup area start -->
+    <div class="overlay"></div>
+    <div class="product-popup">
+        <div class="view-background">
+            <div class="row">
+                <div class="col-xl-5 col-lg-5 col-md-5">
+                    <div class="quickview">
+                        <div class="quickview__thumb">
+                            <img src="assets/img/quick_view/25.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-7 col-lg-7 col-md-7">
+                    <div class="viewcontent">
+                        <div class="viewcontent__header">
+                            <h2>Brown Leather Bags</h2>
+                            <a class="view_close product-p-close" href="javascript:void(0)"><i
+                                    class="fal fa-times-circle"></i></a>
+                        </div>
+                        <div class="viewcontent__rating">
+                            <i class="fal fa-star ratingcolor"></i>
+                            <i class="fal fa-star ratingcolor"></i>
+                            <i class="fal fa-star ratingcolor"></i>
+                            <i class="fal fa-star"></i>
+                        </div>
+                        <div class="viewcontent__price">
+                            <h4><span>$</span>99.00</h4>
+                        </div>
+                        <div class="viewcontent__stock">
+                            <h4>Available :<span> In stock</span></h4>
+                        </div>
+                        <div class="viewcontent__details">
+                            <p>Anlor sit amet, consectetur adipiscing elit. Fusce condimentum est lacus, non pretium
+                                risus lacinia vel. Fusce eget turpis orci.</p>
+                        </div>
+                        <div class="viewcontent__action">
+                            <span>Qty</span>
+                            <span><input type="number" placeholder="1"></span>
+                            <span><a href="#">add to cart</a></span>
+                            <span><i class="fal fa-heart"></i></span>
+                            <span><i class="fal fa-info-circle"></i></span>
+                        </div>
+                        <div class="viewcontent__footer">
+                            <ul>
+                                <li>Category:</li>
+                                <li>SKU:</li>
+                                <li>Brand:</li>
+                            </ul>
+                            <ul>
+                                <li>Watches</li>
+                                <li>2584-MK63</li>
+                                <li>Brenda</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- popup area end -->
+
+    <!-- footer area start -->
+    <footer class="footer_area fix">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info  wow fadeInUp " data-wow-duration=".s" data-wow-delay=".3s">
+                        <h3 class="f-title">contact info</h3>
+                        <ul>
+                            <li>Add: 734 Riverwood Drive, Suite 245 Cottonwood </li>
+                            <li>Beverly Hill, Melbourne, USA.</li>
+                            <li>Email: <a href="https://wphix.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a5975746e7b796e5a7f687f746e727f777f34797577">[email&#160;protected]</a></li>
+                            <li>Fax: (+100) 123 456 7890 - (+100) 123 456 7891</li>
+                        </ul>
+                        <div class="social__media mb-30">
+                            <h3 class="f-title">FOLLOW US ON</h3>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".7s" data-wow-delay=".4s">
+                        <h3 class="f-title">Get Help</h3>
+                        <ul>
+                            <li><a href="contact.html">Contact Us</a></li>
+                            <li><a href="accordion.html">Delivery Information</a></li>
+                            <li><a href="accordion.html">Sale Terms & Conditions</a></li>
+                            <li><a href="accordion.html">Privacy Notice</a></li>
+                            <li><a href="accordion.html">Shopping FAQs</a></li>
+                            <li><a href="accordion.html">Returns & Refundss</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".8s" data-wow-delay=".5s">
+                        <h3 class="f-title">Popular categories</h3>
+                        <ul>
+                            <li><a href="shop.html">Sneaker</a></li>
+                            <li><a href="shop.html">Clothing & Stools</a></li>
+                            <li><a href="shop.html">Helmet for Women’s</a></li>
+                            <li><a href="shop.html">Basketball</a></li>
+                            <li><a href="shop.html">Mens Running</a></li>
+                            <li><a href="shop.html">Footwear</a></li>
+                            <li><a href="shop.html">Outerwears</a></li>
+                            <li><a href="shop.html">Men’s</a></li>
+                            <li><a href="shop.html">Kids & Young</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-3 offset-xl-1 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".9s" data-wow-delay=".6s">
+                        <h3 class="f-title">get in touch</h3>
+                        <p>Sign up for all the news about our latest arrivals and<br>
+                            get an exclusive early access shopping. Join <br>
+                            <span>60.000+ Subscribers</span> and get a new discount coupon<br> on every Saturday.
+                        </p>
+                        <div class="subscribe pt-20">
+                            <form action="#">
+                                <input type="email" placeholder="Enter your email here..." />
+                                <button>Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer__bottom pb-10 mt-60">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 ">
+                        <p>Copyright © <span>Gota Store</span> All Rights Reserved. Powered by <span><a href="themepure.html">theme_pure</a></span>
+                        </p>
+                    </div>
+                    <div class="col-xl-5 offset-xl-2 col-lg-4 col-md-6 col-sm-12">
+                        <div class="footer-menu">
+                            <ul class="text-end">
+                                <li><a href="contact.html">Site Map</a></li>
+                                <li><a href="accordion.html">Search Terms</a></li>
+                                <li><a href="shop.html">Advanced Search </a></li>
+                                <li><a href="contact.html">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer area end -->
+
+
+    <!-- JS here -->
+    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+    <script src="assets/js/one-page-nav-min.js"></script>
+    <script src="assets/js/slick.min.js"></script>
+    <script src="assets/js/jquery.meanmenu.min.js"></script>
+    <script src="assets/js/countdown.js"></script>
+    <script src="assets/js/ajax-form.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/jquery.scrollUp.min.js"></script>
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+
+
+<!-- Mirrored from wphix.com/template/gota/gota/checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Dec 2023 18:27:50 GMT -->
+</html>

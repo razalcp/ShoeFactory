@@ -1,0 +1,1826 @@
+<%-include('userLayouts/userHeader.ejs')%>
+
+    <!-- slider start -->
+    <div class="slider-active swiper-container height">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide slider-item">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="slider_images">
+                                <img class="back" src="assets/img/slider/slider-img-1.png" alt="">
+                                <img class="top" src="assets/img/slider/text.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide slider-item">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="slider_images">
+                                <img class="back" src="assets/img/slider/slider-img-1.png" alt="">
+                                <img class="top" src="assets/img/slider/text.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="swiper-slide slider-item">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="slider_images">
+                                <img class="back" src="assets/img/slider/slider-img-1.png" alt="">
+                                <img class="top" src="assets/img/slider/text.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
+    </div>
+    <!-- slider end -->
+
+    <!-- features area start  -->
+    <div class="features-area d-none d-md-block fix">
+        <div class="row g-0">
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <div class="fetures">
+                    <div class="fetures__thumb fix">
+                        <a href="shop.html"><img src="assets/img/features/fe1.png" alt="features1"></a>
+                    </div>
+                    <div class="fetures__content">
+                        <h4 class="feature-title mb-40">Sport<br> Baseball</h4>
+                        <p class="d-md-none d-lg-block">all products <span class="discount"><a href="#">up to 70%
+                                    off</a></span> limited time discount</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <div class="fetures">
+                    <div class="fetures__thumb fix">
+                        <a href="shop.html"><img src="assets/img/features/banner-home2.jpg" alt="features1"></a>
+                    </div>
+                    <div class="fetures__content pt-200">
+                        <p class="d-md-none d-lg-block">Gota store with a tool that makes design simple for everyone</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                <div class="fetures">
+                    <div class="fetures__thumb fix">
+                        <a href="shop.html"><img src="assets/img/features/fe3.png" alt="features1"></a>
+                    </div>
+                    <div class="fetures__content">
+                        <h4 class="feature-title mb-40">Jacket<br>For women’s</h4>
+                        <p class="d-md-none d-lg-block">all products <span class="discount"><a href="#">up to 70%
+                                    off</a></span> limited time discount</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- features area end  -->
+
+        <!-- categories area start -->
+        <div class="categories_area pt-85 mb-150">
+            <div class="container-fluid">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <div class="section-wrapper text-center mb-35">
+                            <h2 class="section-title">Explore Our Bestsellers</h2>
+                            <p>Commodo sociosqu venenatis cras dolor sagittis integer luctus sem primis<br> eget maecenas sed urna malesuada.</p>
+                        </div>
+                    </div>
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                        <div class="categories__tab">
+                            <ul class="nav nav-tabs justify-content-center mb-55" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab"  aria-selected="true">All SHoes</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab"  aria-selected="false">Men’s</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab"  aria-selected="false">WoMen’s</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#kidss" type="button" role="tab"  aria-selected="false">Kids</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="home">
+                                    <div class="container">
+                                        <div class="product-active h-2-product-active swiper-container">
+                                            <div class="swiper-wrapper">
+                                                <% product.forEach((pdt)=> { %>
+                                                <div class="product-item swiper-slide wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="/userhome/productdetail?id=<%= pdt._id %>">
+                                                               <img class="product-primary" src="/public/images/<%=pdt.imageurl[3]%>" alt="product_image"> 
+                                                               <img class="product-secondary" src="/public/images/<%=pdt.imageurl[2]%>" alt="product_image"> 
+
+
+                                                                
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="/userhome/productdetail"><%=pdt.producttitle%></a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>₹</span><%=pdt.price%></p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                    <div class="product__action">
+                                                        <div class="inner__action">
+                                                            <div class="wishlist">
+                                                                <a href="#"><i class="fal fa-heart"></i></a>
+                                                            </div>
+                                                            <div class="view">
+                                                                <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                            </div>
+                                                            <div class="layer">
+                                                                <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% }); %>
+
+                                                
+                                                
+                                                
+                                                
+                                                
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="profile">
+                                    <div class="container">
+                                        <div class="product-active swiper-container">
+                                            <div class="swiper-wrapper">
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/cat1.png" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/cat2.png" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating text-end">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__name">
+                                                                <h4><a href="single.html">Sports Sandals for </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>180.00 - <span>$</span>880.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__action">
+                                                                <div class="inner__action">
+                                                                    <div class="wishlist">
+                                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                                    </div>
+                                                                    <div class="view">
+                                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                                    </div>
+                                                                    <div class="layer">
+                                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/cat2.png" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/cat1.png" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="lightblueclr" href="#">-20%</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">Sports Sandals for </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>180.00 - <span>$</span>980.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__action">
+                                                                <div class="inner__action">
+                                                                    <div class="wishlist">
+                                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                                    </div>
+                                                                    <div class="view">
+                                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                                    </div>
+                                                                    <div class="layer">
+                                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/cat3.png" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/cat2.png" alt="product_image">
+                                                            </a>
+                                                            <!-- <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div> -->
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">and American foreign trade </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>280.00 - <span>$</span>580.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__action">
+                                                                <div class="inner__action">
+                                                                    <div class="wishlist">
+                                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                                    </div>
+                                                                    <div class="view">
+                                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                                    </div>
+                                                                    <div class="layer">
+                                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/cat2.png" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/cat2.png" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="lightblueclr" href="#">-30%</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">Korean version of women's platform</a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>480.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__action">
+                                                                <div class="inner__action">
+                                                                    <div class="wishlist">
+                                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                                    </div>
+                                                                    <div class="view">
+                                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                                    </div>
+                                                                    <div class="layer">
+                                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/cat1.png" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/cat2.png" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">new word with thick toes and </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__action">
+                                                                <div class="inner__action">
+                                                                    <div class="wishlist">
+                                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                                    </div>
+                                                                    <div class="view">
+                                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                                    </div>
+                                                                    <div class="layer">
+                                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/cat1.png" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/cat2.png" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">High-heeled sandals women 2021 </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__action">
+                                                                <div class="inner__action">
+                                                                    <div class="wishlist">
+                                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                                    </div>
+                                                                    <div class="view">
+                                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                                    </div>
+                                                                    <div class="layer">
+                                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="contact">
+                                    <div class="container">
+                                        <div class="product-active h-2-product-active swiper-container">
+                                            <div class="swiper-wrapper">
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/9.jpg" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/9-2.jpg" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">women's sandals stiletto super </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                    <div class="product__action">
+                                                        <div class="inner__action">
+                                                            <div class="wishlist">
+                                                                <a href="#"><i class="fal fa-heart"></i></a>
+                                                            </div>
+                                                            <div class="view">
+                                                                <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                            </div>
+                                                            <div class="layer">
+                                                                <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/3.jpg" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/3-2.jpg" alt="product_image">
+                                                            </a>
+                                                            <!-- <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div> -->
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">Women's 2021 new balance heel </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                    <div class="product__action">
+                                                        <div class="inner__action">
+                                                            <div class="wishlist">
+                                                                <a href="#"><i class="fal fa-heart"></i></a>
+                                                            </div>
+                                                            <div class="view">
+                                                                <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                            </div>
+                                                            <div class="layer">
+                                                                <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/11.jpg" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/11-2.jpg" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">big silk belt female sandals</a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                    <div class="product__action">
+                                                        <div class="inner__action">
+                                                            <div class="wishlist">
+                                                                <a href="#"><i class="fal fa-heart"></i></a>
+                                                            </div>
+                                                            <div class="view">
+                                                                <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                            </div>
+                                                            <div class="layer">
+                                                                <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/4.jpg" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/4-2.jpg" alt="product_image">
+                                                            </a>
+                                                            <!-- <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div> -->
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">heeled big silk belt female sandals</a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                    <div class="product__action">
+                                                        <div class="inner__action">
+                                                            <div class="wishlist">
+                                                                <a href="#"><i class="fal fa-heart"></i></a>
+                                                            </div>
+                                                            <div class="view">
+                                                                <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                            </div>
+                                                            <div class="layer">
+                                                                <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/10.jpg" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/10-2.jpg" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">Fashion high heeled big silk belt </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                    <div class="product__action">
+                                                        <div class="inner__action">
+                                                            <div class="wishlist">
+                                                                <a href="#"><i class="fal fa-heart"></i></a>
+                                                            </div>
+                                                            <div class="view">
+                                                                <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                            </div>
+                                                            <div class="layer">
+                                                                <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/cat1.png" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/cat2.png" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">balance heel summer new platfh </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                    <div class="product__action">
+                                                        <div class="inner__action">
+                                                            <div class="wishlist">
+                                                                <a href="#"><i class="fal fa-heart"></i></a>
+                                                            </div>
+                                                            <div class="view">
+                                                                <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                            </div>
+                                                            <div class="layer">
+                                                                <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="kidss">
+                                    <div class="container">
+                                        <div class="product-active swiper-container">
+                                            <div class="swiper-wrapper">
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/cat1.png" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/cat2.png" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating text-end">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__name">
+                                                                <h4><a href="single.html">heeled big silk belt </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__action">
+                                                                <div class="inner__action">
+                                                                    <div class="wishlist">
+                                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                                    </div>
+                                                                    <div class="view">
+                                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                                    </div>
+                                                                    <div class="layer">
+                                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/cat2.png" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/cat1.png" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="lightblueclr" href="#">-20%</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">d American style Roman </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__action">
+                                                                <div class="inner__action">
+                                                                    <div class="wishlist">
+                                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                                    </div>
+                                                                    <div class="view">
+                                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                                    </div>
+                                                                    <div class="layer">
+                                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/cat3.png" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/cat2.png" alt="product_image">
+                                                            </a>
+                                                            <!-- <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div> -->
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">stiletto high-heeled thin shallow </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__action">
+                                                                <div class="inner__action">
+                                                                    <div class="wishlist">
+                                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                                    </div>
+                                                                    <div class="view">
+                                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                                    </div>
+                                                                    <div class="layer">
+                                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/cat2.png" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/cat2.png" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="lightblueclr" href="#">-30%</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">high-heeled thin shallow </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__action">
+                                                                <div class="inner__action">
+                                                                    <div class="wishlist">
+                                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                                    </div>
+                                                                    <div class="view">
+                                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                                    </div>
+                                                                    <div class="layer">
+                                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/cat1.png" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/cat2.png" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">Fashion high heeled big silk belt </a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__action">
+                                                                <div class="inner__action">
+                                                                    <div class="wishlist">
+                                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                                    </div>
+                                                                    <div class="view">
+                                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                                    </div>
+                                                                    <div class="layer">
+                                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-item swiper-slide">
+                                                    <div class="product">
+                                                        <div class="product__thumb">
+                                                            <a href="single.html">
+                                                                <img class="product-primary" src="assets/img/product/cat1.png" alt="product_image">
+                                                                <img class="product-secondary" src="assets/img/product/cat2.png" alt="product_image">
+                                                            </a>
+                                                            <div class="product__update">
+                                                                <a class="#">new</a>
+                                                            </div>
+                                                            <div class="product-info mb-10">
+                                                                <div class="product_category">
+                                                                    <span>Shoes, Clothing</span>
+                                                                </div>
+                                                                <div class="product_rating">
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                                </div>
+                                                            </div>
+                                                               <div class="product__name">
+                                                                <h4><a href="shop.html">heeled sandals open</a></h4>
+                                                                <div class="pro-price">
+                                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 - <span>$</span>680.00</p>
+                                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product__action">
+                                                                <div class="inner__action">
+                                                                    <div class="wishlist">
+                                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                                    </div>
+                                                                    <div class="view">
+                                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                                    </div>
+                                                                    <div class="layer">
+                                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- categories area end -->
+
+    <!-- product show case area start  -->
+    <div class="show-case lightblue pt-125">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div class="section-wrapper text-center mb-35">
+                        <h4 class="sub-title">Bestseller products</h4>
+                        <h2 class="section-title text-white">Nike Air Force 1 Sage Low LX</h2>
+                        <p class="d-none d-lg-block">Commodo sociosqu venenatis cras dolor sagittis integer luctus sem
+                            primis<br> eget maecenas sed urna malesuada.</p>
+                    </div>
+                </div>
+                <div class="case-info text-center">
+                    <span class="offer-text d-none d-lg-block">hot deal<i class="far fa-stars"></i></span>
+                    <h2 class="back1-text d-none d-lg-block">top</h2>
+                    <h2 class="back-text d-none d-lg-block">limited</h2>
+                    <a href="shop.html"><img class="banar-product" src="assets/img/product/product4.png" alt=""></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- product show case area end  -->
+
+    <!-- new product area start -->
+    <div class="new_product_area mb-80">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                            <div class="section-wrapper text-center mb-35">
+                                <h2 class="section-title"><a href="#">Explore Our New arrivals</a></h2>
+                                <p>Commodo sociosqu venenatis cras dolor sagittis integer luctus sem primis<br> eget
+                                    maecenas sed urna malesuada.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="product-active2 swiper-container">
+                            <div class="swiper-wrapper">
+                                <div class="product-item swiper-slide  wow fadeInLeft " data-wow-duration=".9s" data-wow-delay=".3s">
+                                    <div class="product product-2">
+                                        <div class="product__thumb">
+                                            <a href="single.html">
+                                                <img class="product-primary" src="assets/img/product/6.jpg"
+                                                    alt="product_image">
+                                                <img class="product-secondary" src="assets/img/product/6-2.jpg"
+                                                    alt="product_image">
+                                            </a>
+                                            <!-- <div class="product__update">
+                                                    <a class="#">new</a>
+                                                </div> -->
+                                            <div class="product-info mb-10">
+                                                <div class="product_category">
+                                                    <span>Shoes, Clothing</span>
+                                                </div>
+                                                <div class="product_rating">
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="product__name">
+                                                <h4><a href="shop.html">Ladies Rose one Flower </a></h4>
+                                                <div class="pro-price">
+                                                    <p class="p-absoulute pr-1"><span>$</span>180.00 -
+                                                        <span>$</span>280.00</p>
+                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                </div>
+                                            </div>
+                                            <div class="product__action">
+                                                <div class="inner__action">
+                                                    <div class="wishlist">
+                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                    </div>
+                                                    <div class="view">
+                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                    </div>
+                                                    <div class="layer">
+                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-item swiper-slide  wow fadeInLeft " data-wow-duration=".9s" data-wow-delay=".4s">
+                                    <div class="product product-2">
+                                        <div class="product__thumb">
+                                            <a href="single.html">
+                                                <img class="product-primary" src="assets/img/product/9.jpg"
+                                                    alt="product_image">
+                                                <img class="product-secondary" src="assets/img/product/9-2.jpg"
+                                                    alt="product_image">
+                                            </a>
+                                            <div class="product__update">
+                                                <a href="#">new</a>
+                                            </div>
+                                            <div class="product-info mb-10">
+                                                <div class="product_category">
+                                                    <span>Shoes, Clothing</span>
+                                                </div>
+                                                <div class="product_rating">
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="product__name">
+                                                <h4><a href="shop.html">Mens Sneakers Mens Casual </a></h4>
+                                                <div class="pro-price">
+                                                    <p class="p-absoulute pr-1"><span>$</span>280.00 -
+                                                        <span>$</span>380.00</p>
+                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                </div>
+                                            </div>
+                                            <div class="product__action">
+                                                <div class="inner__action">
+                                                    <div class="wishlist">
+                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                    </div>
+                                                    <div class="view">
+                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                    </div>
+                                                    <div class="layer">
+                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-item swiper-slide  wow fadeInLeft " data-wow-duration=".9s" data-wow-delay=".5s">
+                                    <div class="product product-2">
+                                        <div class="product__thumb">
+                                            <a href="single.html">
+                                                <img class="product-primary" src="assets/img/product/3.jpg"
+                                                    alt="product_image">
+                                                <img class="product-secondary" src="assets/img/product/3-2.jpg"
+                                                    alt="product_image">
+                                            </a>
+                                            <div class="product__update">
+                                                <a class="lightblueclr" href="#">-30%</a>
+                                            </div>
+                                            <div class="product-info mb-10">
+                                                <div class="product_category">
+                                                    <span>Shoes, Clothing</span>
+                                                </div>
+                                                <div class="product_rating">
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="product__name">
+                                                <h4><a href="shop.html">Ballet Flat Shoes for Women</a></h4>
+                                                <div class="pro-price">
+                                                    <p class="p-absoulute pr-1"><span>$</span>180.00 -
+                                                        <span>$</span>280.00</p>
+                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                </div>
+                                            </div>
+                                            <div class="product__action">
+                                                <div class="inner__action">
+                                                    <div class="wishlist">
+                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                    </div>
+                                                    <div class="view">
+                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                    </div>
+                                                    <div class="layer">
+                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-item swiper-slide  wow fadeInLeft " data-wow-duration=".9s" data-wow-delay=".6s">
+                                    <div class="product product-2">
+                                        <div class="product__thumb">
+                                            <a href="single.html">
+                                                <img class="product-primary" src="assets/img/product/1.jpg"
+                                                    alt="product_image">
+                                                <img class="product-secondary" src="assets/img/product/1-2.jpg"
+                                                    alt="product_image">
+                                            </a>
+                                            <!-- <div class="product__update">
+                                                    <a class="#">new</a>
+                                                </div> -->
+                                            <div class="product-info mb-10">
+                                                <div class="product_category">
+                                                    <span>Shoes, Clothing</span>
+                                                </div>
+                                                <div class="product_rating">
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="product__name">
+                                                <h4><a href="shop.html">Formal Leather Loafers for </a></h4>
+                                                <div class="pro-price">
+                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 -
+                                                        <span>$</span>680.00</p>
+                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                </div>
+                                            </div>
+                                            <div class="product__action">
+                                                <div class="inner__action">
+                                                    <div class="wishlist">
+                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                    </div>
+                                                    <div class="view">
+                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                    </div>
+                                                    <div class="layer">
+                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-item swiper-slide  wow fadeInLeft " data-wow-duration=".9s" data-wow-delay=".7s">
+                                    <div class="product product-2">
+                                        <div class="product__thumb">
+                                            <a href="single.html">
+                                                <img class="product-primary" src="assets/img/product/4.jpg"
+                                                    alt="product_image">
+                                                <img class="product-secondary" src="assets/img/product/4-2.jpg"
+                                                    alt="product_image">
+                                            </a>
+                                            <div class="product__update">
+                                                <a class="#">new</a>
+                                            </div>
+                                            <div class="product-info mb-10">
+                                                <div class="product_category">
+                                                    <span>Shoes, Clothing</span>
+                                                </div>
+                                                <div class="product_rating">
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="product__name">
+                                                <h4><a href="shop.html">sports round toe men </a></h4>
+                                                <div class="pro-price">
+                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 -
+                                                        <span>$</span>680.00</p>
+                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                </div>
+                                            </div>
+                                            <div class="product__action">
+                                                <div class="inner__action">
+                                                    <div class="wishlist">
+                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                    </div>
+                                                    <div class="view">
+                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                    </div>
+                                                    <div class="layer">
+                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 padding-left">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12"></div>
+                    <div class="section-wrapper text-center mb-35">
+                        <h2 class="section-title">Explore Our featured</h2>
+                        <p>Commodo sociosqu venenatis cras dolor sagittis integer luctus sem primis<br> eget maecenas
+                            sed urna malesuada.</p>
+                    </div>
+                    <div class="row">
+                        <div class="product-active2 swiper-container">
+                            <div class="swiper-wrapper">
+                                <div class="product-item swiper-slide  wow fadeInLeft " data-wow-duration=".9s" data-wow-delay=".4s">
+                                    <div class="product product-2">
+                                        <div class="product__thumb">
+                                            <a href="single.html">
+                                                <img class="product-primary" src="assets/img/product/1.jpg"
+                                                    alt="product_image">
+                                                <img class="product-secondary" src="assets/img/product/1-2.jpg"
+                                                    alt="product_image">
+                                            </a>
+                                            <!-- <div class="product__update">
+                                                    <a class="#">new</a>
+                                                </div> -->
+                                            <div class="product-info mb-10">
+                                                <div class="product_category">
+                                                    <span>Shoes, Clothing</span>
+                                                </div>
+                                                <div class="product_rating">
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="product__name">
+                                                <h4><a href="shop.html">global 4L premium </a></h4>
+                                                <div class="pro-price">
+                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 -
+                                                        <span>$</span>680.00</p>
+                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                </div>
+                                            </div>
+                                            <div class="product__action">
+                                                <div class="inner__action">
+                                                    <div class="wishlist">
+                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                    </div>
+                                                    <div class="view">
+                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                    </div>
+                                                    <div class="layer">
+                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-item swiper-slide  wow fadeInLeft " data-wow-duration=".9s" data-wow-delay=".5s">
+                                    <div class="product product-2">
+                                        <div class="product__thumb">
+                                            <a href="single.html">
+                                                <img class="product-primary" src="assets/img/product/5.jpg"
+                                                    alt="product_image">
+                                                <img class="product-secondary" src="assets/img/product/5-1.jpg"
+                                                    alt="product_image">
+                                            </a>
+                                            <div class="product__update">
+                                                <a href="#">new</a>
+                                            </div>
+                                            <div class="product-info mb-10">
+                                                <div class="product_category">
+                                                    <span>Shoes, Clothing</span>
+                                                </div>
+                                                <div class="product_rating">
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="product__name">
+                                                <h4><a href="shop.html">Fashion Leather Slip</a></h4>
+                                                <div class="pro-price">
+                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 -
+                                                        <span>$</span>680.00</p>
+                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                </div>
+                                            </div>
+                                            <div class="product__action">
+                                                <div class="inner__action">
+                                                    <div class="wishlist">
+                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                    </div>
+                                                    <div class="view">
+                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                    </div>
+                                                    <div class="layer">
+                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-item swiper-slide  wow fadeInLeft " data-wow-duration=".9s" data-wow-delay=".6s">
+                                    <div class="product product-2">
+                                        <div class="product__thumb">
+                                            <a href="single.html">
+                                                <img class="product-primary" src="assets/img/product/24.jpg"
+                                                    alt="product_image">
+                                                <img class="product-secondary" src="assets/img/product/24-2.jpg"
+                                                    alt="product_image">
+                                            </a>
+                                            <div class="product__update">
+                                                <a class="lightblueclr" href="#">-30%</a>
+                                            </div>
+                                            <div class="product-info mb-10">
+                                                <div class="product_category">
+                                                    <span>Shoes, Clothing</span>
+                                                </div>
+                                                <div class="product_rating">
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="product__name">
+                                                <h4><a href="shop.html">Lotto Sports Slippers for Men and </a></h4>
+                                                <div class="pro-price">
+                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 -
+                                                        <span>$</span>680.00</p>
+                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                </div>
+                                            </div>
+                                            <div class="product__action">
+                                                <div class="inner__action">
+                                                    <div class="wishlist">
+                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                    </div>
+                                                    <div class="view">
+                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                    </div>
+                                                    <div class="layer">
+                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-item swiper-slide  wow fadeInLeft " data-wow-duration=".9s" data-wow-delay=".7s">
+                                    <div class="product product-2">
+                                        <div class="product__thumb">
+                                            <a href="single.html">
+                                                <img class="product-primary" src="assets/img/product/1.jpg"
+                                                    alt="product_image">
+                                                <img class="product-secondary" src="assets/img/product/1-2.jpg"
+                                                    alt="product_image">
+                                            </a>
+                                            <!-- <div class="product__update">
+                                                    <a class="#">new</a>
+                                                </div> -->
+                                            <div class="product-info mb-10">
+                                                <div class="product_category">
+                                                    <span>Shoes, Clothing</span>
+                                                </div>
+                                                <div class="product_rating">
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="product__name">
+                                                <h4><a href="shop.html">Canvas Shoes in Lotto Brand Print</a></h4>
+                                                <div class="pro-price">
+                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 -
+                                                        <span>$</span>680.00</p>
+                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                </div>
+                                            </div>
+                                            <div class="product__action">
+                                                <div class="inner__action">
+                                                    <div class="wishlist">
+                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                    </div>
+                                                    <div class="view">
+                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                    </div>
+                                                    <div class="layer">
+                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-item swiper-slide  wow fadeInLeft " data-wow-duration=".9s" data-wow-delay=".8s">
+                                    <div class="product product-2">
+                                        <div class="product__thumb">
+                                            <a href="single.html">
+                                                <img class="product-primary" src="assets/img/product/4.jpg"
+                                                    alt="product_image">
+                                                <img class="product-secondary" src="assets/img/product/4-2.jpg"
+                                                    alt="product_image">
+                                            </a>
+                                            <div class="product__update">
+                                                <a class="#">new</a>
+                                            </div>
+                                            <div class="product-info mb-10">
+                                                <div class="product_category">
+                                                    <span>Shoes, Clothing</span>
+                                                </div>
+                                                <div class="product_rating">
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star start-color"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                    <a href="#"><i class="fal fa-star"></i></a>
+                                                </div>
+                                            </div>
+                                            <div class="product__name">
+                                                <h4><a href="shop.html">Slippers for Men and Women</a></h4>
+                                                <div class="pro-price">
+                                                    <p class="p-absoulute pr-1"><span>$</span>680.00 -
+                                                        <span>$</span>680.00</p>
+                                                    <a class="p-absoulute pr-2" href="#">add to cart</a>
+                                                </div>
+                                            </div>
+                                            <div class="product__action">
+                                                <div class="inner__action">
+                                                    <div class="wishlist">
+                                                        <a href="#"><i class="fal fa-heart"></i></a>
+                                                    </div>
+                                                    <div class="view">
+                                                        <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                    </div>
+                                                    <div class="layer">
+                                                        <a href="#"><i class="fal fa-layer-group"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- new product area end -->
+
+        <!-- blog area start -->
+        <div class="blog-area mb-100">
+            <div class="container">
+                <div class="section-wrapper text-center mb-35">
+                    <h2 class="section-title"><a href="blog.html">from our blog</a></h2>
+                    <p>Commodo sociosqu venenatis cras dolor sagittis integer luctus sem primis<br> eget maecenas sed urna malesuada.</p>
+                    </div>
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                        <div class="blog" style="background-image: url('assets/img/blog/9.jpg');">
+                            <div class="blog__content">
+                                <span class="mb-15">Shoes, Clothing</span>
+                                <h3 class="blog-title "><a href="blog.html">Mauris rhoncus aliquet purus</a></h3>
+                                <p>By Erentheme /<span>September 16, 2019</span></p>
+                                <a href="blog.html">Continue reading</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                        <div class="bpost">
+                            <div class="bpost__thumb">
+                                <img src="assets/img/blog/blog1.jpg" alt="blog_post">
+                            </div>
+                            <div class="bpost__content">
+                                <span>Shoes, Clothing</span>
+                                <h3 class="blog-title title-2"><a href="blog.html">Simple & Easy DIY Flower Deco</a></h3>
+                                <p>By <span>Erentheme </span>/September 16, 2019</p>
+                                <p>Sapien luctus id justo suscipit nonummy eget hymenaeos...</p>
+                            </div>
+                        </div>
+                        <div class="bpost">
+                            <div class="bpost__thumb">
+                                <img src="assets/img/blog/blog2.jpg" alt="blog_post">
+                            </div>
+                            <div class="bpost__content">
+                                <span>Shoes, Clothing</span>
+                                <h3 class="blog-title title-2"><a href="blog.html">Take A Look At The Most Photo</a></h3>
+                                <p>By <span>Erentheme </span>/September 16, 2019</p>
+                                <p>Sapien luctus id justo suscipit nonummy eget hymenaeos...</p>
+                            </div>
+                        </div>
+                        <div class="bpost m-0">
+                            <div class="bpost__thumb">
+                                <img src="assets/img/blog/blog3.jpg" alt="blog_post">
+                            </div>
+                            <div class="bpost__content">
+                                <span>Shoes, Clothing</span>
+                                <h3 class="blog-title title-2"><a href="blog.html">Mauris rhoncus aliquet purus</a></h3>
+                                <p>By <span>Erentheme </span>/September 16, 2019</p>
+                                <p>Sapien luctus id justo suscipit nonummy eget hymenaeos...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- blog area end -->
+
+    <!-- gallary area start  -->
+    <div class="gallary_area">
+        <div class="gallary__thumb">
+            <a href="shop.html"><img src="assets/img/gallary/gallary6.jpg" alt="gallaryImage"></a>
+        </div>
+        <div class="gallary__thumb">
+            <a href="shop.html"><img src="assets/img/gallary/gallary1.jpg" alt="gallaryImage"></a>
+        </div>
+        <div class="gallary__thumb">
+            <a href="shop.html"><img src="assets/img/gallary/gallary2.jpg" alt="gallaryImage"></a>
+        </div>
+        <div class="gallary__thumb">
+            <a href="shop.html"><img src="assets/img/gallary/gallary3.jpg" alt="gallaryImage"></a>
+        </div>
+        <div class="gallary__thumb">
+            <a href="shop.html"><img src="assets/img/gallary/gallary4.jpg" alt="gallaryImage"></a>
+        </div>
+        <div class="gallary__thumb">
+            <a href="shop.html"><img src="assets/img/gallary/gallary5.jpg" alt="gallaryImage"></a>
+        </div>
+    </div>
+    <!-- gallary area end  -->
+
+    <!-- popup area start -->
+    <div class="overlay"></div>
+    <div class="product-popup">
+        <div class="view-background">
+            <div class="row">
+                <div class="col-xl-5 col-lg-5 col-md-5">
+                    <div class="quickview">
+                        <div class="quickview__thumb">
+                            <img src="assets/img/quick_view/25.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-7 col-lg-7 col-md-7">
+                    <div class="viewcontent">
+                        <div class="viewcontent__header">
+                            <h2>Brown Leather Bags</h2>
+                            <a class="view_close product-p-close" href="javascript:void(0)"><i
+                                    class="fal fa-times-circle"></i></a>
+                        </div>
+                        <div class="viewcontent__rating">
+                            <i class="fal fa-star ratingcolor"></i>
+                            <i class="fal fa-star ratingcolor"></i>
+                            <i class="fal fa-star ratingcolor"></i>
+                            <i class="fal fa-star"></i>
+                        </div>
+                        <div class="viewcontent__price">
+                            <h4><span>$</span>99.00</h4>
+                        </div>
+                        <div class="viewcontent__stock">
+                            <h4>Available :<span> In stock</span></h4>
+                        </div>
+                        <div class="viewcontent__details">
+                            <p>Anlor sit amet, consectetur adipiscing elit. Fusce condimentum est lacus, non pretium
+                                risus lacinia vel. Fusce eget turpis orci.</p>
+                        </div>
+                        <div class="viewcontent__action">
+                            <span>Qty</span>
+                            <span><input type="number" placeholder="1"></span>
+                            <span><a href="#">add to cart</a></span>
+                            <span><i class="fal fa-heart"></i></span>
+                            <span><i class="fal fa-info-circle"></i></span>
+                        </div>
+                        <div class="viewcontent__footer">
+                            <ul>
+                                <li>Category:</li>
+                                <li>SKU:</li>
+                                <li>Brand:</li>
+                            </ul>
+                            <ul>
+                                <li>Watches</li>
+                                <li>2584-MK63</li>
+                                <li>Brenda</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- popup area end -->
+
+    <!-- footer area start -->
+    <footer class="footer_area fix">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info  wow fadeInUp " data-wow-duration=".s" data-wow-delay=".3s">
+                        <h3 class="f-title">contact info</h3>
+                        <ul>
+                            <li>Add: 734 Riverwood Drive, Suite 245 Cottonwood </li>
+                            <li>Beverly Hill, Melbourne, USA.</li>
+                            <li>Email: <a href="https://wphix.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="afecc0c1dbceccdbefcaddcac1dbc7cac2ca81ccc0c2">[email&#160;protected]</a></li>
+                            <li>Fax: (+100) 123 456 7890 - (+100) 123 456 7891</li>
+                        </ul>
+                        <div class="social__media mb-30">
+                            <h3 class="f-title">FOLLOW US ON</h3>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".7s" data-wow-delay=".4s">
+                        <h3 class="f-title">Get Help</h3>
+                        <ul>
+                            <li><a href="contact.html">Contact Us</a></li>
+                            <li><a href="accordion.html">Delivery Information</a></li>
+                            <li><a href="accordion.html">Sale Terms & Conditions</a></li>
+                            <li><a href="accordion.html">Privacy Notice</a></li>
+                            <li><a href="accordion.html">Shopping FAQs</a></li>
+                            <li><a href="accordion.html">Returns & Refundss</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".8s" data-wow-delay=".5s">
+                        <h3 class="f-title">Popular categories</h3>
+                        <ul>
+                            <li><a href="shop.html">Sneaker</a></li>
+                            <li><a href="shop.html">Clothing & Stools</a></li>
+                            <li><a href="shop.html">Helmet for Women’s</a></li>
+                            <li><a href="shop.html">Basketball</a></li>
+                            <li><a href="shop.html">Mens Running</a></li>
+                            <li><a href="shop.html">Footwear</a></li>
+                            <li><a href="shop.html">Outerwears</a></li>
+                            <li><a href="shop.html">Men’s</a></li>
+                            <li><a href="shop.html">Kids & Young</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-3 offset-xl-1 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".9s" data-wow-delay=".6s">
+                        <h3 class="f-title">get in touch</h3>
+                        <p>Sign up for all the news about our latest arrivals and<br>
+                            get an exclusive early access shopping. Join <br>
+                            <span>60.000+ Subscribers</span> and get a new discount coupon<br> on every Saturday.
+                        </p>
+                        <div class="subscribe pt-20">
+                            <form action="#">
+                                <input type="email" placeholder="Enter your email here..." />
+                                <button>Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer__bottom pb-10 mt-60">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 ">
+                        <p>Copyright © <span>Gota Store</span> All Rights Reserved. Powered by <span><a href="themepure.html">theme_pure</a></span>
+                        </p>
+                    </div>
+                    <div class="col-xl-5 offset-xl-2 col-lg-4 col-md-6 col-sm-12">
+                        <div class="footer-menu">
+                            <ul class="text-end">
+                                <li><a href="contact.html">Site Map</a></li>
+                                <li><a href="accordion.html">Search Terms</a></li>
+                                <li><a href="shop.html">Advanced Search </a></li>
+                                <li><a href="contact.html">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer area end -->
+
+
+    <!-- JS here -->
+    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+    <script src="assets/js/one-page-nav-min.js"></script>
+    <script src="assets/js/slick.min.js"></script>
+    <script src="assets/js/jquery.meanmenu.min.js"></script>
+    <script src="assets/js/countdown.js"></script>
+    <script src="assets/js/ajax-form.js"></script>
+    <script src="assets/js/wow.min.js"></script>
+    <script src="assets/js/jquery.scrollUp.min.js"></script>
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="assets/js/plugins.js"></script>
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="/public/js/subtotal.js"></script>
+    
+</body>
+
+
+<!-- Mirrored from wphix.com/template/gota/gota/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Dec 2023 18:26:38 GMT -->
+</html>
