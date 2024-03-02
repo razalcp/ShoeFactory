@@ -44,7 +44,7 @@ function passvalidate(e){
         error4.innerHTML = "Should contain Numbers and Alphabets!!"
     }
     else{
-
+        
         error4.style.display = "none"
         error4.innerHTML = ""
     }

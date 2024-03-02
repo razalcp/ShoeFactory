@@ -39,6 +39,7 @@
                                     <div class="mb-4">
                                         <label class="form-label">Brand name</label>
                                         <select id="dropdown" class="form-select" name="brandid">
+                                            
                                             <option value="<%= product.brandId._id %>"><%= product.brandId.brandName%></option>
                                             <% if(locals.brand && locals.brand.length > 0){ for(let i = 0 ; i < locals.brand.length  ; i++) { %>
                                                 <% if(locals.brand[i]._id == product.brandId._id) {%>

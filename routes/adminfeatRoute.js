@@ -3,6 +3,12 @@ const router = express.Router()
 const adminController = require('../controllers/adminController')
 const upload = require('../utils/multer');
 const adminMiddleWare = require('../middleware/adminMiddleware')
+const couponController = require('../controllers/couponController');
+const productOfferController = require('../controllers/productOfferController')
+const salesReportController = require('../controllers/salesReportController')
+
+
+
 
 router.get('/home', adminController.adminHome)
 router.get('/home/addproduct', adminController.addproduct)
@@ -23,10 +29,31 @@ router.get('/usermanagement/deleteproduct', adminController.deleteproduct)
 router.get('/home/addBrand', adminMiddleWare.adminSession, adminController.addBrandLoad)
 router.post('/home/addBrand', adminMiddleWare.adminSession, upload.single('brandImages'), adminController.insertBrand)
 
+router.get('/editBrand' ,adminMiddleWare.adminSession,adminController.editBrand)
+
 router.get('/home/listbrand', adminMiddleWare.adminSession, adminController.listBrand)
 router.get('/home/listbrand/deletebrand', adminController.deleteBrand)
 router.get('/home/listbrand/blockbrand', adminController.blockBrand)
 router.get('/home/listbrand/unblockbrand', adminController.UnblockBrand)
+
+router.get('/orderList',adminMiddleWare.adminSession,adminController.listOrders)
+
+router.get('/orderDetail',adminMiddleWare.adminSession,adminController.orderDetails)
+
+router.get('/updateOrderStatus',adminMiddleWare.adminSession,adminController.updateStatus)
+
+
+router.get('/coupon',adminMiddleWare.adminSession,couponController.showCouponPage)
+
+router.get('/createCoupon',adminMiddleWare.adminSession,couponController.viewCreateCouponPage)
+router.post('/addCouponToDb',adminMiddleWare.adminSession,couponController.addCopounToDB)
+
+router.get('/deleteCoupon',adminMiddleWare.adminSession,couponController.deleteCoupon)
+
+router.get('/updateProductOffer',adminMiddleWare.adminSession,productOfferController.updateOffer)
+router.get('/removeProductOffer',adminMiddleWare.adminSession,productOfferController.removeOffer)
+
+router.get('/salesReport',adminMiddleWare.adminSession,salesReportController.showSalesReport)
 
 
 

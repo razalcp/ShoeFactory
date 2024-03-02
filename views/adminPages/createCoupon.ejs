@@ -1,0 +1,262 @@
+<%- include('../adminLayouts/header.ejs') %>
+
+    <main class="main-wrap">
+
+        <form id='couponForm' method="post" action="/admin/addCouponToDb" >
+            <section class="content-main">
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="content-header">
+                            <h2 class="content-title">Add New Coupon
+
+                            </h2>
+                            <div>
+                                <button type="submit" id="addCoupon" class="btn btn-md rounded font-sm hover-up">Add
+                                    Coupon</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="row">
+
+                                    <div class="col-md-9">
+
+                                        <div class="mb-4">
+                                            <label class="form-label">Coupon Code</label>
+                                            <input id="couponCode" name="couponCode" type="text"
+                                                placeholder="Generate Coupon Code" class="form-control">
+                                            <p>
+                                            <div id="error1" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+                                        </div>
+                                        <a href="#" class="fluorescent-blue-button" onclick="generateCoupon()" style="margin-left: 116px;
+                                        margin-top: -12px;">Generate Code</a>
+
+
+                                        <div class="mb-4">
+                                         <label class="form-label" placeHolder="mm/dd/yy">Validity</label>
+                                            <input id="expiryDate" name="expiryDate" type="text"
+                                                placeholder="Select date" class="form-control">
+                                            <p>
+                                            <div id="error" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+                                        </div>
+
+                                        <div class="mb-4">
+
+                                            <label class="form-label">Min Purchase
+                                            </label>
+                                            <input id="minPurchase" name="minPurchase" type="number"
+                                                placeholder="Type here" class="form-control">
+                                            <p>
+                                            <div id="error2" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+                                          
+                                        </div>
+                                        <div class="mb-4">
+
+                                            <label class="form-label">Discount( % )
+                                            </label>
+                                            <input id="discount" name="discount" type="number"
+                                                placeholder="Type here" class="form-control">
+                                            <p>
+                                            <div id="error3" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+                                            
+                                        </div>
+                                        <div class="mb-4">
+
+                                            <label class="form-label">Max Discount (Rs)
+                                            </label>
+                                            <input id="maxDiscount" name="maxDiscount" type="number"
+                                                placeholder="Type here" class="form-control">
+                                            <p>
+                                            <div id="error4" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+                                          
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">Description (T & c)</label>
+                                            <textarea id="descriptionBox" name="description" placeholder="Type here"
+                                                class="form-control" rows="4"></textarea>
+                                            <p>
+                                            <div id="error5" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+                                           
+                                        </div>
+
+
+                                    </div> <!-- col.// -->
+                                </div> <!-- row.// -->
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> <!-- content-main end// -->
+        </form>
+
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="/public/js/addCoupnScript.js"></script>
+    <script src="/public/js/createCopounScript.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        flatpickr("#expiryDate", {
+            dateFormat: "m/d/Y", // Customize date format if needed
+            minDate: "today", // Allow current date and dates greater than current date to be selectable
+            // Custom validation function
+            onChange: function (selectedDates, dateStr, instance) {
+                var currentDate = new Date();
+                // Check if selected date is before current date
+                if (selectedDates.length > 0 && selectedDates[0] < currentDate) {
+                    // Show error message
+                    document.getElementById("error").innerText = "The selected date must be equal to or greater than the current date.";
+                    document.getElementById("error").style.display = "block";
+                    // Clear selected date
+                    instance.clear();
+                } else {
+                    // Hide error message
+                    document.getElementById("error").style.display = "none";
+                }
+            }
+        });
+    </script>
+    
+
+    <script>
+        function generateCoupon() {
+            var coupons = [
+                "summer20",
+                "bigBillionSale30",
+                "festival20",
+                "winterSale25",
+                "newYearSale",
+                "springSale",
+                "backToSchool",
+                "blackFriday",
+                "cyberMonday",
+                "valentine20",
+                "laborday",
+                "memorialday",
+                "independence20",
+                "halloween25",
+                "thanksgiving30",
+                "christmasSale",
+                "newArrivalSale",
+                "clearanceSale",
+                "flashSale50",
+                "friendsAndFamily",
+                "studentDiscount",
+                "loyaltyProgram",
+                "firstPurchase10",
+                "subscribeAndSave",
+                "bundleDeal",
+                "giftCardOffer",
+                "freeShipping",
+                "buyOneGetOne",
+                "doorbusterDeal",
+                "limitedTimeOffer",
+                "earlyBirdOffer",
+                "seasonalDiscount",
+                "weekendSpecial",
+                "holidaySpecial",
+                "vipSale",
+                "exclusiveDeal",
+                "onlineOnlyOffer"
+            ];
+            var randomIndex = Math.floor(Math.random() * coupons.length);
+            let generatedCoupon = coupons[randomIndex];
+
+            let couponCodeTag = document.getElementById('couponCode')
+            couponCodeTag.value = generatedCoupon;
+        }
+
+        // return coupon;
+
+
+
+
+    </script>
+
+
+    <script src="/public/assetss/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/public/assetss/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/public/assetss/js/vendors/select2.min.js"></script>
+    <script src="/public/assetss/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/public/assetss/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/public/assetss/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+    <script>
+        document.getElementById('imageField').addEventListener('change', handleFileSelect);
+
+        function handleFileSelect(event) {
+            var previewContainer = document.getElementById('preview-container');
+            previewContainer.innerHTML = ''; // Clear previous previews
+
+            var files = event.target.files;
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                if (!file.type.startsWith('image/')) {
+                    continue; // Skip non-image files
+                }
+
+                var reader = new FileReader();
+
+                reader.onload = (function (currentFile) {
+                    return function (e) {
+                        var previewImage = document.createElement('img');
+                        previewImage.className = 'preview-image';
+                        previewImage.src = e.target.result;
+                        previewImage.title = currentFile.name;
+
+                        previewContainer.appendChild(previewImage);
+                    };
+                })(file);
+
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+
+
+    </body>
+
+
+    <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
+
+    </html>

@@ -1,0 +1,289 @@
+<%- include('../userLayouts/userHeader.ejs') %>
+
+    <!-- contact area start -->
+    <div class="contact__area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12">
+                <div class="contact__content text-center mb-140">
+                    <h2>Orders</h2>
+                    <p>Gratitude unlocks the fullness of life. It turns what we have into enough, and more. It turns denial into acceptance, chaos to order, confusion to clarity. <br> It can turn a meal into a feast, a house into a home, a stranger into a friend. </p>
+                </div>
+                </div>
+            </div>
+        <div class="contact-wrapper">
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-6" style="width: 1240px;">
+                    <div class="contactbox">
+                        <div class="contactbox__heading">
+                            <!-- <h5>Contact us</h5>
+                            <h2>Please contact us quickly if <br>you need help.</h2> -->
+                        </div>
+                        <div class="table-wrapper">
+                            <table>
+                                <th>Product</th>
+                                <th>Total Price</th>
+                                <th>Quantity</th>
+                                
+                                <th>Status</th>
+                                 <th>Order Date</th>
+                                <th>Action</th>
+                               
+                            
+                            
+                            <% if(orderData){%>
+                               <% orderData.forEach(el => {%>
+                                <%el.products.forEach(ele =>{%>
+                                    <tr>
+                                        <td><img style="height:50px;width:38px" src="/public/images/<%=ele.product_id.imageurl[1]%>" alt=""> <%=ele.product_id.producttitle%> x <%=ele.qty%></td>
+                                        <td>&#x20B9; <%=el.totalPrice%></td>
+                                        <td><%=ele.qty%></td>
+                                            
+                                   
+                                      
+                                        <% if(ele.status==="Processing" ) { %>
+                                            <td><span class="badge rounded-pill alert-warning getStatus">Processing</span></td>
+        
+                                            <% } else if(ele.status==="Cancelled" ) {%>
+                                                <td><span class="badge rounded-pill alert-danger getStatus">Cancelled</span>
+                                                </td>
+                                                <% } else if(ele.status==="Delivered" ){ %>
+                                                    <td><span
+                                                            class="badge rounded-pill alert-success getStatus">Delivered</span>
+                                                    </td>
+                                                    <% } else if(ele.status==="Shipped" ) {%>
+                                                        <td><span
+                                                                class="badge rounded-pill alert-info">Shipped</span>
+                                                        </td>
+                                                    <% } else if(ele.status==="Dispatched" ){ %>
+                                                        <td><span
+                                                                class="badge rounded-pill alert-info getStatus">Dispatched</span>
+                                                        </td>
+                                                        <% }else if(ele.status==="Return Requested" ){ %>
+                                                            <td><span
+                                                                    class="badge rounded-pill bg-dark text-light alert-dark getStatus">Return
+                                                                    Requested</span></td>
+                                                            <% }else if(ele.status==="Return Accepted" ){ %>
+                                                                <td><span
+                                                                        class="badge rounded-pill  alert-dark getStatus">Return
+                                                                        Accepted</span>
+                                                                </td>
+                                                                <% } else if(ele.status==="Return Declined" ) {%>
+                                                                    <td><span
+                                                                            class="badge rounded-pill alert-danger getStatus">Return
+                                                                            Declined</span>
+                                                                    </td>
+                                                                    <% } %>
+                                                                    <td><%=el.createdAt.toISOString().split('T')[0]%></td>
+
+                                                                        <%if(ele.status==="Delivered"){%>
+                                                                            <td>
+                                                                                <select class="status p-2">
+        
+                                                                                    <option value="">Change status</option>
+                                                                                    <!-- <option value="Processing">Processing</option> -->
+                                                                                    <option value="Return Requested">Return
+                                                                                    </option>
+                                                                                    <option value="Cancelled">Cancel</option>
+        
+                                                                                </select>
+                                                                            </td>
+                                                                            
+                                                                            <%}%>
+        
+        
+
+
+                                    </tr>
+                                        
+                                       
+                                    
+                               <% })%>
+                                    
+                                <%})%>
+                            <%} %>
+                        </table>
+                        </div>
+                        <!-- <div class="contactbox__info pt-20">
+                            <h5>London</h5>
+                            <ul>
+                                <li>S9 Heaven Stress, Beverly Hill, Melbourne, USA.</li>
+                                <li>Open: 9:30 am – 9:00 pm</li>
+                            </ul>
+                        </div> -->
+                        <!-- <div class="contactbox__info pt-20">
+                            <h5>Contacts Email:</h5>
+                            <ul>
+                                <li><a href="https://wphix.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="59183e362d38193c2b3c372d313c343c773a3634">[email&#160;protected]</a> Phone</li>
+                                <li><a href="tel:(+100)123456789">(+100) 123 456 789</a></li>
+                            </ul>
+                        </div> -->
+                    </div>
+                </div>
+                <!-- <div class="col-xl-6 col-lg-6 col-md-12 col-md-6">
+                    <div class="form">
+                        <h5>write to us</h5>
+                        <form action="#" method="POST">
+                            <div class="c-input-group">
+                                <label>Your Email (required)</label>
+                                <input type="text">
+                            </div>
+                            <div class="c-input-group">
+                                <label>Subject</label>
+                                <input type="text">
+                            </div>
+                            <div class="c-input-group">
+                                <label>Your Message</label>
+                                <textarea name="message" ></textarea>
+                            </div>
+                            <div class="submit-btn">
+                                <input type="submit" value="Send">
+                            </div>
+                        </form>
+                    </div>
+                </div> -->
+            </div>
+            </div>
+        </div>
+    </div>
+     <!-- contact area end -->
+
+         <div class="map__area">
+            <div class="google-map contact-map">
+                <iframe class="w-100" height="800" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.91477055202!2d-74.11976321327155!3d40.69740344214894!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sbd!4v1612427122501!5m2!1sen!2sbd"></iframe>
+            </div>
+         </div>
+
+    <!-- footer area start -->
+    <footer class="footer_area fix">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info  wow fadeInUp " data-wow-duration=".s" data-wow-delay=".3s">
+                        <h3 class="f-title">contact info</h3>
+                        <ul>
+                            <li>Add: 734 Riverwood Drive, Suite 245 Cottonwood </li>
+                            <li>Beverly Hill, Melbourne, USA.</li>
+                            <li>Email: <a href="https://wphix.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="81c2eeeff5e0e2f5c1e4f3e4eff5e9e4ece4afe2eeec">[email&#160;protected]</a></li>
+                            <li>Fax: (+100) 123 456 7890 - (+100) 123 456 7891</li>
+                        </ul>
+                        <div class="social__media mb-30">
+                            <h3 class="f-title">FOLLOW US ON</h3>
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-google-plus-g"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".7s" data-wow-delay=".4s">
+                        <h3 class="f-title">Get Help</h3>
+                        <ul>
+                            <li><a href="contact.html">Contact Us</a></li>
+                            <li><a href="accordion.html">Delivery Information</a></li>
+                            <li><a href="accordion.html">Sale Terms & Conditions</a></li>
+                            <li><a href="accordion.html">Privacy Notice</a></li>
+                            <li><a href="accordion.html">Shopping FAQs</a></li>
+                            <li><a href="accordion.html">Returns & Refundss</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".8s" data-wow-delay=".5s">
+                        <h3 class="f-title">Popular categories</h3>
+                        <ul>
+                            <li><a href="shop.html">Sneaker</a></li>
+                            <li><a href="shop.html">Clothing & Stools</a></li>
+                            <li><a href="shop.html">Helmet for Women’s</a></li>
+                            <li><a href="shop.html">Basketball</a></li>
+                            <li><a href="shop.html">Mens Running</a></li>
+                            <li><a href="shop.html">Footwear</a></li>
+                            <li><a href="shop.html">Outerwears</a></li>
+                            <li><a href="shop.html">Men’s</a></li>
+                            <li><a href="shop.html">Kids & Young</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xl-3 offset-xl-1 col-lg-6 col-md-6 col-sm-12">
+                    <div class="company__info wow fadeInUp " data-wow-duration=".9s" data-wow-delay=".6s">
+                        <h3 class="f-title">get in touch</h3>
+                        <p>Sign up for all the news about our latest arrivals and<br>
+                            get an exclusive early access shopping. Join <br>
+                            <span>60.000+ Subscribers</span> and get a new discount coupon<br> on every Saturday.
+                        </p>
+                        <div class="subscribe pt-20">
+                            <form action="#">
+                                <input type="email" placeholder="Enter your email here..." />
+                                <button>Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer__bottom pb-10 mt-60">
+                <div class="row">
+                    <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 ">
+                        <p>Copyright © <span>Gota Store</span> All Rights Reserved. Powered by <span><a href="themepure.html">theme_pure</a></span>
+                        </p>
+                    </div>
+                    <div class="col-xl-5 offset-xl-2 col-lg-4 col-md-6 col-sm-12">
+                        <div class="footer-menu">
+                            <ul class="text-end">
+                                <li><a href="contact.html">Site Map</a></li>
+                                <li><a href="accordion.html">Search Terms</a></li>
+                                <li><a href="shop.html">Advanced Search </a></li>
+                                <li><a href="contact.html">Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer area end -->
+
+
+		<!-- JS here -->
+        <script>
+
+const statusElements = document.getElementsByClassName('status');
+
+
+Array.from(statusElements).forEach(statusElement => {
+
+    statusElement.addEventListener('change', function(event) {
+     
+        const selectedOption = event.target.value;
+        
+       
+        console.log('Selected option:', selectedOption);
+        
+
+    });
+});
+
+        </script>
+        <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
+        <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
+        <script src="assets/js/popper.min.js"></script>
+        <script src="assets/js/bootstrap.min.js"></script>
+        <script src="assets/js/owl.carousel.min.js"></script>
+        <script src="assets/js/isotope.pkgd.min.js"></script>
+        <script src="assets/js/one-page-nav-min.js"></script>
+        <script src="assets/js/slick.min.js"></script>
+        <script src="assets/js/jquery.meanmenu.min.js"></script>
+        <script src="assets/js/ajax-form.js"></script>
+        <script src="assets/js/wow.min.js"></script>
+        <script src="assets/js/jquery.scrollUp.min.js"></script>
+        <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+        <script src="assets/js/jquery.magnific-popup.min.js"></script>
+        <script src="assets/js/plugins.js"></script>
+        <script src="assets/js/swiper-bundle.min.js"></script>
+        <script src="assets/js/countdown.js"></script>
+        <script src="assets/js/main.js"></script>
+    </body>
+
+<!-- Mirrored from wphix.com/template/gota/gota/contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Dec 2023 18:30:47 GMT -->
+</html>

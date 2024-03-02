@@ -239,12 +239,13 @@
         }
 
         function validateCategory() {
+            //This is quantity validation function but is named as validateCategory()
             const val5 = category.value
             var lettersRegex = /^[a-zA-Z0-9\s]+$/;
 
             if (val5.trim() === "" || !lettersRegex.test(val5)) {
                 error5.style.display = "block"
-                error5.innerHTML = "Please Enter a valid Category."
+                error5.innerHTML = "Please Enter a valid Quantity"
             }
             else {
                 error5.innerHTML = ""

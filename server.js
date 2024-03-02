@@ -1,3 +1,6 @@
+const jsPDF = require('jspdf');
+
+var toastifyJs = require("toastify-js")
 const express = require("express");
 const path = require("path");
 const nocache = require("nocache");
@@ -9,7 +12,6 @@ const multer = require("multer");
 const Swal = require("sweetalert2");
 const bcrypt = require("bcrypt");
 const morgan = require("morgan");
-
 const session = require("express-session");
 require("dotenv").config();
 const otpModel = require("./models/otpModel");

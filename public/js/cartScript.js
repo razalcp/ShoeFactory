@@ -2,20 +2,25 @@
 const quantity = document.querySelectorAll('.quantityField')
 const total = document.querySelectorAll('.totalField')
 const subTotal = document.getElementById('subTotal')
-const button = document.getElementsByClassName('removeBtn')
+// const button = document.getElementsByClassName('removeBtn')
 const hiddenField = document.getElementsByClassName('hiddenField')
-
+const productIdArray = Array.from(hiddenField)
 const totalArray = Array.from(total)
+
+
+const buttons = document.querySelectorAll('.removeBtn');
+
+
 
 quantity.forEach((el, index) => {
     el.addEventListener('change', () => {
         let prize = parseInt(el.dataset.price)
-        let productid=(el.dataset.id)
+        let productid = (el.dataset.id)
 
         let element2 = totalArray[index]
 
         let updatedQuantity = el.value
-        updateQuantityInDataBase(updatedQuantity,productid)
+        updateQuantityInDataBase(updatedQuantity, productid)
         let totalPrize = updatedQuantity * prize
         // var resultWithRupee = '₹' + totalPrize
 
@@ -62,29 +67,68 @@ totalArray.forEach(element => {
 });
 
 
+buttons.forEach(button => {
+    button.addEventListener('click', async (event) => {
+        const productId = button.dataset.id;
 
-
-
-
-for (let i = 0; i <= button.length; i++) {
-
-
-    button[i].addEventListener('click', async function (event) {
-        let productId=button[i].dataset.id
-      
         url = `http://localhost:3003/deleteCartItem?productid=${productId}`
         const result = await fetch(url)
 
-        if(result){
+        if (result) {
             const buttonClicked = event.target
 
-        buttonClicked.parentElement.parentElement.remove()
+            buttonClicked.parentElement.parentElement.remove()
         }
-        
 
 
-    })
-}
+    });
+});
+
+
+
+
+// Array.from(button).forEach(el=>{
+//     el.addEventListener('click',async function(event){
+//         let productId=button.dataset.id
+//         console.log(productId);
+// productIdArray .forEach(el=>{
+//  const productId = el.value
+//  console.log(productId);
+// })
+
+//         url = `http://localhost:3003/deleteCartItem?productid=${productId}`
+//         const result = await fetch(url)
+
+//         if(result){
+//             const buttonClicked = event.target
+
+//             buttonClicked.parentElement.parentElement.remove()
+//         }
+
+//     })
+// })
+
+
+
+// for (let i = 0; i < button.length; i++) {
+
+
+//     button[i].addEventListener('click', async function (event) {
+//         let productId=button[i].dataset.id
+
+//         url = `http://localhost:3003/deleteCartItem?productid=${productId}`
+//         const result = await fetch(url)
+
+//         if(result){
+//             const buttonClicked = event.target
+
+//         buttonClicked.parentElement.parentElement.remove()
+//         }
+
+
+
+//     })
+// }
 
 
 async function updatePriceInDataBase(price) {
@@ -95,10 +139,34 @@ async function updatePriceInDataBase(price) {
 
 }
 
-async function updateQuantityInDataBase(updatedQuantity,productid) {
+async function updateQuantityInDataBase(updatedQuantity, productid) {
     url = `http://localhost:3003/updateCartQuantity?quantity=${updatedQuantity}&productid=${productid}`
-    const updateQty=await fetch(url)
+    const updateQty = await fetch(url)
+    console.log(updateQty);
     var data = await updateQty.json();
-    console.log(data.success);
-   
+    if (data.message == 'Out Of Stock') {
+
+        Toastify({
+            text: "Only " + data.stockQuantity + " available in the stock",
+            duration: 3000,
+            // destination: "https://github.com/apvarun/toastify-js",
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "center", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
+                // Adjust width here
+                "min-width": "400px", // Set the minimum width to your desired value
+                "max-width": "400px",
+                fontSize: "30px"  // Set the maximum width to your desired value
+            },
+            onClick: function () { } // Callback after click
+        }).showToast()
+    } else {
+        console.log(data.message)
+    }
+
+
 }

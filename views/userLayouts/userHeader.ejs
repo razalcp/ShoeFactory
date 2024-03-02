@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html class="no-js" lang="en">
 
 
@@ -11,11 +11,133 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="manifest" href="site.html">
+    <!-- <link rel="manifest" href="site.html"> -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
     <!-- Place favicon.ico in the root directory -->
 
     <!-- CSS here -->
+   <style>
+    .table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-wrapper {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 20px; /* Adjust font size as needed */
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+   </style>
+    <style>
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+    
+        #productSearch {
+            width: 122%; 
+            height: 39px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+    
+        #productSearch:focus {
+            border-color: #007bff;
+        }
+    
+        #productSearch::placeholder {
+            color: #999;
+        }
+    
+        /* Style the search icon */
+        .search-icon {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            color: #999;
+            cursor: pointer;
+        }
+    </style>
+    
+    
+    <style>
+        .box {
+            border: 1px solid #000;
+            /* Add border */
+            padding: 10px;
+            /* Add padding for spacing */
+            display: inline-block;
+            /* Ensure the box wraps around the content */
+            margin-top: -20px;
+            margin-left: 42rem;
+            margin-bottom: 2rem;
+        }
+
+        .paymentOptions {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px; /* More rounded corners */
+    background-color: #fff; /* Background color */
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for border color and box shadow */
+}
+
+.paymentOptions:hover {
+    border-color: #1aff1a; /* Fluorescent green border color on hover */
+    box-shadow: 0 0 10px #1aff1a; /* Glow effect */
+}
+
+.paymentOptions option:first-child {
+    color: #999; /* Style the default option */
+}
+
+
+    </style>
+    <style>
+   .styled-button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition-duration: 0.4s;
+    }
+    
+    .styled-button:hover {
+        background-color: #45a049; /* Darker Green */
+    }
+    </style>
+ 
+    
     <link rel="stylesheet" href="/public/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/public/assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="/public/assets/css/animate.min.css">
@@ -57,9 +179,13 @@
                     <div class="col-xl-4 offset-xl-5 col-lg-6 col-md-6 col-sm-6 text-end">
                         <div class="gota_right">
                             <ul>
-                                <li><a href="cart.html">Wishlist</a></li>
+                                <!-- <li><a href="#">Wishlist</a></li> -->
                                 <li><a href="/userProfile">Account</a></li>
-                                <li><a href="checkout.html">Checkout</a></li>
+                                <li><a href="/myOrder">My Orders</a></li>
+                                <li><a href="/wallet">Wallet</a></li>
+                                <li><a href="/cart">Cart</a></li>
+
+                                <li><a href="/checkout">Checkout</a></li>
                                 <% if(locals.userdata) { %>
                                     <li><a href="/logout">Logout</a></li>
                                     <% }else { %>
@@ -90,12 +216,12 @@
                         <div class="main-menu">
                             <nav id="mobile-menu">
                                 <ul>
-                                    <li class="menu-item-has-children"><a href="index.html">Home </a>
+                                    <li class=""><a href="/">Home </a>
 
                                     </li>
-                                    <li class="position-static menu-item-has-children"><a href="shop.html">Shop</a>
+                                    <li class="position-static"><a href="/shop">Shop</a>
                                         <ul class="mega_menu" data-background="assets/img/mega-menu/product.jpg">
-                                            <li>
+                                            <!-- <li>
                                                 <h4 class="mega_title">Shop Layout</h4>
                                                 <ul class="mega_item">
                                                     <li><a href="shop.html">Pagination</a></li>
@@ -104,8 +230,8 @@
                                                     <li><a href="shop-right.html">Sidebar Right</a></li>
                                                     <li><a href="shop.html">Sidebar Left</a></li>
                                                 </ul>
-                                            </li>
-                                            <li>
+                                            </li> -->
+                                            <!-- <li>
                                                 <h4 class="mega_title">shop pages</h4>
                                                 <ul class="mega_item">
                                                     <li><a href="shop-list.html">List View</a></li>
@@ -115,8 +241,8 @@
                                                     <li><a href="shop-4.html">Shop — 4 Items</a></li>
                                                     <li><a href="shop-sm.html">Shop — 5 Items</a></li>
                                                 </ul>
-                                            </li>
-                                            <li>
+                                            </li> -->
+                                            <!-- <li>
                                                 <h4 class="mega_title">Product Layout</h4>
                                                 <ul class="mega_item">
                                                     <li><a href="shop-sticky.html">Description Sticky</a></li>
@@ -126,7 +252,7 @@
                                                     <li><a href="single-right.html">Thumbnail Right</a></li>
                                                     <li><a href="single-bottom.html"> Thumbnail Botttom</a></li>
                                                 </ul>
-                                            </li>
+                                            </li> -->
                                             <li>
 
                                             </li>
@@ -173,17 +299,13 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li><a class="d-none d-xl-block" href="index.html">
-                                            <img class="pl-50 pr-50" src="/public/assets/img/logo/logo-1.png" alt="">
+                                    <li><a class="d-none d-xl-block" href="/">
+                                            <!-- <img class="pl-50 pr-50" src="/public/assets/img/logo/logo-1.png" alt=""> -->
+                                            <h2 style="font-family: fantasy">Shoe <span
+                                                    style="color:#00DFA2">F</span>actory</h2>
                                         </a></li>
-                                    <li class="menu-item-has-children"><a href="blog-details.html">Blog</a>
-                                        <ul class="sub-menu">
-                                            <li><a href="blog-grid.html">Blog Grid</a></li>
-                                            <li><a href="blog-large.html">Blog large</a></li>
-                                            <li><a href="blog-left.html">Blog left</a></li>
-                                            <li><a href="blog-right.html">Blog Right</a></li>
-                                            <li><a href="blog-no-sidebar.html">Blog no sidebar</a></li>
-                                        </ul>
+                                    <li class="menu-item"><a href="/blog">Blog</a>
+                                        
                                     </li>
                                     <li class="menu-item-has-children"><a href="about.html">pages</a>
                                         <ul class="sub-menu">
@@ -312,12 +434,13 @@
         <div class="container">
             <div class="cart__content d-flex flex-column">
                 <div class="cart-text">
-                    <h3 class="mb-40 d-flex justify-content-between">Shopping cart <span class="cart-icon"><i class="fal fa-times"></i></span></h3>
-                    
-                <%if(locals.cartData){%>
-                    
-                    <% locals.cartData.forEach(el=>{%>
-                     
+                    <h3 class="mb-40 d-flex justify-content-between">Shopping cart <span class="cart-icon"><i
+                                class="fal fa-times"></i></span></h3>
+
+                    <%if(locals.cartData){%>
+
+                        <% locals.cartData.forEach(el=>{%>
+
                             <div class="add_cart_product">
                                 <div class="add_cart_product__thumb">
                                     <img src="/public/images/<%=el.productId.imageurl[0]%>" alt="">
@@ -333,21 +456,21 @@
                                 </p>
                                 <button class="cart_close"><i class="fal fa-times"></i></button>
                             </div>
-                        </div>
-                        
-                        <%})%>
+                </div>
 
-                            <% } %>
+                <%})%>
+
+                    <% } %>
 
 
             </div>
-            
+
             <div class="cart-bottom">
                 <div class="cart-bottom__text">
                     <!-- <span>Subtotal:</span>
                     <span class="end">$121.00</span> -->
                     <a href="/cart">view cart</a>
-                    <a href="checkout.html">checkout</a>
+                    <a href="/checkout">checkout</a>
                 </div>
             </div>
         </div>

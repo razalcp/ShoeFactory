@@ -1,0 +1,171 @@
+<%- include('../adminLayouts/header.ejs')  %>
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:31 GMT -->
+    <main class="main-wrap">
+      <form id='regform' method="post" action="/admin/home/addBrand" enctype="multipart/form-data">
+        <section class="content-main">
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Update Brand</h2>
+                     
+                    </div>
+                    
+                </div>
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Panel</h4>
+                        </div>
+                        <div class="card-body">
+                            <%if(locals.brandData){%>
+                            <form id="logform">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Brand title</label>
+                                    <input type="text" placeholder="Type here" class="form-control" name="brandname" id="brandname" value="<%=brandData.brandName%>">
+                                    <p><div id="error1" style="display: none;" class="alert alert-danger err"></div></p>
+
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Full description</label>
+                                    <textarea placeholder="Type here" class="form-control" rows="4" name="description" id="descriptionBox"><%=brandData.description%></textarea>
+                                    <p><div id="error2" style="display: none;" class="alert alert-danger err"></div></p>
+
+                                </div>
+                             
+                                <div class="col-lg-3">
+                                    <div class="card mb-4" style="height: 358px;width: 535px;">
+                                        <div class="card-header">
+                                            <h4>Media</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="input-upload">
+                                                <img src="/public/assetss/imgs/theme/upload.svg" alt="">
+                                                <input class="form-control" type="file" name="brandImages" id="imageField" value="<%=brandData.imageName%>">
+                                                <img style="height: 76px;width: 80px;" src="/public/images/<%= brandData.imageName %>" alt="">
+                                               <p><div id="error3" style="display: none;" class="alert alert-danger err"></div></p>
+
+                                            </div>
+                                        </div>
+                                        <div>
+                          
+                                            <button class="btn btn-md rounded font-sm hover-up m-3">Add Brand</button>
+                                        </div>
+                                    </div> <!-- card end// -->
+                                 
+                                </div>
+                             
+                            </form>
+                        </div>
+                        <%}%>
+                    </div> <!-- card end// -->
+                     
+                </div>
+               
+            </div>
+        </section>
+        
+    </form>
+
+
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                    document.write(new Date().getFullYear())
+                    </script>
+                </div>
+                
+            </div>
+        </footer>
+    </main>
+    <script src="/public/assetss/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/public/assetss/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/public/assetss/js/vendors/select2.min.js"></script>
+    <script src="/public/assetss/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/public/assetss/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/public/assetss/js/main.js" type="text/javascript"></script>
+
+
+    <script>
+    const brandName=document.getElementById('brandname')
+    const regform = document.getElementById('regform')
+    const error1 = document.getElementById('error1')
+    const error2 = document.getElementById('error2')
+    const error3 = document.getElementById('error3')
+
+    const descriptionBox= document.getElementById('descriptionBox')
+    const image= document.getElementById('imageField')
+
+
+    
+
+    function validateBrandName(){
+        const val=brandName.value
+        var lettersRegex = /^(Adidas|Puma|Nike)$/
+                
+    if(val.trim() === "" || !lettersRegex.test(val) )
+    {
+        error1.style.display = "block"
+        error1.innerHTML = "Please Enter a valid Brand Name."
+    }
+    else{
+        error1.style.display = "none"
+        error1.innerHTML = ""
+    }
+    }
+
+    
+    function validateDescription(){
+            const val2= descriptionBox.value
+            // var letters= /^(?:\b[\w.,]+\b\s*){1,100}$/
+
+    
+        if(val2.trim() === '' )
+        {
+            error2.style.display = "block"
+            error2.innerHTML="Please Enter a valid Description"
+        }
+        else{
+            error2.style.display = "none"
+            error2.innerHTML= ""
+        }
+    }
+
+    function validateImage(){
+            const val3=imageField.value;
+            var imageRegex = /\.(jpg|jpeg|png|gif)$/i;
+
+            if(val3.trim === "" || !imageRegex.test(val3))
+            {
+                error3.style.display = "block"
+                error3.innerHTML = "only .jpg ,.jpeg, .png ,.gif accepted"
+            }
+            else{
+                error3.style.display = "none"
+                error3.innerHTML = ""
+            }
+        }
+
+    brandName.addEventListener('blur',validateBrandName)
+    descriptionBox.addEventListener('blur',validateDescription)
+    image.addEventListener('blur',validateImage)
+
+
+    regform.addEventListener('submit',function(e){
+        validateBrandName()
+        validateDescription()
+        validateImage()
+
+        if( error1.innerHTML  || error2.innerHTML || error3.innerHTML)
+        {
+            e.preventDefault()
+        }
+    })
+    </script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
+</html>

@@ -32,7 +32,17 @@ const userSchema =new mongoose.Schema({
         required:true,
         default:0
 
-    }
+    },
+    walletBalance:{
+        type:Number,
+        required:true,
+        default:0
+    },
+    couponApplied:[{
+        type:String,
+        required:true,
+        default:"sale"
+    }]
 
 })
 

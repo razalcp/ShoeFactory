@@ -1,0 +1,193 @@
+<%- include('../adminLayouts/header.ejs')  %>
+
+
+
+    <main class="main-wrap">
+     
+        <section class="content-main">
+            <div class="content-header">
+                <h2 class="content-title">Coupon Managment System</h2>
+               <a href="/admin/createCoupon"><button class="create-coupon-button">Create Coupon</button></a> 
+               
+            </div>
+            <div class="card mb-4">
+                
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                   
+                                    
+                                        <th>Coupon Code</th>
+                                        <th>Min Purchase Amount</th>
+                                        <th>Discount %</th>
+                                        <th>Max Discount Amount</th>
+                                        <th>Expiry Date</th>
+                                        <th class="text-end"> Action </th>
+                                
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <%if(coupon){ %>
+                                   <% coupon.forEach(ele =>{ %>
+                                    <tr>
+
+                                      
+                                        <td><%=ele.couponCode%></td>
+                                        <td><%=ele.minPurchase%></td>
+                                        <td><%=ele.minDiscountPercentage%></td>
+                                        <td><%=ele.maxDiscountValue%></td>
+                                        <td><%=ele.validity.toISOString().split('T')[0]%></td>
+                                               
+                              
+                                <!-- <td class="text-end">
+                                    <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15">Block</a>
+                                </td> -->
+                                
+                                <td class="text-end">
+                                   
+                                  
+                                 
+                                        <a  class="btn btn-sm btn-brand rounded font-sm mt-15" onclick="deleteConfirm('<%=ele._id%>')">Delete</a>
+                                  
+                                        <!-- <a  class="btn btn-sm btn-danger rounded font-sm mt-15" onclick="confirmUnblockUser('')">Unblock</a> -->
+                                
+                                </td>
+                            
+                      
+                                    </tr>
+                                   <% })%>
+                              <%  }%>
+                        
+
+
+                            </tbody>
+
+                        </table> <!-- table-responsive.// -->
+                    </div>
+                </div> <!-- card-body end// -->
+            </div> <!-- card end// -->
+            <!-- <div class="pagination-area mt-15 mb-50">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                        <li class="page-item"><a class="page-link" href="#">02</a></li>
+                        <li class="page-item"><a class="page-link" href="#">03</a></li>
+                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#">16</a></li>
+                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
+                    </ul>
+                </nav>
+            </div> -->
+        </section> <!-- content-main end// -->
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+                   
+                </div>
+                <div class="col-sm-6">
+                    
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="/public/js/deleteCouponScript.js"></script>
+    <script src="/public/assetss/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/public/assetss/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/public/assetss/js/vendors/select2.min.js"></script>
+    <script src="/public/assetss/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/public/assetss/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/public/assetss/js/main.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+
+        function confirmBlockUser(userId) {
+            Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, block it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            blockuser(userId); // Assuming blockProduct is your function to block the product
+            Swal.fire({
+                title: "Blocked!",
+                text: "The product has been blocked.",
+                icon: "success"
+            });
+        }
+    });
+    }
+
+    function confirmUnblockUser(userId) {
+        Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Unblock it!"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            unblockuser(userId); // Assuming blockProduct is your function to block the product
+            Swal.fire({
+                title: "UnBlocked!",
+                text: "The product has been Unblocked.",
+                icon: "success"
+            });
+        }
+    });
+    }
+
+        async function blockuser(userid){
+            
+            try{
+                console.log("Entered blockuser");
+                url = `http://localhost:3003/admin/usermanagement/block?id=${userid}`
+            
+            const response = await fetch(url);
+            if(response.ok) {
+                const data = await response.json();
+                console.log(data);
+                // console.log(data.data);
+                window.location.reload();
+             } else {
+                console.error(`Error:${response.status}`);
+             }    
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    async function unblockuser(userid){
+            try{
+                console.log("Entered blockuser");
+                url = `http://localhost:3003/admin/usermanagement/unblock?id=${userid}`
+            
+            const response = await fetch(url);
+            if(response.ok) {
+                const data = await response.json();
+                console.log(data.data);
+                window.location.reload();
+             } else {
+                console.error(`Error:${response.status}`);
+             }    
+        } catch (err) {
+            console.error(err);
+        }
+    }
+    </script>
+</body>
+
+
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-sellers-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:23 GMT -->
+</html>

@@ -2,6 +2,7 @@ const User = require("../models/userModel");
 const Product = require("../models/productModel");
 const bcrypt = require("bcrypt");
 const Brand = require("../models/brandModel");
+const Order = require("../models/orderModel")
 
 const adminLogin = (req, res) => {
     if (req.session.admin) {
@@ -16,7 +17,7 @@ const admincheck = async (req, res) => {
 
     try {
         const loggedadmin = await User.findOne({ email: logemail });
-        
+
         if (loggedadmin && loggedadmin.isBlocked === 0) {
             const userpassword = await bcrypt.compare(
                 logpassword,
@@ -56,12 +57,12 @@ const adminHome = (req, res) => {
 
 const addproduct = async (req, res) => {
     const brand = await Brand.find({ isBlocked: 0 });
-    
+
     res.render("add-product-page", { brand });
 };
 
 const addproducttodb = async (req, res) => {
-    
+
 
     try {
         const Images = req.files;
@@ -125,14 +126,14 @@ const unblockuser = async (req, res) => {
 };
 
 const productsList = async (req, res) => {
-    const product = await Product.find({ isProduct: 0 });
-    
+    const product = await Product.find({ isProduct: 0 }).populate('brandId')
+  
     res.render("page-products-list", { product });
 };
 
 const blockProduct = async (req, res) => {
     try {
-        
+
         const { id } = req.query;
         const da = await Product.findByIdAndUpdate(
             { _id: id },
@@ -155,7 +156,7 @@ const unblockProduct = async (req, res) => {
             { $set: { isBlocked: 0 } },
             { new: true },
         );
-        console.log(da);
+
         res.status(200).json({ data: "success" });
     } catch (err) {
         console.error(err);
@@ -167,7 +168,7 @@ const editProduct = async (req, res) => {
         const { id } = req.query;
 
         const product = await Product.findById({ _id: id }).populate('brandId')
-  
+
 
         const brand = await Brand.find({ isActive: 0 });
 
@@ -241,10 +242,24 @@ const insertBrand = async (req, res) => {
     }
 };
 
+
+const editBrand = async (req, res) => {
+    try {
+        const { id } = req.query
+
+        const brandData = await Brand.findOne({ _id: id })
+        res.render('adminPages/editBrandPage', { brandData });
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
 const listBrand = async (req, res) => {
     const brand = await Brand.find({ isActive: 0 });
     res.render("listBrand", { brand });
 };
+
 
 const deleteBrand = async (req, res) => {
     try {
@@ -257,9 +272,10 @@ const deleteBrand = async (req, res) => {
     }
 };
 
+
 const blockBrand = async (req, res) => {
     try {
-        console.log(req.query);
+
         const { id } = req.query;
         const da = await Brand.findByIdAndUpdate(
             { _id: id },
@@ -273,9 +289,10 @@ const blockBrand = async (req, res) => {
     }
 };
 
+
 const UnblockBrand = async (req, res) => {
     try {
-        console.log(req.query);
+
         const { id } = req.query;
         const da = await Brand.findByIdAndUpdate(
             { _id: id },
@@ -288,6 +305,48 @@ const UnblockBrand = async (req, res) => {
         console.error(err);
     }
 };
+
+const listOrders = async (req, res) => {
+    try {
+        const orderData = await Order.find({ __v: 0 }).populate('userId products.product_id')
+
+
+        res.render('adminPages/orderList', { orderData })
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const orderDetails = async (req, res) => {
+
+    try {
+        const { orderId } = req.query
+
+        const orderData = await Order.find({ _id: orderId }).populate('userId products.product_id')
+
+        res.render('adminPages/userOrdersDetail', { orderData })
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+const updateStatus = async (req, res) => {
+    const { status, productId, orderId, refundAmount } = req.query
+
+
+    const upgrade = await Order.findOneAndUpdate({ _id: orderId, 'products._id': productId }, { $set: { 'products.$.status': status } })
+    if (status == "Return Accepted") {
+        const result = await User.findOneAndUpdate({ _id: req.session.user }, { $inc: { walletBalance: refundAmount } })
+    }
+    if (upgrade) {
+        res.status(200).json({ message: 'STATUS Updated' });
+    } else {
+        res.status(500).json({ message: 'Error placing order' });
+    }
+
+}
+
+
 
 const logoutadmin = (req, res) => {
     if (req.session.admin) {
@@ -303,17 +362,12 @@ const logoutadmin = (req, res) => {
     }
 };
 
-// router.get("/logout",(req,res)=>{
-//     req.session.destroy((err)=>{
-//         if(err)
-//         {
-//             console.log("Error in logout")
-//         }
-//         else{
-//             res.redirect("/")
-//         }
-//     })
-// })
+
+
+
+
+
+
 
 module.exports = {
     adminLogin,
@@ -337,4 +391,8 @@ module.exports = {
     deleteBrand,
     blockBrand,
     UnblockBrand,
+    editBrand,
+    listOrders,
+    orderDetails,
+    updateStatus
 };

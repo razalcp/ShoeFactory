@@ -49,17 +49,17 @@
                                             <td>
                                                 <%= el.productId.producttitle %>
                                             </td>
-                                            <td id="price">₹<%= el.productId.price %>
+                                            <td id="price">₹<%= el.productId.discountPrice %>
                                             </td>
 
                                             <td>
                                                 <div class="viewcontent__action single_action pt-30">
-                                                    <span><input type="number" data-price="<%=el.productId.price%>"
+                                                    <span><input type="number" data-price="<%=el.productId.discountPrice%>"
                                                             data-id="<%=el.productId._id%>" class="quantityField"
                                                             value="<%=el.quantity%>" min="0" max="10"></span>
                                                 </div>
                                             </td>
-                                            <td class="totalField">₹<%= el.productId.price %>
+                                            <td class="totalField">₹<%= el.productId.discountPrice %>
                                             </td>
 
 
@@ -249,11 +249,11 @@
             </div>
             <div class="footer__bottom pb-10 mt-60">
                 <div class="row">
-                    <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 ">
+                    <!-- <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 ">
                         <p>Copyright © <span>Gota Store</span> All Rights Reserved. Powered by <span><a
                                     href="themepure.html">theme_pure</a></span>
                         </p>
-                    </div>
+                    </div> -->
                     <div class="col-xl-5 offset-xl-2 col-lg-4 col-md-6 col-sm-12">
                         <div class="footer-menu">
                             <ul class="text-end">
@@ -272,7 +272,8 @@
 
 
     <!-- JS here -->
-    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <!-- <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
@@ -298,9 +299,12 @@
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
     <script src="../public/js/cartScript.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+
+   
     </body>
 
 
-    <!-- Mirrored from wphix.com/template/gota/gota/cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Dec 2023 18:27:49 GMT -->
+   
 
     </html>

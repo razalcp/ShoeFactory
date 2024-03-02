@@ -1,210 +1,272 @@
 <%-include('../userLayouts/userHeader') %>
 
-  <!-- cart area start  --> 
-  <div class="cart__sidebar">
-    <div class="container">
-        <div class="cart__content">
-            <div class="cart-text">
-                <h3 class="mb-40">Shopping cart</h3>
-                <div class="add_cart_product">
-                    <div class="add_cart_product__thumb">
-                        <img src="assets/img/product/29-3.jpg" alt="">
-                    </div>
-                    <div class="add_cart_product__content">
-                        <h5><a href="shop.html">Running 3-Stripes</a></h5>
-                        <p>1 × $66.00</p>
-                        <button class="cart_close"><i class="fal fa-times"></i></button>
-                    </div>
-                </div>
-                <div class="add_cart_product">
-                    <div class="add_cart_product__thumb">
-                        <img src="assets/img/product/17.jpg" alt="">
-                    </div>
-                    <div class="add_cart_product__content">
-                        <h5><a href="shop.html">Buddy non Stripes</a></h5>
-                        <p>1 × $40.00</p>
-                        <button class="cart_close"><i class="fal fa-times"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="cart-icon">
-                <i class="fal fa-times"></i>
-            </div>
-            <div class="cart-bottom">
-                <div class="cart-bottom__text">
-                    <span>Subtotal:</span>
-                    <span class="end">$121.00</span>
-                    <a href="cart.html">view cart</a>
-                    <a href="checkout.html">checkout</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="cart-offcanvas-overlay"></div>
-<!-- cart area end  -->
-
-
     <div class="checkout_area pt-80">
         <div class="container">
-            <div class="notification__message">
-                <p><i class="fal fa-window-maximize"></i>Returning customer? Click here to <a href="login.html">login</a></p>
-                <p><i class="fal fa-window-maximize"></i>Have a coupon? Click here to enter your code</p>
-            </div>
-            <div class="row">
-                <div class="col-xl-7 col-lg-7 col-md-12">
-                    <div class="checkout_form mb-100">
-                        <form action="#">
-                            <div class="row mb-30">
-                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                    <div class="checkout__wrap">
-                                        <label>First name <span>*</span></label>
-                                        <input type="text" name="fname">
-                                    </div>
-                                </div>
-                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                    <div class="checkout__wrap">
-                                        <label>Last name <span>*</span></label>
-                                        <input type="text" name="lname">
-                                    </div>
-                                </div>
+
+            <div class="f_cart_area pt-110 mb-100">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-8 col-lg-8 col-md-12">
+                            <div class="cart_table">
+                                <table>
+                                    <tr>
+                                        <td>Product Image</td>
+                                        <td>Product Name</td>
+
+
+
+                                        <td>Action</td>
+
+                                    </tr>
+                                    <tbody>
+                                        <% if(locals.cartData){ %>
+                                            <%locals.cartData.forEach(el=>{%>
+                                                <tr class="max-width-set">
+                                                    <td>
+                                                        <img src="/public/images/<%=el.productId.imageurl[0]%>" alt="">
+                                                    </td>
+                                                    <td>
+                                                        <%= el.productId.producttitle %> <span>x<%=el.quantity%></span>
+                                                    </td>
+
+
+
+                                                    <td><button type="button" class="btn btn-danger removeBtn"
+                                                            data-id="<%=el.productId._id%>">Remove</button></td>
+
+                                                </tr>
+                                            
+                                                <input type="hidden" value="<%=el.productId._id%>" class="hiddenField">
+
+                                                <% }) %>
+
+                                                    <% } %>
+
+                                    </tbody>
+
+                                    <%if(locals.cart){%>
+                                        <input type="hidden" id="cartidhidden" value="<%=cart._id%>">
+                                        <%}%>
+                                            <!-- <tfoot>
+                                <tr class="design-footer">
+                                    <td>
+                                        <input type="text" placeholder="Coupon Code">
+                                    </td>
+                                    <td><button type="submit">Apply Coupon</button></td>
+                                    <td colspan="3"><a href="#">update cart</a></td>
+                                </tr>
+                            </tfoot> -->
+                                </table>
                             </div>
-                            <div class="checkout__wrap">
-                                <label>Company name (optional) <span></span></label>
-                                <input type="text" name="cname">
+                        </div>
+                        <div class="col-xl-4 col-lg-4 col-md-12">
+                            <div class="cart__acount">
+                                <h5>Cart totals:</h5>
+                                <% if(locals.cart) { %>
+
+                                    <table>
+
+
+                                        <tr class="first-child">
+                                            <td>Price</td>
+                                            <td id="subTotal">₹<%= cart.total %>
+                                            </td>
+
+                                        </tr>
+                                      
+                                    </table>
+
+                                    <% } %>
+                                        <br>
+                                        <h5>Available Coupons:</h5>
+                                        <% if(locals.coupons){%>
+                                            <table>
+                                                <% locals.coupons.forEach(ele=>{ %>
+                                                    <tr>
+                                                        <td class="couponName">
+                                                            <%=ele.couponCode%>
+                                                        </td>
+                                                        <td><button class="styled-button"
+                                                                onclick="couponApply('<%=ele._id%>')">Apply</button></td>
+                                                    </tr>
+                                                    <% }) %>
+
+                                            </table>
+                                        <%}%>
+
                             </div>
-                            <div class="checkout__wrap">
-                                <label>Country / Region <span>*</span></label>
-                                <select name="country">
-                                    <option value="Bangladesh">Bangladesh</option>
-                                    <option value="Bangladesh">Pakistan</option>
-                                    <option value="Bangladesh">Arab</option>
-                                    <option value="Bangladesh">America</option>
-                                    <option value="Bangladesh">Saudi Arabia</option>
-                                    <option value="Bangladesh">Israil</option>
-                                    <option value="Bangladesh">Irak</option>
-                                    <option value="Bangladesh">Netherland</option>
-                                </select>
-                            </div>
-                            <div class="checkout__wrap">
-                                <label>Street address <span>*</span></label>
-                                <input class="mb-20" type="text" name="add1" placeholder="house number and street number">
-                                <input type="text" name="add2" placeholder="apartment,suite,unit,etc.(optional)">
-                            </div>
-                            <div class="checkout__wrap">
-                                <label>Town / City *<span></span></label>
-                                <input type="text" name="town">
-                            </div>
-                            <div class="checkout__wrap">
-                                <label>County (optional)<span></span></label>
-                                <input type="text" name="country">
-                            </div>
-                            <div class="checkout__wrap">
-                                <label>Postcode<span>*</span></label>
-                                <input type="text" name="postcode">
-                            </div>
-                            <div class="checkout__wrap">
-                                <label>Phone <span>*</span></label>
-                                <input type="text" name="phone">
-                            </div>
-                            <div class="checkout__wrap">
-                                <label>Email address <span>*</span></label>
-                                <input type="email" name="email">
-                            </div>
-                            <div class="checkout__wrap-2 pt-20">
-                                <input type="checkbox" name="check1">
-                                <span>Create an account?</span>
-                            </div>
-                            <div class="checkout__wrap-2 pt-20">
-                                <input type="checkbox" name="check2">
-                                <span>Ship to a different address?</span>
-                            </div>
-                            <div class="checkout__wrap">
-                                <label>Order notes (optional) <span></span></label>
-                                <textarea  name="ordernote" placeholder="Note about your order, e.g special note for delivery"></textarea>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-5 col-lg-5 col-md-12">
+                    <div class="cart__acount ml-50">
+                        <h5>Address</h5>
+
+
+
+                        <!-- <div class="terms pt-50 pb-20"> -->
+
+
+                        <div class="login_wrapper login_wrapper_2 p-4">
+
+                            <%if(locals.addressData){%>
+                                <%locals.addressData.address.forEach(el=> { %>
+                                    <div class="card p-3 input_wrap input_wrap_3">
+                                        <span style="text-align: center;">Select Address</span> <input name="rad"
+                                            type="radio" value="<%= el._id %>">
+
+                                        <p class="mb-10"><span>Name : </span>
+                                            <%=el.uname%>
+                                        </p>
+                                        <p class="mb-10"><span>Mobile: </span>
+                                            <%=el.mobile%>
+                                        </p>
+                                        <p class="mb-10"><span>Address: </span>
+                                            <%=el.address%>
+                                        </p>
+                                        <p class="mb-10"><span>Locality: </span>
+                                            <%=el.locality%>
+                                        </p>
+                                        <p class="mb-10"><span>City: </span>
+                                            <%=el.city%>
+                                        </p>
+                                        <p class="mb-10"><span>Pincode: </span>
+                                            <%=el.pincode%>
+                                        </p>
+                                        <p class="mb-10"><span>State: </span>
+                                            <%=el.state%>
+                                        </p>
+
+
+                                        <a href="/editAddress?addressId=<%=el._id%>"><button
+                                                type="submit">Edit</button></a>
+                                        <br>
+
+                                        <input type="hidden" value="<%=el._id%>" id="addresshiddenfield">
+                                        <input type="button" class="btn-danger removebtn" onClick="deleteconfirm()"
+                                            value="Delete">
+
+
+                                    </div>
+                                    <% })%>
+                                        <%}%>
+                        </div>
+
+                        <h2>You can add your Address Here</h2>
+                        <br>
+                        <form action="/addAddress" method="get">
+                            <div class="input_wrap">
+                                <button type="submit">Add Address</button>
+                            </div>
+                        </form>
+                        <!-- </div> -->
+                    </div>
+                </div>
+
+
                 <div class="col-xl-5 col-lg-5 col-md-12">
                     <div class="cart__acount ml-50">
                         <h5>Your order</h5>
-                      <table>
-                       <% if(locals.product){ %>
-                        <tr class="first-child-2">
-                            <td>product</td>
-                            <td><%= product.producttitle %> <span>× 1</span></td>
-                        </tr>
-                        
-                        <tr class="first-child-2">
-                            <td>Total</td>
-                            <td class="lightbluee">$47.00</td>
-                        </tr>
-                       <% } %>
-                          
-                          <!-- <tr class="first-child lastchild">
+                        <table>
+                            <% if(locals.product){ %>
+                                <tr class="first-child-2">
+                                    <td>product</td>
+                                    <td>
+                                        <%= product.producttitle %> <span>× 1</span>
+                                    </td>
+                                </tr>
+
+                                <tr class="first-child-2">
+                                    <td>Total</td>
+                                    <td class="lightbluee">$47.00</td>
+                                </tr>
+                                <% } %>
+
+                                    <!-- <tr class="first-child lastchild">
                               <td>Shipping</td>
                               <td>Enter your address to view shipping options. </td>
                           </tr> -->
-                         
-                      </table>
-                      <div class="checkout__accordion mt-30">
-                        <div class="accordion" id="accordionExample">
-                            <div class="accordion-item">
-                              <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    Check payments 
-                                </button>
-                              </h2>
-                              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.
+
+                        </table>
+
+                        <select name="" class="paymentOptions">
+                            <option value="">Select a Payment Methord</option>
+                            <option value="Cash on Delivery">Cash on Delivery</option>
+                            <option value="Online Payment">Online Payment</option>
+                            <option value="Wallet">Wallet</option>
+                        </select>
+
+                        <!-- <div class="checkout__accordion mt-30">
+                            <div class="accordion" id="accordionExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseOne" aria-expanded="true"
+                                            aria-controls="collapseOne">
+                                            Check payments
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse show"
+                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            Please send a check to Store Name, Store Street, Store Town, Store State /
+                                            County, Store Postcode.
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
-                            </div>
-                            <div class="accordion-item">
-                              <h2 class="accordion-header" id="headingTwo">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Cash on delivery 
-                                </button>
-                              </h2>
-                              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    Pay with cash upon delivery.
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingTwo">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseTwo"
+                                            aria-expanded="false" aria-controls="collapseTwo">
+                                            Cash on delivery
+                                        </button>
+                                    </h2>
+                                    <div id="collapseTwo" class="accordion-collapse collapse"
+                                        aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            Pay with cash upon delivery.
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
-                            </div>
-                            <div class="accordion-item">
-                              <h2 class="accordion-header" id="headingThree">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                    PayPal
-                                </button>
-                              </h2>
-                              <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                                <div class="accordion-body">
-                                    Cash on delivery 
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingThree">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                            aria-expanded="false" aria-controls="collapseThree">
+                                            PayPal
+                                        </button>
+                                    </h2>
+                                    <div id="collapseThree" class="accordion-collapse collapse"
+                                        aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            Cash on delivery
+                                        </div>
+                                    </div>
                                 </div>
-                              </div>
                             </div>
-                          </div>
-                      </div>
-                    <div class="terms pt-50 pb-20">
-                        <p>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our privacy policy</p>
-                        <div class="check_term">
-                            <input type="checkbox">
-                            <p>I have read and agree to the website terms and conditions <span>*</span></p>
-                        </div>
-                        <div class="order-button">
-                            <button type="submit">place order</button>
+                        </div> -->
+                        <div class="terms pt-50 pb-20">
+                            <p>Your personal data will be used to process your order, support your experience throughout
+                                this website, and for other purposes described in our privacy policy</p>
+                            <div class="check_term">
+                                <input type="checkbox">
+                                <p>I have read and agree to the website terms and conditions <span>*</span></p>
+                            </div>
+                            <div class="order-button">
+                                <button type="submit" onclick="orderConfirm()">place order</button>
+                            </div>
                         </div>
                     </div>
-                    </div>    
                 </div>
             </div>
         </div>
     </div>
 
-     <!-- popup area start -->
+    <!-- popup area start -->
     <div class="overlay"></div>
     <div class="product-popup">
         <div class="view-background">
@@ -275,7 +337,9 @@
                         <ul>
                             <li>Add: 734 Riverwood Drive, Suite 245 Cottonwood </li>
                             <li>Beverly Hill, Melbourne, USA.</li>
-                            <li>Email: <a href="https://wphix.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1a5975746e7b796e5a7f687f746e727f777f34797577">[email&#160;protected]</a></li>
+                            <li>Email: <a href="https://wphix.com/cdn-cgi/l/email-protection" class="__cf_email__"
+                                    data-cfemail="1a5975746e7b796e5a7f687f746e727f777f34797577">[email&#160;protected]</a>
+                            </li>
                             <li>Fax: (+100) 123 456 7890 - (+100) 123 456 7891</li>
                         </ul>
                         <div class="social__media mb-30">
@@ -336,7 +400,8 @@
             <div class="footer__bottom pb-10 mt-60">
                 <div class="row">
                     <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 ">
-                        <p>Copyright © <span>Gota Store</span> All Rights Reserved. Powered by <span><a href="themepure.html">theme_pure</a></span>
+                        <p>Copyright © <span>Gota Store</span> All Rights Reserved. Powered by <span><a
+                                    href="themepure.html">theme_pure</a></span>
                         </p>
                     </div>
                     <div class="col-xl-5 offset-xl-2 col-lg-4 col-md-6 col-sm-12">
@@ -357,7 +422,68 @@
 
 
     <!-- JS here -->
-    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+    <script src="/public/js/checkoutScript.js"></script>
+    <script src="/public/js/cartScript.js"></script>
+    <script src="/public/js/couponApplyScript.js"></script>
+    <script>
+
+
+        function deleteconfirm() {
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You want to delete this Address!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const del = await deleteAddress();
+                    if (del) {
+                        Swal.fire({
+                            title: "Deleted Successfully!",
+                            text: "The product has been deleted.",
+                            icon: "success"
+                        }).then(() => {
+                            location.reload()
+                        })
+
+                    }
+                } else {
+                    Swal.fire({
+                        title: "Product deletion Cancelled!",
+                        text: "The product addition  has been cancelled.",
+                        icon: "success"
+                    });
+                }
+            });
+        }
+
+
+        async function deleteAddress() {
+            const addressid = document.getElementById('addresshiddenfield').value
+            const button = document.getElementsByClassName('removebtn')
+
+            url = `http://localhost:3003/deleteAddress?addressId=${addressid}`
+            const result = await fetch(url)
+            if (result.status === 200) {
+                console.log("data deleted");
+                return true
+            }
+        }
+
+
+
+
+    </script>
+
+
+    <!-- <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/owl.carousel.min.js"></script>
@@ -374,8 +500,12 @@
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/swiper-bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
-</body>
 
 
-<!-- Mirrored from wphix.com/template/gota/gota/checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Dec 2023 18:27:50 GMT -->
-</html>
+
+    </body>
+
+
+    <!-- Mirrored from wphix.com/template/gota/gota/checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Dec 2023 18:27:50 GMT -->
+
+    </html>
