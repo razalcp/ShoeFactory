@@ -82,10 +82,10 @@ function validateMaxDiscount() {
 
 function validateDescriptionBox(){
     let value5 = descriptionBox.value;
-    var regex = /^(?![0-9\s~`!@#$%^&*()-_=+[\]{}\\|;:'",.<>/?]).{25,}$/;
+    
 
 
-    if (value5.trim() === "" || ! regex.test(value5)) {
+    if (value5.trim() === "" ) {
         error5.style.display = "block"
         error5.innerHTML = "Please Enter a valid Description"
     }

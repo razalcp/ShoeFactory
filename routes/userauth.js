@@ -6,6 +6,11 @@ const shopController = require('../controllers/shopController')
 const couponController = require('../controllers/couponController')
 const myOrderController = require('../controllers/myOrdersController')
 const middle = require('../middleware/userMiddleware')
+const wishListController = require('../controllers/wishListController')
+const orderDetailController = require('../controllers/orderDetailController')
+
+const invoiceController = require('../controllers/invoiceController')
+
 
 router.get('/', userController.loaduserHome)
 
@@ -54,9 +59,14 @@ router.post('/editAddress',middle.userToLogin,userController.updateAddress)
 
 router.get('/deleteAddress',middle.userToLogin,userController.deleteUserAddress)
 
-router.get('/updateOrderStatus',middle.userToLogin,userController.updateStatus)
 
-router.get('/forgetPassword',userController.forgetPassword)
+
+router.get('/forgetPassword',userController.viewforgetPassword)
+router.post('/forgetPassword',userController.forgetPassword)
+router.get('/reset-password/:id/:token',userController.viewResetPassword)
+router.post('/reset-password/:id/:token',userController.resetPassword)
+
+
 
 
 router.get('/verify-payment',middle.userToLogin,userController.verifyPayment)
@@ -73,16 +83,23 @@ router.get('/initiateRefund',middle.userToLogin,walletController.refundToWallet)
 
 router.get('/blog',userController.viewBlog)
 router.get('/myOrder',middle.userToLogin,myOrderController.viewMyOrder);
+router.get('/updateOrderStatus',middle.userToLogin,myOrderController.updateStatu);
+
+router.get('/applyCoupon',middle.userToLogin,couponController.applyCouponLogic);
 
 
-router.get('/applyCoupon',middle.userToLogin,couponController.applyCouponLogic)
+router.get('/wishList',middle.userToLogin,wishListController.getWishList)
 
+router.get('/addToWishlist',middle.userToLogin,wishListController.addToWishList)
 
+router.get('/orderDetail',middle.userToLogin,orderDetailController.viewOrderDetail)
  
+// router.get('/downloadInvoice',middle.userToLogin,invoiceController.downloadInvoice)
+router.get('/invoice',middle.userToLogin,invoiceController.viewInvoice)
 
+router.get('/pendingPayment',middle.userToLogin,myOrderController.paymentPending)
 
-
-
+router.get('/deleteWishListItem',middle.userToLogin,wishListController.deleteWishListItem)
 
 
 

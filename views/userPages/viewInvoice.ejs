@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            width: 150px;
+            /* Adjust the width of your logo */
+            border-radius: 8px;
+        }
+
+        .invoice-details {
+            text-align: right;
+        }
+
+        .invoice-details h2 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .invoice-details p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #666;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .total {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .total p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="maindiv" style=" margin-top: 126px;">
+        <div class="container">
+            <div class="header">
+                <!-- <img class="logo"
+                    src="https://scontent-maa2-2.xx.fbcdn.net/v/t39.30808-6/302530987_475869004552721_3861741234842901853_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=5f2048&_nc_ohc=V1w24x-SvJ0AX9ykiV3&_nc_ht=scontent-maa2-2.xx&oh=00_AfDksUgeVarNc5FY89u17qq2cUczzLKk3sOPKiwuAs5eGg&oe=65F2A82B"
+                    alt="Your Logo"> -->
+                    <div>
+                     <h3>The Shoe Factory &star;</h3>
+                    <p>Outer Space Road</p>
+                    <p>Dharwar Lane</p>
+                    <p>Mumbai</p>
+                    </div>
+                    
+                <% if(locals.orderData){ %>
+                    <div class="invoice-details">
+                        <h2 style="text-decoration: underline;">Invoice</h2>
+                        <p>Invoice Number: <%=orderData.orderId%>
+                        </p>
+                        <p>
+                            <%=orderData.createdAt.toISOString().split('T')[0]%>
+                        </p>
+
+                    </div>
+
+
+            </div>
+            <div>
+                <p>Bill To:</p>
+                <p>
+                    <%=orderData.address[0].uname %> , <%=orderData.address[0].address %>
+                </p>
+
+                <p>
+                    <%=orderData.address[0].city %>, Pincode: <%=orderData.address[0].pincode %>
+                </p>
+                <p></p>
+                <p>
+                    <%=orderData.address[0].state %>
+                </p>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <% orderData.products.forEach(el=>{ %>
+                            <td>
+                                <%= el.product_id.producttitle %> x <%= el.qty%>
+                            </td><br>
+                            <td>&#8377 <%=orderData.totalPrice %>
+                            </td>
+                            <% }) %>
+
+                    </tr>
+                    <!-- Add more rows for additional products/services -->
+                </tbody>
+            </table>
+            <div class="total">
+                <p><strong>Subtotal:</strong>&#8377 <%=orderData.totalPrice %>
+                </p>
+
+                <p><strong>Total:</strong> &#8377 <%=orderData.totalPrice %>
+                </p>
+            </div>
+        </div>
+        <button style="height: 35px;margin-left: 1060px;width: 138px;" onclick="downloadPdf()">&darr; Download Invoice</button>
+        <% } %>
+    </div>
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+<script src="/public/js/downloadInvoice.js"></script>
+
+
+
+</html>

@@ -42,7 +42,11 @@ const userSchema =new mongoose.Schema({
         type:String,
         required:true,
         default:"sale"
-    }]
+    }],
+    createdAt: {
+        type:Date,
+        default: Date.now
+     }
 
 })
 

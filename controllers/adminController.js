@@ -47,9 +47,108 @@ const admincheck = async (req, res) => {
     }
 };
 
-const adminHome = (req, res) => {
+const adminHome = async (req, res) => {
     if (req.session.admin) {
-        res.render("adminHome");
+        const orderData = await Order.find({ "products.status": { $all: ["Delivered"] } })
+    
+        let totalPriceSum = 0;
+        let count = 0;
+        for (const order of orderData) {
+            count++;
+            totalPriceSum += order.totalPrice;
+        }
+
+        let totalQtySum = 0;
+
+        for (const order of orderData) {
+            for (const product of order.products) {
+                totalQtySum += product.qty;
+            }
+        }
+
+        let onlinePriceSum = 0;
+
+        for (const order of orderData) {
+            if (order.paymentMethord === 'Online Payment') {
+                onlinePriceSum += order.totalPrice;
+            }
+        }
+        const orderata = await Order.find({ "products.status": { $all: ["Delivered"] } }).populate('products.product_id')
+
+
+        function sumQuantitiesByProductTitle(orderData) {
+            const productQtyMap = {};
+
+            orderData.forEach((order) => {
+                order.products.forEach((product) => {
+                    const { product_id, qty } = product;
+                    const productTitle = product_id.producttitle;
+                    if (productTitle in productQtyMap) {
+                        productQtyMap[productTitle] += qty;
+                    } else {
+                        productQtyMap[productTitle] = qty;
+                    }
+                });
+            });
+
+            return productQtyMap;
+        }
+
+        // Call the function and get the result
+        const productQtyMap = sumQuantitiesByProductTitle(orderata);
+
+
+
+        // Convert the object into an array of objects
+        const productQtyArray = Object.keys(productQtyMap).map((productTitle) => {
+            return { productTitle, quantity: productQtyMap[productTitle] };
+        });
+
+        // Sort the array by quantity in decreasing order
+        productQtyArray.sort((a, b) => b.quantity - a.quantity);
+
+
+        /////////////////////////////////////////////////////////////////////////////////////////////
+        const odata = await Order.find({ "products.status": { $all: ["Delivered"] } })
+            .populate({
+                path: 'products.product_id',
+                populate: { path: 'brandId' }
+            });
+
+
+
+
+        // Initialize an object to store the sum of quantities for each brand
+        const brandQtyMap = {};
+
+        // Iterate through each order
+        odata.forEach((order) => {
+            // Iterate through each product in the order
+            order.products.forEach((product) => {
+                // Extract the brand name from the product
+                const brandName = product.product_id.brandId.brandName;
+
+                // Add the quantity to the corresponding brand in the brandQtyMap
+                if (brandName in brandQtyMap) {
+                    brandQtyMap[brandName] += product.qty;
+                } else {
+                    brandQtyMap[brandName] = product.qty;
+                }
+            });
+        });
+
+
+        // Your object containing brand names and quantities
+
+        // Convert the object into an array of objects
+        const brandQtyArray = Object.keys(brandQtyMap).map((brandName) => {
+            return { brandName, totalQuantity: brandQtyMap[brandName] };
+        });
+        brandQtyArray.sort((a, b) => b.totalQuantity - a.totalQuantity);
+
+   
+       
+        res.render("adminHome", { totalPriceSum, count, totalQtySum, onlinePriceSum, productQtyArray, brandQtyArray });
     } else {
         res.redirect("/admin");
     }
@@ -127,7 +226,7 @@ const unblockuser = async (req, res) => {
 
 const productsList = async (req, res) => {
     const product = await Product.find({ isProduct: 0 }).populate('brandId')
-  
+
     res.render("page-products-list", { product });
 };
 

@@ -43,25 +43,27 @@
 
                 <h2 class="fw-bold mb-2 text-uppercase">Login</h2>
                 <p class="text-white-50 mb-5">Please enter your email and password!</p>
-
-                <form id="logform" action="/login" method="post">
-
-                  <% if(locals.message) { %>
+                <% if(locals.errmessage) { %>
+                  <div class="alert alert-danger">
+                    <%= locals.errmessage %>
+                  </div>
+                  <% } %>
+                  <% if(locals.resetPasswordmessage) { %>
                     <div class="alert alert-success">
-                      <%= locals.message %>
+                      <%= locals.resetPasswordmessage %>
                     </div>
                     <% } %>
+               
+                <form id="logform" action="/login" method="post">
 
-                      <% if(locals.errmessage) { %>
-                        <div class="alert alert-danger">
-                          <%= locals.errmessage %>
-                        </div>
-                        <% } %>
+                    
 
                           <div class="form-outline form-white mb-4">
+                            
+                           
                             <input
                               style="border-radius: 1rem;background: none !important; backdrop-filter: blur(10px) !important;"
-                              type="email" id="email" class="form-control  form-control-lg" name="email" required value="kiran@gmail.com"/>
+                              type="email" id="email" class="form-control  form-control-lg" name="email" required value="aiswarya@gmail.com"/>
                             <label class="form-label" for="email">Email</label>
                           </div>
                           <p>
@@ -71,7 +73,7 @@
                           <div class="form-outline form-white mb-4">
                             <input
                               style="border-radius: 1rem;background: none !important; backdrop-filter: blur(10px) !important;"
-                              type="password" id="password" class="form-control form-control-lg" name="password" value="kiran@123"
+                              type="password" id="password" class="form-control form-control-lg" name="password" value="aiswarya@123"
                               required />
                             <label class="form-label" for="password">Password</label>
                           </div>

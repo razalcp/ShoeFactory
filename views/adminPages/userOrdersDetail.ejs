@@ -147,10 +147,16 @@
                                                                     class="badge rounded-pill alert-warning">Processing</span>
                                                             </td>
 
-                                                            <% } else if(elem.status==="Cancelled" ) {%>
+                                                            <% } else if(elem.status==="Cancel Requested" ) {%>
                                                                 <td><span
-                                                                        class="badge rounded-pill alert-danger">Cancelled</span>
-                                                                </td>
+                                                                        class="badge rounded-pill alert-danger">Cancel Requested</span>
+                                                                </td> <% } else if(elem.status==="Cancel Accepted" ) {%>
+                                                                    <td><span
+                                                                            class="badge rounded-pill alert-danger">Cancel Accepted</span>
+                                                                    </td> <% } else if(elem.status==="Cancel Declined" ) {%>
+                                                                        <td><span
+                                                                                class="badge rounded-pill alert-danger">Cancel Declined</span>
+                                                                        </td>
                                                                 <% } else if(elem.status==="Shipped" ) {%>
                                                                     <td><span
                                                                             class="badge rounded-pill alert-info">Shipped</span>
@@ -222,6 +228,8 @@
                                                                                                         value="Return Declined">
                                                                                                         Return Declined
                                                                                                     </option>
+                                                                                                    <option value="Cancel Accepted">Accept Cancel</option>
+                                                                                                    <option value="Cancel Declined">Decline Cancel</option>
                                                                                                 </select>
                                                                                             </td>
 

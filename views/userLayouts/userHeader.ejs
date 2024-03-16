@@ -17,42 +17,64 @@
     <!-- Place favicon.ico in the root directory -->
 
     <!-- CSS here -->
-   <style>
-    .table-container {
-    width: 100%;
-    overflow-x: auto;
-}
+    <style>
+        .paynowButton {
+            background-color: #4CAF50;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 10px;
+        }
 
-.table-wrapper {
-    width: 100%;
-}
+        .paynowButton:hover {
+            background-color: #45a049;
+            /* Darker Green */
+        }
+    </style>
+    <style>
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-spacing: 0;
-    font-size: 20px; /* Adjust font size as needed */
-}
+        .table-wrapper {
+            width: 100%;
+        }
 
-th, td {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            font-size: 20px;
+            /* Adjust font size as needed */
+        }
 
-th {
-    background-color: #f2f2f2;
-}
+        th,
+        td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
 
-   </style>
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
     <style>
         .search-container {
             position: relative;
             margin-bottom: 20px;
         }
-    
+
         #productSearch {
-            width: 122%; 
+            width: 122%;
             height: 39px;
             padding: 10px;
             border: 1px solid #ccc;
@@ -61,15 +83,15 @@ th {
             outline: none;
             transition: border-color 0.3s ease;
         }
-    
+
         #productSearch:focus {
             border-color: #007bff;
         }
-    
+
         #productSearch::placeholder {
             color: #999;
         }
-    
+
         /* Style the search icon */
         .search-icon {
             position: absolute;
@@ -80,8 +102,8 @@ th {
             cursor: pointer;
         }
     </style>
-    
-    
+
+
     <style>
         .box {
             border: 1px solid #000;
@@ -96,48 +118,54 @@ th {
         }
 
         .paymentOptions {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 20px; /* More rounded corners */
-    background-color: #fff; /* Background color */
-    cursor: pointer;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for border color and box shadow */
-}
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 20px;
+            /* More rounded corners */
+            background-color: #fff;
+            /* Background color */
+            cursor: pointer;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            /* Smooth transition for border color and box shadow */
+        }
 
-.paymentOptions:hover {
-    border-color: #1aff1a; /* Fluorescent green border color on hover */
-    box-shadow: 0 0 10px #1aff1a; /* Glow effect */
-}
+        .paymentOptions:hover {
+            border-color: #1aff1a;
+            /* Fluorescent green border color on hover */
+            box-shadow: 0 0 10px #1aff1a;
+            /* Glow effect */
+        }
 
-.paymentOptions option:first-child {
-    color: #999; /* Style the default option */
-}
-
-
+        .paymentOptions option:first-child {
+            color: #999;
+            /* Style the default option */
+        }
     </style>
     <style>
-   .styled-button {
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 5px;
-        transition-duration: 0.4s;
-    }
-    
-    .styled-button:hover {
-        background-color: #45a049; /* Darker Green */
-    }
+        .styled-button {
+            background-color: #4CAF50;
+            /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition-duration: 0.4s;
+        }
+
+        .styled-button:hover {
+            background-color: #45a049;
+            /* Darker Green */
+        }
     </style>
- 
-    
+
+
     <link rel="stylesheet" href="/public/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/public/assets/css/owl.carousel.min.css">
     <link rel="stylesheet" href="/public/assets/css/animate.min.css">
@@ -183,6 +211,7 @@ th {
                                 <li><a href="/userProfile">Account</a></li>
                                 <li><a href="/myOrder">My Orders</a></li>
                                 <li><a href="/wallet">Wallet</a></li>
+
                                 <li><a href="/cart">Cart</a></li>
 
                                 <li><a href="/checkout">Checkout</a></li>
@@ -219,6 +248,7 @@ th {
                                     <li class=""><a href="/">Home </a>
 
                                     </li>
+
                                     <li class="position-static"><a href="/shop">Shop</a>
                                         <ul class="mega_menu" data-background="assets/img/mega-menu/product.jpg">
                                             <!-- <li>
@@ -305,7 +335,7 @@ th {
                                                     style="color:#00DFA2">F</span>actory</h2>
                                         </a></li>
                                     <li class="menu-item"><a href="/blog">Blog</a>
-                                        
+
                                     </li>
                                     <li class="menu-item-has-children"><a href="about.html">pages</a>
                                         <ul class="sub-menu">
@@ -329,7 +359,9 @@ th {
 
                     </div>
                     <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4">
+
                         <div class="gota_cart gotat_cart_1 text-end">
+                            <a href="/wishList"><span><i class="fal fa-heart"></i></span></a>
                             <a href="javascript:void(0)"><i class="fal fa-shopping-cart"></i>My Bag<span
                                     class="counter"> (2)</span></a>
                         </div>

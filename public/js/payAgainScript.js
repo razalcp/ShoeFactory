@@ -1,57 +1,16 @@
-const cartId = document.getElementById('cartidhidden').value
-const addressId = document.getElementById('addresshiddenfield').value
-const paymentMethord = document.getElementsByClassName('paymentOptions')
-let updatedStatus;
 
-for (let i = 0; i < paymentMethord.length; i++) {
-
-    paymentMethord[i].addEventListener('change', async function () {
-
-        updatedStatus = this.value;
-
-    });
-}
+var buttons = document.getElementsByClassName('paynowButton');
 
 
+for (var i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', async function() {
+      
+        var orderId = this.dataset.orderid;
 
-function orderConfirm() {
-
-    // Swal.fire({
-    //     title: "Are you sure?",
-    //     text: "You want to Place the order!",
-    //     icon: "warning",
-    //     showCancelButton: true,
-    //     confirmButtonColor: "#3085d6",
-    //     cancelButtonColor: "#d33",
-    //     confirmButtonText: "Yes, order now!"
-    // }).then((result) => {
-    //     if (result.isConfirmed) {
-            createOrder();
-//             Swal.fire({
-//                 title: "Order Placed!",
-//                 text: "The order has been placed successfully.",
-//                 icon: "success"
-//             });
-//         } else {
-//             Swal.fire({
-//                 title: "Ordering cancelled!",
-//                 text: "The product ordering has been cancelled.",
-//                 icon: "success"
-//             });
-//         }
-//     });
-// }
-}
-
-async function createOrder() {
-
-   const total =  document.getElementById('subTotal').innerHTML
-
-   
-    url = `http://localhost:3003/orderPlace?cartId=${cartId}&addressId=${addressId}&modeOfPayment=${updatedStatus}&total=${total}`
-
-    const result = await fetch(url)
-    var data = await result.json()
+      
+       url=`http://localhost:3003/pendingPayment?orderId=${orderId}`
+       const result= await fetch(url)
+       var data = await result.json()
    
 console.log(data.success);
     if (data.success) {
@@ -75,7 +34,11 @@ console.log(data.success);
         });
     }
 
+
+    });
 }
+
+
 
 function razorPayPayment(order) {
     
@@ -107,6 +70,7 @@ function razorPayPayment(order) {
     rzp1.open();
 
 }
+
 
 async function verifyPayment(payment, order) {
 

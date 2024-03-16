@@ -69,6 +69,7 @@ function namevalidate(){
     }
 }
 
+
 function mobvalidate(){
     const mobval = mobileid.value
     const mobregex = /^(?!0{10})[6789]\d{9}$/;
@@ -88,6 +89,7 @@ function mobvalidate(){
         error3.innerHTML = ""
     }   
 }
+
 
 emailid.addEventListener('blur', emailvalidate)
 nameid.addEventListener('blur',namevalidate)

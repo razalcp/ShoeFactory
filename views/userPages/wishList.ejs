@@ -1,28 +1,25 @@
-<%- include('../userLayouts/userHeader.ejs') %>
 
-
-
+<%- include('../userLayouts/userHeader.ejs')%>
     <!-- breadcrumb area start -->
     <div class="page-layout" data-background="assets/img/slider/shop.jpg">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div class="breadcrumb-area text-center">
-                        <% if(locals.cartData && locals.cartData.length > 0){ %>
-                            
-                        <h2 class="page-title">Cart</h2>
-                        <% } else{ %>
-                             <h2 class="page-title">OOps Cart is Empty...Try adding some products</h2>
+                        <% if(wishlistData.length>0){ %>
+                             <h2 class="page-title">WishList</h2>
+                       <% } else { %>
+                        <h2 class="page-title">WishList is Empty...Add to your List</h2>
                        <% }%>
-                       
-                        <div class="breadcrumb-menu">
+                      
+                            <div class="breadcrumb-menu">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb justify-content-center">
                                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                                     <li class="breadcrumb-item"><a href="cart.html">cart</a></li>
                                 </ol>
                             </nav>
-                        </div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -35,102 +32,90 @@
             <div class="row">
                 <div class="col-xl-8 col-lg-8 col-md-12">
                     <div class="cart_table">
-                        <% if(locals.cartData){%>
-                            <table>
-                                <tr>
-                                    <td>Product Image</td>
-                                    <td>Product Name</td>
-                                    <td>price</td>
-                                    <td>Quantity</td>
-                                    <td>Total</td>
-                                    <td>Action</td>
-
-                                </tr>
-                                <tbody>
-                              
-                                        <%locals.cartData.forEach(el=>{%>
+                        <table>
+                            <tr> 
+                                <td>Product Image</td>
+                                
+                                <td>Name</td>
+                                <td>Price</td>
+                                
+                                <td>Action</td>
+                                
+                               </tr>
+                            <tbody>
+                                <% if(locals.wishlistData) { %>
+                                   <% locals.wishlistData.forEach(el=>{ %>
+                                        <% el.wishList.forEach(productData=>{ %>
                                             <tr class="max-width-set">
-                                                <td>
-                                                    <img src="/public/images/<%=el.productId.imageurl[1]%>" alt="">
-                                                </td>
-                                                <td>
-                                                    <%= el.productId.producttitle %>
-                                                </td>
-                                                <td id="price">₹<%= el.productId.discountPrice %>
-                                                </td>
-
-                                                <td>
-                                                    <div class="viewcontent__action single_action pt-30">
-                                                        <span><input type="number"
-                                                                data-price="<%=el.productId.discountPrice%>"
-                                                                data-id="<%=el.productId._id%>" class="quantityField"
-                                                                value="<%=el.quantity%>" min="1" max="<%= el.productId.stock %>" ></span>
-                                                    </div>
-                                                </td>
-                                                <td class="totalField">₹<%= el.productId.discountPrice %>
-                                                </td>
-
-
-                                                <td><button type="button" class="btn btn-danger removeBtn"
-                                                        data-id="<%=el.productId._id%>">Remove</button></td>
-
-                                            </tr>
-                                            <input type="hidden" value="<%=el.productId._id  %>" class="hiddenField">
-                                            <% })%>
-
-                                                <% } %>
-
-                                </tbody>
-                                <!-- <tfoot>
-                                    <tr class="design-footer">
                                         <td>
-                                            <input type="text" placeholder="Coupon Code">
+                                            <img src="/public/images/<%=productData.productId.imageurl[1]%>" alt="">
                                         </td>
-                                        <td><button type="submit">Apply Coupon</button></td>
-                                        <td colspan="3"><a href="#">update cart</a></td>
+                                       
+                                        <td><%= productData.productId.producttitle %></td>
+                                        <% if(productData.productId.discountPrice>0) { %>
+                                            <td><%=productData.productId.discountPrice%> </td>  
+                                        
+                                        <%}else{%>
+                                            <td><%=productData.productId.price%></td>
+                                       <% } %>
+                                       <td class="width-set" style="width: 201px;">
+                                       
+                                                <button class="btn-danger deleteBtn" data-idproduct="<%=productData.productId._id%>">Delete</button>
+                                                <button class="btn-primary cartBtn" data-idproduct="<%=productData.productId._id%>" data-quantity="1">Add to Cart</button>
+                                              
+                                    </td>
+                                       <% }) %>
+                                  <%  }) %>
+                                    
+                      
+                                       
                                     </tr>
-                                </tfoot> -->
-
-                            </table>
-                           
-                           
-
+                             <%  } %>
+                              
+                            </tbody>
+                            <!-- <tfoot>
+                                <tr class="design-footer">
+                                    <td>
+                                        <input type="text" placeholder="Coupon Code">
+                                    </td>
+                                    <td><button type="submit">Apply Coupon</button></td>
+                                    <td colspan="3"><a href="#">update cart</a></td>
+                                </tr>
+                            </tfoot> -->
+                        </table>
                     </div>
                 </div>
-                <div class="col-xl-4 col-lg-4 col-md-12">
+                <!-- <div class="col-xl-4 col-lg-4 col-md-12">
                     <div class="cart__acount">
-                        <h5>Cart totals:</h5>
-                        <% if(locals.cart) { %>
-
-                            <table>
-
-
-                                <tr class="first-child">
-
-                                    <td id="subTotal">₹<%= cart.total %>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <a href="/checkout?cartid=<%= cart._id %>"><input type="submit"
-                                                value="proceed to checkout"></a>
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <% } %>
-
-
-
+                        <h5>Cart totals</h5>
+                      <table>
+                          <tr class="first-child">
+                              <td>Subtotal</td>
+                              <td>$18.00</td>
+                          </tr>
+                          <tr class="first-child lastchild">
+                              <td>Shipping</td>
+                              <td>Enter your address to view shipping options <br>
+                                Calculate shipping</td>
+                          </tr>
+                          <tr class="first-child">
+                              <td>Total</td>
+                              <td>$47.00</td>
+                          </tr>
+                          <tr>   
+                              <td colspan="2">
+                                  <a href="checkout.html"><input type="submit" value="procced to checkout"></a>
+                              </td>
+                          </tr>
+                      </table>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
 
 
-    <!-- popup area start -->
+     <!-- popup area start -->
     <div class="overlay"></div>
     <div class="product-popup">
         <div class="view-background">
@@ -201,9 +186,7 @@
                         <ul>
                             <li>Add: 734 Riverwood Drive, Suite 245 Cottonwood </li>
                             <li>Beverly Hill, Melbourne, USA.</li>
-                            <li>Email: <a href="https://wphix.com/cdn-cgi/l/email-protection" class="__cf_email__"
-                                    data-cfemail="13507c7d67727067537661767d677b767e763d707c7e">[email&#160;protected]</a>
-                            </li>
+                            <li>Email: <a href="https://wphix.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="13507c7d67727067537661767d677b767e763d707c7e">[email&#160;protected]</a></li>
                             <li>Fax: (+100) 123 456 7890 - (+100) 123 456 7891</li>
                         </ul>
                         <div class="social__media mb-30">
@@ -263,11 +246,10 @@
             </div>
             <div class="footer__bottom pb-10 mt-60">
                 <div class="row">
-                    <!-- <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 ">
-                        <p>Copyright © <span>Gota Store</span> All Rights Reserved. Powered by <span><a
-                                    href="themepure.html">theme_pure</a></span>
+                    <div class="col-xl-5 col-lg-5 col-md-6 col-sm-12 ">
+                        <p>Copyright © <span>Gota Store</span> All Rights Reserved. Powered by <span><a href="themepure.html">theme_pure</a></span>
                         </p>
-                    </div> -->
+                    </div>
                     <div class="col-xl-5 offset-xl-2 col-lg-4 col-md-6 col-sm-12">
                         <div class="footer-menu">
                             <ul class="text-end">
@@ -283,27 +265,15 @@
         </div>
     </footer>
     <!-- footer area end -->
-
+    <script>
+        
+    </script>
 
     <!-- JS here -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
-    <script>
-        function emptyCart() {
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You want to delete this Address!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            })
-        }
-    </script>
 
-    <!-- <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <script src="/public/js/insideWishlistScript.js"></script>
+    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/owl.carousel.min.js"></script>
@@ -320,20 +290,8 @@
     <script src="assets/js/plugins.js"></script>
     <script src="assets/js/swiper-bundle.min.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
-    <script src="../public/js/cartScript.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+</body>
 
 
-    </body>
-
-
-
-
-    </html>
+<!-- Mirrored from wphix.com/template/gota/gota/cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Dec 2023 18:27:49 GMT -->
+</html>

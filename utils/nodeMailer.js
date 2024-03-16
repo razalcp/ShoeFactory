@@ -39,4 +39,19 @@ const sendOTP = async (email, otp) => {
     }
 };
 
-module.exports={generateOTP,sendOTP}
+const sendMail = async (email, otp) => {
+   
+  const mailOptions = {
+    from: "cprazalnazim@gmail.com", // replace with your email
+    to: email,
+    subject: "Password Reset Link",
+    text: `${otp}`,
+  };
+
+    const send = await transporter.sendMail(mailOptions)
+    if(send){
+        console.log("Link Send Sucessfully !!!");
+    }
+};
+
+module.exports={generateOTP,sendOTP,sendMail}

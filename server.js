@@ -1,5 +1,5 @@
 const jsPDF = require('jspdf');
-
+const jwt =require('jsonwebtoken')
 var toastifyJs = require("toastify-js")
 const express = require("express");
 const path = require("path");
@@ -47,7 +47,9 @@ app.use(
     },
   }),
 );
-
+//////forget password changes
+app.use(express.json())
+//////////
 app.use(express.urlencoded({ extended: true }));
 
 app.use(nocache());

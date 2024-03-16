@@ -15,7 +15,7 @@
                     <!-- Input field for selecting end date -->
                     <label for="endDate">End Date:</label>
                     <input type="date" id="endDate">
-                  
+                    
                     <button type="button" onclick="filterOrders()">Filter</button>
                   </form>
                 <div id="buttonContainer">
@@ -39,6 +39,7 @@
                                         <th>Item Name and Quantity</th>
                                         <th>Total</th>
                                         <th>Payment Mode</th>
+                                        <th>Status</th>
                                         <th class="text-end"> Date </th>
                                 
                                     
@@ -57,6 +58,10 @@
                                     <% })%></td>
                                     <td><%=ele.totalPrice%></td>
                                        <td>&#128179;   <%=ele.paymentMethord%></td> 
+                                       <% ele.products.forEach(elem=>{%>
+                                        <td><%=elem.status%></td>
+                                    <%   }) %>
+                                       
                                        <td class="text-end"><%=ele.createdAt.toISOString().split('T')[0]%></td>       
                               
                                 <!-- <td class="text-end">
@@ -90,6 +95,20 @@
                     </ul>
                 </nav>
             </div> -->
+            <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                  <h5 class="card-title">Sales Overview</h5>
+                  <h6 class="card-subtitle mb-2 text-muted">Counts of the required</h6>
+                  <% if(locals.totalDeliveredQty) {%>
+                    <p class="card-text">Total count of Products Sold = <%= totalDeliveredQty %></p>
+                 <% } %>
+                 <% if(locals.totalCount) {%>
+                    <p class="card-text">Total count of Sales Happened= <%= totalCount %></p>
+                 <% } %>
+                  <!-- <a href="#" class="card-link">Card link</a> -->
+                  <!-- <a href="#" class="card-link">Another link</a> -->
+                </div>
+              </div>
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
@@ -103,6 +122,14 @@
             </div>
         </footer>
     </main>
+    <script>
+        function downloadPdf() {
+            const element = document.getElementById('myTable')
+            console.log(element);
+            html2pdf().from(element).save();
+            
+        }
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
@@ -113,6 +140,7 @@
 
       <script>
         function filterOrders() {
+            console.log("hi");
             const startDate = document.getElementById("startDate").value;
             const endDate = document.getElementById("endDate").value;
             
@@ -123,7 +151,7 @@
             // Filter table rows based on the date range
             const rows = document.querySelectorAll("#myTable tbody tr");
             rows.forEach(row => {
-                const dateStr = row.cells[5].textContent; // Assuming date is in the 6th cell (index 5)
+                const dateStr = row.cells[6].textContent; // Assuming date is in the 6th cell (index 5)
                 const orderDate = new Date(dateStr);
                 if (orderDate < start || orderDate > end) {
                     row.style.display = "none";

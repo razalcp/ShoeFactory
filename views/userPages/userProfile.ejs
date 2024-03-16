@@ -105,117 +105,6 @@
         </div>
     </div>
 
-    <h3 class="title-7">Your Order Details</h3>
-    <% if(locals.orderData){ %>
-
-        <% orderData.forEach(el=>{ %>
-            <input type="hidden" id="orderId" value="<%=el._id%>">
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th width="40%">Product</th>
-                            <th width="20%">Unit Price</th>
-                            <th width="20%">Quantity</th>
-                            <th width="20%">Status</th>
-                            <th width="20%">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%el.products.forEach(elem=>{%>
-
-
-                            <tr>
-                                <td>
-
-
-                                    <a class="itemside" href="#">
-
-                                        <div class="left">
-
-                                            <img src="/public/images/<%=elem.product_id.imageurl[0]%>" width="40"
-                                                height="40" class="img-xs" alt="Item">
-                                        </div>
-                                        <div class="info">
-                                            <%=elem.product_id.producttitle%>
-                                        </div>
-                                    </a>
-                                </td>
-                                <td id="price"> ₹<%=elem.product_id.price%>
-                                </td>
-                                <input type="hidden" class="hiddenFielder" value="<%=elem._id%>">
-
-                                <td id="quantity">
-                                    <%=elem.qty%>
-                                </td>
-
-                                <input type="hidden" id="statusValue" value="<%=elem.status%>">
-
-
-                                <% if(elem.status==="Processing" ) { %>
-                                    <td><span class="badge rounded-pill alert-warning getStatus">Processing</span></td>
-
-                                    <% } else if(elem.status==="Cancelled" ) {%>
-                                        <td><span class="badge rounded-pill alert-danger getStatus">Cancelled</span>
-                                        </td>
-                                        <% } else if(elem.status==="Delivered" ){ %>
-                                            <td><span
-                                                    class="badge rounded-pill alert-success getStatus">Delivered</span>
-                                            </td>
-                                            <% } else if(elem.status==="Shipped" ) {%>
-                                                <td><span
-                                                        class="badge rounded-pill alert-info">Shipped</span>
-                                                </td>
-                                            <% } else if(elem.status==="Dispatched" ){ %>
-                                                <td><span
-                                                        class="badge rounded-pill alert-info getStatus">Dispatched</span>
-                                                </td>
-                                                <% }else if(elem.status==="Return Requested" ){ %>
-                                                    <td><span
-                                                            class="badge rounded-pill bg-dark text-light alert-dark getStatus">Return
-                                                            Requested</span></td>
-                                                    <% }else if(elem.status==="Return Accepted" ){ %>
-                                                        <td><span
-                                                                class="badge rounded-pill  alert-dark getStatus">Return
-                                                                Accepted</span>
-                                                        </td>
-                                                        <% } else if(elem.status==="Return Declined" ) {%>
-                                                            <td><span
-                                                                    class="badge rounded-pill alert-danger getStatus">Return
-                                                                    Declined</span>
-                                                            </td>
-                                                            <% } %>
-                                                                <%if(elem.status==="Delivered"){%>
-                                                                    <td>
-                                                                        <select class="status p-2">
-
-                                                                            <option value="">Change status</option>
-                                                                            <!-- <option value="Processing">Processing</option> -->
-                                                                            <option value="Return Requested">Return
-                                                                            </option>
-                                                                            <option value="Cancelled">Cancel</option>
-
-                                                                        </select>
-                                                                    </td>
-                                                                    <%}%>
-
-
-
-
-
-
-                            </tr>
-                            <% }) %>
-                    </tbody>
-                </table>
-                <br><br>
-                <div class="text-end box">
-                    <h3>Total Prize = <%=el.totalPrice%>
-                    </h3>
-                </div>
-            </div> <!-- table-responsive// -->
-            <% }) %>
-                <%}%>
                     <!-- footer area start -->
                     <footer class="footer_area">
                         <div class="container">
@@ -379,7 +268,7 @@
 
                   
 
-                    <script>
+                    <!-- <script>
                         const stat = document.getElementsByClassName('status')
                         const orderid = document.getElementById('orderId').value
                      
@@ -404,7 +293,7 @@
 
                             });
                         }
-                    </script>
+                     </script> -->
 
                     <!-- <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> -->
                     <script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>

@@ -6,8 +6,10 @@ const adminMiddleWare = require('../middleware/adminMiddleware')
 const couponController = require('../controllers/couponController');
 const productOfferController = require('../controllers/productOfferController')
 const salesReportController = require('../controllers/salesReportController')
+const chartController = require('../controllers/chartController')
+const bestSellingController = require('../controllers/bestSellingController')
 
-
+const deleteImgInEditProduct = require('../controllers/deleteImgInEditProduct')
 
 
 router.get('/home', adminController.adminHome)
@@ -55,8 +57,14 @@ router.get('/removeProductOffer',adminMiddleWare.adminSession,productOfferContro
 
 router.get('/salesReport',adminMiddleWare.adminSession,salesReportController.showSalesReport)
 
+router.get('/bringSalesData',adminMiddleWare.adminSession,chartController.getSalesChartData)
+router.get('/bringSalesDataMonthly',adminMiddleWare.adminSession,chartController.getSalesChartDataMonthly)
+router.get('/bringSalesDataYearly',adminMiddleWare.adminSession,chartController.getSalesChartDataYearly)
 
 
+///////////////////////////deleteImageInEdit Product routes
+
+router.get('/deleteImage',adminMiddleWare.adminSession,deleteImgInEditProduct.deleteImage)
 
 router.get('/logoutadmin', adminController.logoutadmin)
 

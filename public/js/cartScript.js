@@ -142,9 +142,11 @@ async function updatePriceInDataBase(price) {
 async function updateQuantityInDataBase(updatedQuantity, productid) {
     url = `http://localhost:3003/updateCartQuantity?quantity=${updatedQuantity}&productid=${productid}`
     const updateQty = await fetch(url)
-    console.log(updateQty);
+
     var data = await updateQty.json();
-    if (data.message == 'Out Of Stock') {
+
+
+    if (updatedQuantity == data.stockQuantity) {
 
         Toastify({
             text: "Only " + data.stockQuantity + " available in the stock",

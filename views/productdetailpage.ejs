@@ -117,7 +117,7 @@
                         
                             
                             <input id="hiddenId" type="hidden" value="<%= productdata._id %>" >
-                            <span><i class="fal fa-heart"></i></span>
+                           <a ><span><i class="fal fa-heart" onclick="wishlist('<%= productdata._id %>')"></i></span></a> 
                             <span><i class="fas fa-compress"></i></span>
                         </div>
                         <div class="viewcontent__footer border-top-0 border-bottom pb-30">
@@ -5345,6 +5345,8 @@
 
 
     <!-- JS here -->
+    
+    <script src="../public/js/wishlistScript.js"></script>
     <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
     <script src="/public/assets/js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="/public/assets/js/vendor/jquery-1.12.4.min.js"></script>

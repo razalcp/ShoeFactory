@@ -105,15 +105,17 @@
                                         
                                        <% product.imageurl.forEach(function(el){ %>
                                      <div>
-                                        <input id="imageField" type="file" name="images" multiple value="<%= product.imageurl %>">
+                                        <br>
                                         <img style="height: 76px;width: 80px;" src="/public/images/<%= el %>" alt="">
                                         <p><%=el %></p>
-                                        <a  class="btn btn-sm btn-danger rounded font-sm mt-15" onclick="">Delete</a>
-                                       
+                                        <a  class="btn btn-sm btn-danger rounded font-sm mt-15" onclick="deleteImg('<%=product._id%>','<%=el%>')">Delete</a>
+                                       <br>
                                      </div>
                                         
                                       <% }) %>
-                                     
+                                     <br>
+                                     <br>
+                                      <input id="imageField" type="file" name="images" multiple value="<%= product.imageurl %>">
 
 
 
@@ -145,6 +147,7 @@
             </div>
         </footer>
     </main>
+    <script src="/public/js/deleteImageScript.js"></script>
     <script src="/public/assetss/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/public/assetss/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/public/assetss/js/vendors/select2.min.js"></script>

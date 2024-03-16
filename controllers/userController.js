@@ -9,8 +9,8 @@ const Order = require('../models/orderModel')
 const razorPayHelper = require('../helpers/razarPayHelper')
 const Coupon = require('../models/couponModel')
 const orderIdHelper = require('../helpers/orderIdHelper')
-
-
+const jwt = require('jsonwebtoken')
+const JWT_SECRET = 'some super secret...'
 
 const loginload = function (req, res) {
   if (req.session.user) {
@@ -21,13 +21,101 @@ const loginload = function (req, res) {
 };
 
 
-const forgetPassword = async (req, res) => {
+const viewforgetPassword = async (req, res) => {
   try {
     res.render('userPages/forgotPassword')
   } catch (error) {
     console.log(error.message)
   }
 }
+
+const forgetPassword = async (req, res) => {
+  try {
+    const { email } = req.body
+    const user = await User.findOne({ email: email })
+
+
+    if (!user) {
+      res.render('userPages/forgotPassword', { errmessage: "User not registered" })
+      // res.send("User not registered")
+      return;
+    }
+    //USer Exists and create One time Link that is valid for 15 minutes
+
+    const secret = JWT_SECRET + user.password
+    const payload = {
+      email: user.email,
+      id: user._id
+    }
+    const token = jwt.sign(payload, secret, { expiresIn: '15m' })
+    const link = `http://localhost:3003/reset-password/${user._id}/${token}`
+    console.log(link);
+
+    mailer.sendMail(user.email, link);
+
+
+    // console.log(link);
+    res.render('userPages/forgotPassword', { message: "Password reset link send to mail" })
+    // res.send("Password reset link send")
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const viewResetPassword = async (req, res) => {
+  const { id, token } = req.params
+  const user = await User.findOne({ _id: id })
+
+
+  if (!user) {
+    res.send("Invalid User")
+    return;
+  }
+
+  const secret = JWT_SECRET + user.password;
+
+  try {
+    const payload = jwt.verify(token, secret)
+    res.render('userPages/reset-password', { email: user.email })
+  } catch (error) {
+    console.log(error.message);
+    res.send(error.message)
+  }
+
+}
+
+const resetPassword = async (req, res) => {
+  const { id, token } = req.params;
+  const { password, password2 } = req.body
+  const user = await User.findOne({ _id: id })
+
+
+  if (!user) {
+    res.send("Invalid User")
+    return;
+  }
+  const secret = JWT_SECRET + user.password;
+  try {
+    const payload = jwt.verify(token, secret)
+    if (password == password2) {
+      let saltrounds = 13;
+      const hashedpassword = await bcrypt.hash(password, saltrounds);
+      const update = await User.findOneAndUpdate({ _id: id }, { $set: { password: hashedpassword } })
+      if (update) {
+        res.render('login', { resetPasswordmessage: "Password Reset Successful.Try Log in now " })
+        // res.send("Password Reset Successful")
+      }
+    } else {
+      res.render('userPages/reset-password', { mismatch: "Password mismatch ! Type Again" })
+    }
+    // console.log(password);
+    // console.log(password2);
+  } catch (error) {
+    console.log(error.message);
+    res.send(error.message)
+  }
+}
+
 
 const loadregister = function (req, res) {
   if (req.session.user) {
@@ -75,6 +163,8 @@ const loguser = async (req, res) => {
 
           res.redirect("/userhome");
         }
+      } else {
+        res.render("login", { errmessage: "Login Failed !!!" });
       }
     } else {
       res.render("login", { errmessage: "Login Failed !!!" });
@@ -145,7 +235,7 @@ const submit = (req, res) => {
 
 const sendotp = async (req, res) => {
   try {
-    const { userid } = req.query; 
+    const { userid } = req.query;
     const udata = await User.findById({ _id: userid });
     if (udata) {
       const mail = udata.email;
@@ -229,6 +319,7 @@ const loadProductDetail = async (req, res) => {
 const addToCart = async (req, res) => {
   let { productId } = req.query;
   let { quantity } = req.query;
+
   let userid = req.session.user;
   let productData = await Product.findOne({ _id: productId })
   let currentStock = productData.stock;
@@ -333,8 +424,8 @@ const updateQuantity = async function (req, res) {
         );
 
         // const updateStock = await Product.findOneAndUpdate({ _id: productid }, { $inc: { stock: -quantity } })
-
-        res.status(200).json({ message: 'Quantity updated successfully' });
+        
+        res.status(200).json({ message: 'Quantity updated successfully',stockQuantity: currentStock });
       }
     } else {
 
@@ -375,20 +466,6 @@ const showUserProfile = async (req, res) => {
 }
 
 
-const updateStatus = async (req, res) => {
-
-  const { status, productId, orderId } = req.query
-
-  const upgrade = await Order.findOneAndUpdate({ _id: orderId, 'products._id': productId }, { $set: { 'products.$.status': status } })
-
-  if (upgrade) {
-    res.status(200).json({ message: 'STATUS Updated ' });
-  } else {
-
-    res.status(500).json({ message: 'Error placing order' });
-  }
-
-}
 
 const editUserProfile = async (req, res) => {
 
@@ -536,7 +613,7 @@ const orderPlacing = async function (req, res) {
     let { addressId } = req.query;
     let { modeOfPayment } = req.query;
     let { total } = req.query
-
+    // console.log(modeOfPayment);
 
     let number = total.substring(1);
     const addressData = await Address.findOne({ userId: req.session.user }, { _id: 0, userId: 1, address: { $elemMatch: { _id: addressId } } })
@@ -575,7 +652,7 @@ const orderPlacing = async function (req, res) {
         address: addressToAdd,
         products: productsToAdd,
         totalPrice: number,
-        paymentMethord: modeOfPayment
+        paymentMethord: modeOfPayment,
       };
       const result = await Order.create(orderData)
 
@@ -611,8 +688,9 @@ const orderPlacing = async function (req, res) {
           const userData = await User.findOneAndUpdate({ _id: req.session.user }, { $inc: { walletBalance: -price } });
           res.status(200).json({ message: 'Order placed successfully' });
         } else {
+
           razorPayHelper.generateRazorpay(orderId, price).then((response) => {
-         
+
             res.status(200).json({ success: response });
 
           }).catch(er => {
@@ -637,9 +715,10 @@ const verifyPayment = async (req, res) => {
   const { payment } = req.query
   const { order } = req.query
   //  console.log(JSON.parse(payment));
+
   let orderData = JSON.parse(order)
 
-
+  // console.log(orderData);
   razorPayHelper.verifyPayment(JSON.parse(payment)).then(async () => {
     let status = 'Payment Successful'
 
@@ -656,9 +735,9 @@ const verifyPayment = async (req, res) => {
   })
 }
 
-const viewBlog= async(req,res) => {
+const viewBlog = async (req, res) => {
   const userdata = await User.findOne({ _id: req.session.user });
-  res.render('userPages/blog-grid',{userdata})
+  res.render('userPages/blog-grid', { userdata })
 }
 
 
@@ -689,6 +768,7 @@ module.exports = {
   verifyotp,
   // loadhome,
   loginload,
+  viewforgetPassword,
   forgetPassword,
   loadProductDetail,
   logoutuser,
@@ -709,8 +789,9 @@ module.exports = {
   deleteUserAddress,
   deleteCartItem,
   orderPlacing,
-  updateStatus,
   verifyPayment,
   viewBlog,
+  viewResetPassword,
+  resetPassword
 
 };

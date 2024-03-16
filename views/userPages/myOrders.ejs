@@ -4,11 +4,52 @@
     <div class="contact__area">
         <div class="container">
             <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12">
-                <div class="contact__content text-center mb-140">
-                    <h2>Orders</h2>
+                <div class="col-xl-12 col-lg-12 col-md-12" style="margin-top: -94px; margin-bottom: 267px;">
+                    <div>
+                     
+                        <h2>Pending Orders</h2>
+                       
+                        <table >
+                             <th>Product</th>
+                             <th>Product detail</th>
+                                <th>Total Price</th>
+                                <th>Quantity</th>
+                                
+                                <th>Payment Status</th>
+                                
+                                <th>Action</th>
+
+                                <% if(orderData){%>
+                                    <% orderData.forEach(el => {%>
+                                     
+                                     <%el.products.forEach(ele =>{%>
+                                        <%if(el.paymentStatus=='Payment not received') {%>
+                                         <tr>
+                                             <td><img style="height:50px;width:38px" src="/public/images/<%=ele.product_id.imageurl[1]%>" alt=""> <%=ele.product_id.producttitle%> x <%=ele.qty%></td>
+                                             <td>
+                                              <a href="/orderDetail?orderId=<%=el._id%>" style="color:tomato;text-decoration: underline;">Details</a>   
+     
+                                             </td>
+                                             <td>&#x20B9; <%=el.totalPrice%></td>
+                                             <td><%=ele.qty%></td>
+                                             <%if(el.paymentStatus=='Payment not received') {%>
+                                                    <td><%=el.paymentStatus  %></td>
+                                            <% }%>
+                                                <td><button class="paynowButton" data-orderId="<%= el._id %>">Pay Now</button></td>
+                                                <% } %>
+
+                                             <% })%>
+                                    
+                                             <%})%>
+                                         <%} %>
+                                        
+                        </table>
+                 
+                    </div>
+                <!-- <div class="contact__content text-center mb-140">
+                    <h2>Pending Orders</h2>
                     <p>Gratitude unlocks the fullness of life. It turns what we have into enough, and more. It turns denial into acceptance, chaos to order, confusion to clarity. <br> It can turn a meal into a feast, a house into a home, a stranger into a friend. </p>
-                </div>
+                </div> -->
                 </div>
             </div>
         <div class="contact-wrapper">
@@ -20,22 +61,29 @@
                             <h2>Please contact us quickly if <br>you need help.</h2> -->
                         </div>
                         <div class="table-wrapper">
+                            <h2>Your Order Details</h2>
                             <table>
                                 <th>Product</th>
+                                <th>Product detail</th>
                                 <th>Total Price</th>
                                 <th>Quantity</th>
                                 
                                 <th>Status</th>
                                  <th>Order Date</th>
                                 <th>Action</th>
-                               
+                              
                             
                             
                             <% if(orderData){%>
                                <% orderData.forEach(el => {%>
+                                
                                 <%el.products.forEach(ele =>{%>
                                     <tr>
                                         <td><img style="height:50px;width:38px" src="/public/images/<%=ele.product_id.imageurl[1]%>" alt=""> <%=ele.product_id.producttitle%> x <%=ele.qty%></td>
+                                        <td>
+                                         <a href="/orderDetail?orderId=<%=el._id%>" style="color:tomato;text-decoration: underline;">Details</a>   
+
+                                        </td>
                                         <td>&#x20B9; <%=el.totalPrice%></td>
                                         <td><%=ele.qty%></td>
                                             
@@ -44,9 +92,13 @@
                                         <% if(ele.status==="Processing" ) { %>
                                             <td><span class="badge rounded-pill alert-warning getStatus">Processing</span></td>
         
-                                            <% } else if(ele.status==="Cancelled" ) {%>
-                                                <td><span class="badge rounded-pill alert-danger getStatus">Cancelled</span>
-                                                </td>
+                                            <% } else if(ele.status==="Cancel Requested" ) {%>
+                                                <td><span class="badge rounded-pill alert-danger getStatus">Cancel Requested</span>
+                                                </td> <% } else if(ele.status==="Cancel Accepted" ) {%>
+                                                    <td><span class="badge rounded-pill alert-success getStatus">Cancel Accepted</span>
+                                                    </td><% } else if(ele.status==="Cancel Declined" ) {%>
+                                                        <td><span class="badge rounded-pill alert-success getStatus">Cancel Declined</span>
+                                                        </td>
                                                 <% } else if(ele.status==="Delivered" ){ %>
                                                     <td><span
                                                             class="badge rounded-pill alert-success getStatus">Delivered</span>
@@ -78,19 +130,30 @@
 
                                                                         <%if(ele.status==="Delivered"){%>
                                                                             <td>
-                                                                                <select class="status p-2">
+
+                                                                                <select class="status p-2" data-orderid=<%=el.orderId%> data-productid=<%=ele.product_id._id%>>
         
                                                                                     <option value="">Change status</option>
                                                                                     <!-- <option value="Processing">Processing</option> -->
                                                                                     <option value="Return Requested">Return
                                                                                     </option>
-                                                                                    <option value="Cancelled">Cancel</option>
         
                                                                                 </select>
                                                                             </td>
                                                                             
-                                                                            <%}%>
-        
+                                                                            <%}else if(ele.status==="Processing"){%>
+                                                                                <td>
+                                                                                  
+
+                                                                                <select class="status p-2 " data-orderid=<%=el.orderId%> data-productid=<%=ele.product_id._id%>>
+                                                                                    <option value="">Change status</option>
+                                                                                    
+                                                                                    <option value="Cancel Requested">Cancel</option>
+                                                                                    
+                                                                                </select>
+                                                                            </td>
+                                                                         <%   }%>
+                                                                            
         
 
 
@@ -246,23 +309,43 @@
 
 
 		<!-- JS here -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+        <script src="/public/js/payAgainScript.js"></script>
         <script>
 
 const statusElements = document.getElementsByClassName('status');
 
-
 Array.from(statusElements).forEach(statusElement => {
 
-    statusElement.addEventListener('change', function(event) {
-     
+    statusElement.addEventListener('change', async function(event) {
+   const orderId = statusElement.dataset.orderid
+   const productId = statusElement.dataset.productid
+
+  
         const selectedOption = event.target.value;
         
        
         console.log('Selected option:', selectedOption);
+     console.log('orderID: ',orderId);
+     console.log('productID: ',productId);
+
+     let url = `http://localhost:3003/updateOrderStatus?status=${selectedOption}&productId=${productId}&orderId=${orderId}`
+
+const result = await fetch(url)
+console.log(result);
+if (result) {
+    window.location.reload()
+}
+var data = await result.json()
+
+console.log(data.message);
+
         
 
     });
 });
+
 
         </script>
         <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
