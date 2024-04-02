@@ -47,6 +47,16 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true,
         default: 0
+    },
+    brandDiscountPrice:{
+        type:Number,
+        required:true,
+        default:0
+    },
+    offerBrand:{
+        type:Number,
+        required:true,
+        default:0
     }
 
 

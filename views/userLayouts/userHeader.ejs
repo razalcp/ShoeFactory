@@ -14,9 +14,20 @@
     <!-- <link rel="manifest" href="site.html"> -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+        crossorigin="anonymous"></script>
     <!-- Place favicon.ico in the root directory -->
 
     <!-- CSS here -->
+    <link rel="stylesheet" href="/public/css/ordersuccess.css">
+    <link rel="stylesheet" href="/public/css/orderFailure.css">
+
     <style>
         .paynowButton {
             background-color: #4CAF50;
@@ -213,8 +224,14 @@
                                 <li><a href="/wallet">Wallet</a></li>
 
                                 <li><a href="/cart">Cart</a></li>
-
-                                <li><a href="/checkout">Checkout</a></li>
+                                <% if(locals.totalQuantity) { %>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="margin-left: -200px; margin-top: 8px;">
+                                   <%=totalQuantity %>
+                                    <span class="visually-hidden">unread messages</span>
+                                  </span>
+                              <%  } %>
+                                
+                                <li><a href="/wishlist">Wishlist</a></li>
                                 <% if(locals.userdata) { %>
                                     <li><a href="/logout">Logout</a></li>
                                     <% }else { %>
@@ -358,16 +375,16 @@
                         </div>
 
                     </div>
-                    <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4">
+                    <!-- <div class="col-xl-2 col-lg-2 col-md-4 col-sm-4"> -->
 
-                        <div class="gota_cart gotat_cart_1 text-end">
-                            <a href="/wishList"><span><i class="fal fa-heart"></i></span></a>
-                            <a href="javascript:void(0)"><i class="fal fa-shopping-cart"></i>My Bag<span
-                                    class="counter"> (2)</span></a>
-                        </div>
-                    </div>
+                    <!-- <div class="gota_cart gotat_cart_1 text-end">
+                            <a href="/wishList"><span><i class="fal fa-heart"></i></span></a> -->
+                    <!-- <a href="javascript:void(0)"><i class="fal fa-shopping-cart"></i>My Bag<span
+                                    class="counter"> (2)</span></a> -->
+                    <!-- </div> -->
                 </div>
             </div>
+        </div>
         </div>
     </header>
     <!-- header area end -->
@@ -497,14 +514,14 @@
 
             </div>
 
-            <div class="cart-bottom">
-                <div class="cart-bottom__text">
-                    <!-- <span>Subtotal:</span>
+            <!-- <div class="cart-bottom">
+                <div class="cart-bottom__text"> -->
+            <!-- <span>Subtotal:</span>
                     <span class="end">$121.00</span> -->
-                    <a href="/cart">view cart</a>
+            <!-- <a href="/cart">view cart</a>
                     <a href="/checkout">checkout</a>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     </div>

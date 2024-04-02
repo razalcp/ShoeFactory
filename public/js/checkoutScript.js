@@ -59,20 +59,41 @@ console.log(data.success);
         razorPayPayment(data.success)
     }else if (data.message) {
         Swal.fire({
-            title: "Order Placed Successfully",
-            text: "You can Place another order!",
+            title: "Do You want to debit Money From Wallet",
+            text: "Money will be debited from Wallet balance!",
             icon: "success",
-            showCancelButton: false,
+            showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "OK"
-        })
+        }).then(async (result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Ordering Successful!",
+                        text: "The money has been debited from Wallet.",
+                        icon: "success"
+                    }).then(()=>{
+                        window.location.href="http://localhost:3003/showOrderSuccessPage"
+                    })
+
+                }else{
+                    window.location.href="http://localhost:3003/showOrderFaliurePage"
+                }
+        });
     } else {
         Swal.fire({
             title: "Ordering cancelled!",
-            text: "The product ordering has been cancelled.",
-            icon: "success"
-        });
+            text: "The product ordering has been cancelled due to no wallet balance.",
+            icon: "warning",
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ok"
+        }).then(()=>{
+            window.location.href="http://localhost:3003/showOrderFaliurePage"
+        })
+
+           
+        
     }
 
 }
@@ -106,6 +127,26 @@ function razorPayPayment(order) {
     var rzp1 = new Razorpay(options);
     rzp1.open();
 
+    rzp1.on('payment.failed',function (response){
+        Swal.fire({
+            title: "PAYMENT FAILED!",
+            text: "Try paying again!",
+            icon: "Danger",
+            imageUrl:"/public/assetss/imgs/failed/failed.png",
+            imageWidth: 200,
+            imageHeight:200,
+            showCancelButton: false,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "OK"
+        }).then(async (result) => {
+                if (result.isConfirmed) {
+                   
+                    window.location.href="http://localhost:3003/showOrderFaliurePage"
+                }
+            });
+        
+    })
 }
 
 async function verifyPayment(payment, order) {
@@ -126,7 +167,12 @@ async function verifyPayment(payment, order) {
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "OK"
-            })
+            }).then(async (result) => {
+                    if (result.isConfirmed) {
+                       
+                        window.location.href="http://localhost:3003/showOrderSuccessPage"
+                    }
+                });
         } else {
             Swal.fire({
                 title: "Ordering cancelled!",

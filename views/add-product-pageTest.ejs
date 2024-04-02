@@ -1,0 +1,388 @@
+<%- include("adminLayouts/header.ejs")%>
+
+    <main class="main-wrap">
+
+        <form id='regform' method="post" action="/admin/home/addproduct" enctype="multipart/form-data">
+            <section class="content-main">
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="content-header">
+                            <h2 class="content-title">Add New Product</h2>
+                            <div>
+                                <button type="submit" id="addproduct" class="btn btn-md rounded font-sm hover-up">Add
+                                    Product</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h6>1. General info</h6>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="mb-4">
+
+                                            <label class="form-label">Product title</label>
+                                            <input id="productTitle" name="producttitle" type="text"
+                                                placeholder="Type here" class="form-control">
+                                            <p>
+                                            <div id="error1" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">Description</label>
+                                            <textarea id="descriptionBox" name="description" placeholder="Type here"
+                                                class="form-control" rows="4"></textarea>
+                                            <p>
+                                            <div id="error2" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+
+                                        </div>
+                                        <div class="mb-4">
+
+
+
+                                            <label class="form-label">Brand name</label>
+
+                                            <select id="dropdown" class="form-select" name="brandname">
+                                                <option value="">Select a Brand</option>
+                                                <% brand.forEach(function(brand) { %>
+                                                    <option value="<%=brand._id %>">
+                                                        <%=brand.brandName %>
+                                                    </option>
+
+                                                    <% }); %>
+
+                                            </select>
+                                            <p>
+                                            <div id="error3" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+
+                                        </div>
+
+                                    </div> <!-- col.// -->
+                                </div> <!-- row.// -->
+                                <hr class="mb-4 mt-0">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h6>2. Pricing</h6>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="mb-4">
+                                            <label class="form-label">Cost in Rupees</label>
+                                            <input id="cost" name="price" type="number" placeholder="₹ 00.0"
+                                                class="form-control">
+                                            <p>
+                                            <div id="error4" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+
+                                        </div>
+                                    </div> <!-- col.// -->
+                                </div> <!-- row.// -->
+                                <hr class="mb-4 mt-0">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h6>3. Quantity</h6>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="mb-4">
+                                            <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                                <input id="shoeCategory" name="stock" class="form-control" type="text">
+                                                <!-- <span class="form-check-label"> Shoes </span> -->
+
+                                                <!-- <label class="mb-2 form-check form-check-inline" style="width: 45%;">
+                                            <input class="form-check-input" name="category" type="radio">
+                                            <span class="form-check-label"> Others </span> -->
+                                            </label>
+
+                                        </div>
+                                        <p>
+                                        <div id="error5" style="display: none;" class="alert alert-danger err"></div>
+                                        </p>
+
+                                    </div> <!-- col.// -->
+                                </div> <!-- row.// -->
+                                <hr class="mb-4 mt-0">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h6>4. Media</h6>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="mb-4">
+                                            
+                                            <label class="form-label">Images</label>
+                                            <!-- <input id="imageField" name="image" class="form-control" type="file" placeholder="choose an image to upload"> -->
+                                            <input id="images" type="file" name="images" multiple>
+                                            <p>
+                                            <div id="error6" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+                                            <div id="previewContainer"></div>
+
+
+                                        </div>
+                                    </div> <!-- col.// -->
+                                </div> <!-- .row end// -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </section> <!-- content-main end// -->
+        </form>
+
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="/public/assetss/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/public/assetss/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/public/assetss/js/vendors/select2.min.js"></script>
+    <script src="/public/assetss/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/public/assetss/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/public/assetss/js/main.js" type="text/javascript"></script>
+
+
+
+
+    <script>
+        const productTitle = document.getElementById('productTitle')
+        const regform = document.getElementById('regform')
+        const error1 = document.getElementById('error1')
+        const descriptionDetail = document.getElementById('descriptionBox')
+        const error2 = document.getElementById('error2')
+        const brandDetail = document.getElementById('dropdown')
+        const error3 = document.getElementById('error3')
+        const price = document.getElementById('cost')
+        const error4 = document.getElementById('error4')
+        const category = document.getElementById('shoeCategory')
+        const error5 = document.getElementById('error5')
+        const imageField = document.getElementById('imageField')
+        const error6 = document.getElementById('error6')
+
+
+        function validateProductDetails() {
+            const val = productTitle.value
+            var lettersRegex = /^[a-zA-Z0-9\s]+$/;
+
+            if (val.trim() === "" || !lettersRegex.test(val)) {
+                error1.style.display = "block"
+                error1.innerHTML = "Please Enter a valid Name."
+            }
+            else {
+                error1.innerHTML = ""
+                error1.style.display = "none"
+
+            }
+        }
+
+        function validateDescription() {
+            const val2 = descriptionDetail.value
+            // var letters= /^(?:\b[\w.,]+\b\s*){1,100}$/
+
+
+            if (val2.trim() === '') {
+                error2.style.display = "block"
+                error2.innerHTML = "Please Enter a valid Description"
+            }
+            else {
+                error2.innerHTML = ""
+                error2.style.display = "none"
+
+            }
+        }
+
+        function brandSelect() {
+            const val3 = brandDetail.value;
+            if (val3.trim() === '') {
+                error3.style.display = "block"
+                error3.innerHTML = "Select a Brand"
+            }
+            else {
+                error3.innerHTML = ""
+                error3.style.display = "none"
+            }
+        }
+        function validatePrice() {
+            const val4 = price.value;
+            const numberRegx = /^\d+(\.\d{1,2})?$/;
+            if (val4.trim() === "" || !numberRegx.test(val4)) {
+                error4.style.display = "block"
+                error4.innerHTML = "Please Enter a valid Price"
+            }
+            else {
+                error4.innerHTML = ""
+                error4.style.display = "none"
+
+            }
+        }
+
+        function validateCategory() {
+            //This is quantity validation function but is named as validateCategory()
+            const val5 = category.value
+            var lettersRegex = /^[a-zA-Z0-9\s]+$/;
+
+            if (val5.trim() === "" || !lettersRegex.test(val5)) {
+                error5.style.display = "block"
+                error5.innerHTML = "Please Enter a valid Quantity"
+            }
+            else {
+                error5.innerHTML = ""
+                error5.style.display = "none"
+
+            }
+        }
+
+        function validateImage() {
+            const val6 = imageField.value;
+            var imageRegex = /\.(jpg|jpeg|png|gif)$/i;
+
+            if (val6.trim === "" || !imageRegex.test(val6)) {
+                error6.style.display = "block"
+                error6.innerHTML = "only .jpg ,.jpeg, .png ,.gif accepted"
+            }
+            else {
+                error6.style.display = "none"
+                error6.innerHTML = ""
+            }
+        }
+
+        productTitle.addEventListener('blur', validateProductDetails)
+        descriptionDetail.addEventListener('blur', validateDescription)
+        brandDetail.addEventListener('blur', brandSelect)
+        price.addEventListener('blur', validatePrice)
+        category.addEventListener('blur', validateCategory)
+        imageField.addEventListener("change", validateImage)
+
+        regform.addEventListener('submit', function (e) {
+            validateProductDetails();
+            validateDescription();
+            brandSelect();
+            validatePrice();
+            validateCategory();
+            validateImage();
+
+            if (error1.innerHTML || error2.innerHTML || error3.innerHTML || error4.innerHTML || error5.innerHTML || error6.innerHTML) {
+                e.preventDefault()
+                console.log("prevent")
+            }
+            else {
+                console.log("prevent")
+            }
+        })
+    </script>
+
+    <!-- <script>
+        document.getElementById('imageField').addEventListener('change', handleFileSelect);
+
+        function handleFileSelect(event) {
+            var previewContainer = document.getElementById('preview-container');
+            previewContainer.innerHTML = ''; // Clear previous previews
+
+            var files = event.target.files;
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+
+                if (!file.type.startsWith('image/')) {
+                    continue; // Skip non-image files
+                }
+
+                var reader = new FileReader();
+
+                reader.onload = (function (currentFile) {
+                    return function (e) {
+                        var previewImage = document.createElement('img');
+                        previewImage.className = 'preview-image';
+                        previewImage.src = e.target.result;
+                        previewImage.title = currentFile.name;
+
+                        previewContainer.appendChild(previewImage);
+                    };
+                })(file);
+
+                reader.readAsDataURL(file);
+            }
+        }
+    </script> -->
+
+ 
+<script>
+    const selectedFiles = [];
+  
+    document.getElementById('images').addEventListener('change', function(event) {
+      const previewContainer = document.getElementById('previewContainer');
+      previewContainer.innerHTML = ''; // Clear existing previews
+      selectedFiles.length = 0; // Clear selected files array
+  
+      const files = event.target.files;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        selectedFiles.push(file); // Add file to selected files array
+  
+        const reader = new FileReader();
+  
+        reader.onload = function(e) {
+          const preview = document.createElement('div');
+          preview.className = 'preview';
+  
+          const image = document.createElement('img');
+          image.src = e.target.result;
+          preview.appendChild(image);
+  
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'remove-btn';
+          removeBtn.innerHTML = '&times;';
+          removeBtn.addEventListener('click', function() {
+            preview.remove(); // Remove preview
+            const index = selectedFiles.indexOf(file);
+            if (index !== -1) {
+              selectedFiles.splice(index, 1); // Remove file from selected files array
+            }
+            updateInputValue(); // Update file input value
+          });
+          preview.appendChild(removeBtn);
+  
+          previewContainer.appendChild(preview);
+        };
+  
+        reader.readAsDataURL(file);
+      }
+      updateInputValue(); // Update file input value
+    });
+  
+    function updateInputValue() {
+      const input = document.getElementById('images');
+      if (selectedFiles.length === 0) {
+        input.value = null; // Reset input value if no files selected
+      }
+    }
+  </script>
+    </body>
+
+
+    <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
+
+    </html>

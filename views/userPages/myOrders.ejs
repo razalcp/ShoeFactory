@@ -16,11 +16,11 @@
                                 <th>Quantity</th>
                                 
                                 <th>Payment Status</th>
-                                
+                                <th>Date</th>
                                 <th>Action</th>
 
-                                <% if(orderData){%>
-                                    <% orderData.forEach(el => {%>
+                                <% if(pendingData){%>
+                                    <% pendingData.forEach(el => {%>
                                      
                                      <%el.products.forEach(ele =>{%>
                                         <%if(el.paymentStatus=='Payment not received') {%>
@@ -35,7 +35,8 @@
                                              <%if(el.paymentStatus=='Payment not received') {%>
                                                     <td><%=el.paymentStatus  %></td>
                                             <% }%>
-                                                <td><button class="paynowButton" data-orderId="<%= el._id %>">Pay Now</button></td>
+                                            <td><%=el.createdAt.toISOString().split('T')[0]%></td>
+                                                <td><button class="paynowButton btn btn-warning" data-orderId="<%= el._id %>">Pay Now</button></td>
                                                 <% } %>
 
                                              <% })%>
@@ -130,15 +131,8 @@
 
                                                                         <%if(ele.status==="Delivered"){%>
                                                                             <td>
-
-                                                                                <select class="status p-2" data-orderid=<%=el.orderId%> data-productid=<%=ele.product_id._id%>>
-        
-                                                                                    <option value="">Change status</option>
-                                                                                    <!-- <option value="Processing">Processing</option> -->
-                                                                                    <option value="Return Requested">Return
-                                                                                    </option>
-        
-                                                                                </select>
+<!--  -->
+                                                                                <button class="status p-2 btn btn-info" data-orderid=<%=el.orderId%> data-productid=<%=ele.product_id._id%> value="Return Requested">Return</button>
                                                                             </td>
                                                                             
                                                                             <%}else if(ele.status==="Processing"){%>
@@ -309,6 +303,7 @@
 
 
 		<!-- JS here -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
         <script src="/public/js/payAgainScript.js"></script>
@@ -318,7 +313,7 @@ const statusElements = document.getElementsByClassName('status');
 
 Array.from(statusElements).forEach(statusElement => {
 
-    statusElement.addEventListener('change', async function(event) {
+    statusElement.addEventListener('click', async function(event) {
    const orderId = statusElement.dataset.orderid
    const productId = statusElement.dataset.productid
 
@@ -327,19 +322,19 @@ Array.from(statusElements).forEach(statusElement => {
         
        
         console.log('Selected option:', selectedOption);
-     console.log('orderID: ',orderId);
-     console.log('productID: ',productId);
+    //  console.log('orderID: ',orderId);
+    //  console.log('productID: ',productId);
 
      let url = `http://localhost:3003/updateOrderStatus?status=${selectedOption}&productId=${productId}&orderId=${orderId}`
 
 const result = await fetch(url)
-console.log(result);
+// console.log(result);
 if (result) {
     window.location.reload()
 }
 var data = await result.json()
 
-console.log(data.message);
+// console.log(data.message);
 
         
 

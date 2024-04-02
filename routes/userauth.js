@@ -10,6 +10,7 @@ const wishListController = require('../controllers/wishListController')
 const orderDetailController = require('../controllers/orderDetailController')
 
 const invoiceController = require('../controllers/invoiceController')
+const orderSuccessController = require('../controllers/orderSuccessController')
 
 
 router.get('/', userController.loaduserHome)
@@ -103,6 +104,8 @@ router.get('/deleteWishListItem',middle.userToLogin,wishListController.deleteWis
 
 
 
+router.get('/showOrderSuccessPage',middle.userToLogin,orderSuccessController.showPage)
+router.get('/showOrderFaliurePage',middle.userToLogin,orderSuccessController.showFailurePage)
 
 
 

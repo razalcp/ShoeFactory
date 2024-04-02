@@ -8,7 +8,7 @@ const productOfferController = require('../controllers/productOfferController')
 const salesReportController = require('../controllers/salesReportController')
 const chartController = require('../controllers/chartController')
 const bestSellingController = require('../controllers/bestSellingController')
-
+const brandOfferController=require("../controllers/brandOfferController")
 const deleteImgInEditProduct = require('../controllers/deleteImgInEditProduct')
 
 
@@ -65,6 +65,12 @@ router.get('/bringSalesDataYearly',adminMiddleWare.adminSession,chartController.
 ///////////////////////////deleteImageInEdit Product routes
 
 router.get('/deleteImage',adminMiddleWare.adminSession,deleteImgInEditProduct.deleteImage)
+
+// ////////////////////////////brandOffer ///////////////////////
+
+router.get('/updateBrandOffer',adminMiddleWare.adminSession,brandOfferController.updateOffer)
+router.get('/removeBrandOffer',adminMiddleWare.adminSession,brandOfferController.removeOffer)
+
 
 router.get('/logoutadmin', adminController.logoutadmin)
 

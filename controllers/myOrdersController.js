@@ -1,14 +1,42 @@
-const User = require('../models/userModel')
-const Order = require('../models/orderModel')
-const razorPayHelper = require('../helpers/razarPayHelper')
+const User = require('../models/userModel');
+const Order = require('../models/orderModel');
+const Cart = require('../models/cart');
+const razorPayHelper = require('../helpers/razarPayHelper');
 
 
 
 const viewMyOrder = async (req, res) => {
   const userdata = await User.findOne({ _id: req.session.user });
-  const orderData = await Order.find({ userId: req.session.user }).populate('products.product_id').populate('address')
-  // console.log(orderData);
-  res.render('userPages/myOrders', { userdata, orderData })
+  // const orderData = await Order.find({ userId: req.session.user }).populate('products.product_id').populate('address').sort({ "createdAt": -1 });
+
+  const orderData = await Order.find({ 
+    userId: req.session.user,
+    paymentStatus: "Payment Successful"
+})
+.populate('products.product_id')
+.populate('address')
+.sort({ "createdAt": -1 });
+console.log(orderData);
+  let cartData = await Cart.findOne({ userId: req.session.user }).populate('products.productId')
+  let cartQuantity = 0;
+  console.log(cartData);
+
+  const pendingData = await Order.find({ 
+    userId: req.session.user,
+    paymentStatus: "Payment not received"
+})
+.populate('products.product_id')
+.populate('address')
+.sort({ "createdAt": -1 });
+
+  if(cartData){
+    cartData.products.forEach(product => {
+      // Add the quantity of each product to the totalQuantity
+      cartQuantity += product.quantity;
+    });
+  }
+  
+  res.render('userPages/myOrders', { userdata, orderData ,totalQuantity:cartQuantity?cartQuantity:0 ,pendingData})
 }
 
 const updateStatu = async (req, res) => {

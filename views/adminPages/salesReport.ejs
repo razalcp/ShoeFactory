@@ -1,9 +1,9 @@
-<%- include('../adminLayouts/header.ejs')  %>
+<%- include('../adminLayouts/header.ejs') %>
 
 
 
     <main class="main-wrap">
-     
+
         <section class="content-main">
             <div class="content-header">
                 <h2 class="content-title">Sales Report</h2>
@@ -11,29 +11,30 @@
                     <!-- Input field for selecting start date -->
                     <label for="startDate">Start Date:</label>
                     <input type="date" id="startDate">
-                  
+
                     <!-- Input field for selecting end date -->
                     <label for="endDate">End Date:</label>
                     <input type="date" id="endDate">
-                    
+
                     <button type="button" onclick="filterOrders()">Filter</button>
-                  </form>
+                </form>
                 <div id="buttonContainer">
-                    
+
                     <button id="downloadBtn" onclick="downloadPdf()">Download PDF</button>
                     <button id="downloadBtnforXl">Download Excel</button>
                 </div>
 
             </div>
-            <div class="card mb-4">
-                
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="myTable">
-                            <thead>
-                                <tr>
-                                   
-                                    
+            <div id="myTable">
+
+
+                <div class="card mb-4">
+
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
                                         <th>Order Id</th>
                                         <th>User Name</th>
                                         <th>Item Name and Quantity</th>
@@ -41,49 +42,62 @@
                                         <th>Payment Mode</th>
                                         <th>Status</th>
                                         <th class="text-end"> Date </th>
-                                
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <%if(orderData){ %>
-                                   <% orderData.forEach(ele =>{ %>
-                                    <tr>
 
-                                      
-                                        <td><%=ele.orderId%></td>
-                                        <td><%=ele.userId.name%></td>
-                                        <td> <%ele.products.forEach(el=>{%>
-                                        <%=el.product_id.producttitle%> x <%=el.qty%> <br>
-                                    <% })%></td>
-                                    <td><%=ele.totalPrice%></td>
-                                       <td>&#128179;   <%=ele.paymentMethord%></td> 
-                                       <% ele.products.forEach(elem=>{%>
-                                        <td><%=elem.status%></td>
-                                    <%   }) %>
-                                       
-                                       <td class="text-end"><%=ele.createdAt.toISOString().split('T')[0]%></td>       
-                              
-                                <!-- <td class="text-end">
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%if(orderData){ %>
+                                        <% orderData.forEach(ele=>{ %>
+                                            <tr>
+
+
+                                                <td>
+                                                    <%=ele.orderId%>
+                                                </td>
+                                                <td>
+                                                    <%=ele.userId.name%>
+                                                </td>
+                                                <td>
+                                                    <%ele.products.forEach(el=>{%>
+                                                        <%=el.product_id.producttitle%> x <%=el.qty%> <br>
+                                                                <% })%>
+                                                </td>
+                                                <td>
+                                                    <%=ele.totalPrice%>
+                                                </td>
+                                                <td>&#128179; <%=ele.paymentMethord%>
+                                                </td>
+                                                <% ele.products.forEach(elem=>{%>
+                                                    <td>
+                                                        <%=elem.status%>
+                                                    </td>
+                                                    <% }) %>
+
+                                                        <td class="text-end">
+                                                            <%=ele.createdAt.toISOString().split('T')[0]%>
+                                                        </td>
+
+                                                        <!-- <td class="text-end">
                                     <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15">Block</a>
                                 </td> -->
-                                
-                              
-                            
-                      
-                                    </tr>
-                                   <% })%>
-                              <%  }%>
-                        
 
 
-                            </tbody>
 
-                        </table> <!-- table-responsive.// -->
-                    </div>
-                </div> <!-- card-body end// -->
-            </div> <!-- card end// -->
-            <!-- <div class="pagination-area mt-15 mb-50">
+
+                                            </tr>
+                                            <% })%>
+                                                <% }%>
+
+
+
+                                </tbody>
+
+                            </table> <!-- table-responsive.// -->
+                        </div>
+                    </div> <!-- card-body end// -->
+                </div> <!-- card end// -->
+                <!-- <div class="pagination-area mt-15 mb-50">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-start">
                         <li class="page-item active"><a class="page-link" href="#">01</a></li>
@@ -95,29 +109,34 @@
                     </ul>
                 </nav>
             </div> -->
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                  <h5 class="card-title">Sales Overview</h5>
-                  <h6 class="card-subtitle mb-2 text-muted">Counts of the required</h6>
-                  <% if(locals.totalDeliveredQty) {%>
-                    <p class="card-text">Total count of Products Sold = <%= totalDeliveredQty %></p>
-                 <% } %>
-                 <% if(locals.totalCount) {%>
-                    <p class="card-text">Total count of Sales Happened= <%= totalCount %></p>
-                 <% } %>
-                  <!-- <a href="#" class="card-link">Card link</a> -->
-                  <!-- <a href="#" class="card-link">Another link</a> -->
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Sales Overview</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Counts of the required</h6>
+                        <% if(locals.totalDeliveredQty) {%>
+                            <p class="card-text">Total count of Products Sold = <%= totalDeliveredQty %>
+                            </p>
+                            <% } %>
+                                <% if(locals.totalCount) {%>
+                                    <p class="card-text">Total count of Sales Happened= <%= totalCount %>
+                                    </p>
+                                    <% } %>
+                                        <!-- <a href="#" class="card-link">Card link</a> -->
+                                        <!-- <a href="#" class="card-link">Another link</a> -->
+                    </div>
                 </div>
-              </div>
+            </div>
+            </div>
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
-                    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-                   
+                    <script data-cfasync="false"
+                        src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+
                 </div>
                 <div class="col-sm-6">
-                    
+
                 </div>
             </div>
         </footer>
@@ -127,27 +146,29 @@
             const element = document.getElementById('myTable')
             console.log(element);
             html2pdf().from(element).save();
-            
+
         }
     </script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-   
-      
-      </body>
-      </html>
 
-      <script>
+
+    </body>
+
+    </html>
+
+    <script>
         function filterOrders() {
-            console.log("hi");
+
             const startDate = document.getElementById("startDate").value;
             const endDate = document.getElementById("endDate").value;
-            
+
             // Convert selected dates to Date objects
             const start = new Date(startDate);
             const end = new Date(endDate);
-    
+
             // Filter table rows based on the date range
             const rows = document.querySelectorAll("#myTable tbody tr");
             rows.forEach(row => {
@@ -167,30 +188,30 @@
             const element = document.getElementById('myTable')
             console.log(element);
             html2pdf().from(element).save();
-            
+
         }
     </script>
-    
+
     <script>
 
-        document.getElementById('downloadBtnforXl').addEventListener('click', function() {
-          var table = document.getElementById('myTable');
-          var wb = XLSX.utils.table_to_book(table);
-          var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
-      
-          function s2ab(s) {
-            var buf = new ArrayBuffer(s.length);
-            var view = new Uint8Array(buf);
-            for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
-            return buf;
-          }
-      
-          var blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
-          saveAs(blob, 'table.xlsx');
+        document.getElementById('downloadBtnforXl').addEventListener('click', function () {
+            var table = document.getElementById('myTable');
+            var wb = XLSX.utils.table_to_book(table);
+            var wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+            function s2ab(s) {
+                var buf = new ArrayBuffer(s.length);
+                var view = new Uint8Array(buf);
+                for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+                return buf;
+            }
+
+            var blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+            saveAs(blob, 'table.xlsx');
         });
 
-      </script>
-      
+    </script>
+
 
     <script src="/public/assetss/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/public/assetss/js/vendors/bootstrap.bundle.min.js"></script>
@@ -201,9 +222,10 @@
     <script src="/public/assetss/js/main.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 
- 
-</body>
+
+    </body>
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-sellers-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:23 GMT -->
-</html>
+    <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-sellers-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:23 GMT -->
+
+    </html>

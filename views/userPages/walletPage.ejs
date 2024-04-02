@@ -36,33 +36,69 @@
                         </div>
                     </div>
                 </div> -->
-              
-                    <div class="col-xl-3 col-lg-3 col-md-4 ">
-                        <div class="m_single_service pt-80">
-                            <div class="m_single_service__thumb">
-                                <img src="assets/img/service/SERVICES_2-1.png" alt="">
-                            </div>
-                            <div class="m_single_service__content">
-                                <h5>Wallet Balance</h5>
-                                <%if(userdata){%>
 
-                                    <p style="font-size: xx-large;" name="balance"><span>₹</span>
-                                        <%= userdata.walletBalance%>
-                                    </p>
+                <div class="col-xl-3 col-lg-3 col-md-4 ">
+                    <div class="m_single_service pt-80">
+                        <div class="m_single_service__thumb">
+                            <img src="assets/img/service/SERVICES_2-1.png" alt="">
+                        </div>
+                        <div class="m_single_service__content">
+                            <h5>Wallet Balance</h5>
+                            <%if(userdata){%>
+
+                                <p style="font-size: xx-large;" name="balance"><span>₹</span>
+                                    <%= userdata.walletBalance%>
+                                </p>
 
 
-                                    <%}%>
-                                        <br>
-                                        <input type="number" id="amount" required>
-                                        <button style="margin-left:8px;" type="submit" onclick="addMoneyConfirm()"
-                                            class="btn btn-success">Add
-                                            Money</button>
-               
+                                <%}%>
+                                    <br>
+                                    <input type="number" id="amount" required>
+                                    <button style="margin-left:8px;" type="submit" onclick="addMoneyConfirm()"
+                                        class="btn btn-success">Add
+                                        Money</button>
 
-            </div>
-        </div>
-    </div>
-    <!-- <div class="col-xl-3 col-lg-3 col-md-4">
+
+                        </div>
+                    </div>
+                </div>
+             
+                <div class="col-xl-8 col-lg-8 col-md-8">
+                    <div class="m_single_service pt-80">
+                        <div class="m_single_service__content">
+                            <h5>Your Transactions</h5>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th style="color: white;">Sl no</th>
+                                        <th style="color: white;">Date</th>
+                                        <th style="color: white;">Amount</th>
+                                        <th style="color: white;">Transaction Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Populate this section with your transaction data dynamically -->
+                                    <!-- Example: -->
+                                    <% if(locals.userdata){%>
+                                       <% locals.userdata.walletTranscation.forEach((el,i)=>{ %>
+                                        <tr >
+                                            <td class="text-center" style="color: white;"><%= i+1 %></td>
+                                            <td class="text-center" style="color: white;"><%=el.date.toISOString().split('T')[0] %></td>
+                                            <td class="text-center" style="color: white;"><%= el.amount %></td>
+                                            <td class="text-center" style="color: white;"><%= el.type %></td>
+                                        </tr>
+                                       <% }) %>
+                                    <%} %>
+                                    
+                               
+                                    <!-- Add more rows as needed -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- <div class="col-xl-3 col-lg-3 col-md-4">
                     <div class="m_single_service pt-80">
                         <div class="m_single_service__thumb">
                             <img src="assets/img/service/SERVICES_3-1.png" alt="">
@@ -73,8 +109,8 @@
                         </div>
                     </div>
                 </div> -->
-    </div>
-    </div>
+            </div>
+        </div>
     </div>
     <!-- service area end  -->
 
@@ -278,7 +314,7 @@
 
     <!-- JS here -->
     <script src="/public/js/addMoney.js"></script>
-    
+
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>

@@ -43,12 +43,17 @@ async function couponLogic(couponId) {
     const result = await fetch(url)
     var data = await result.json();
     let couponAppliedPrice = data.number;
+   let discountPrice =data.discountAmount
+   let percentage = data.discountPercentage;
     let rupeeSymbol = "₹"; 
     let priceWithRupeeSymbol = rupeeSymbol + couponAppliedPrice;
-    
+    let discountWithRupeeSymbol = rupeeSymbol+discountPrice;
 
   if(data.number){
-    document.getElementById("subTotal").innerHTML = priceWithRupeeSymbol 
+    document.getElementById("subTotal").innerHTML = priceWithRupeeSymbol ;
+    document.getElementById("disco").innerHTML = discountWithRupeeSymbol  ;
+    document.getElementById("discountMessage").innerHTML = percentage+"% discount applied" ;
+
     // window.location.reload();
   }else{
     alert(data.message)

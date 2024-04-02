@@ -12,11 +12,12 @@ for (var i = 0; i < buttons.length; i++) {
        const result= await fetch(url)
        var data = await result.json()
    
-console.log(data.success);
+
     if (data.success) {
-        
+        console.log(data.success);
         razorPayPayment(data.success)
     }else if (data.message) {
+        console.log(data.message);
         Swal.fire({
             title: "Order Placed Successfully",
             text: "You can Place another order!",
@@ -25,7 +26,12 @@ console.log(data.success);
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "OK"
-        })
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                
+                window.location.href="http://localhost:3003/showOrderSuccessPage"
+            }
+        });
     } else {
         Swal.fire({
             title: "Ordering cancelled!",
@@ -68,7 +74,25 @@ function razorPayPayment(order) {
     };
     var rzp1 = new Razorpay(options);
     rzp1.open();
-
+    rzp1.on('payment.failed',function (response){
+        Swal.fire({
+            title: "PAYMENT FAILED!",
+            text: "Try paying again!",
+            icon: "Danger",
+            imageUrl:"/public/assetss/imgs/failed/failed.png",
+            imageWidth: 200,
+            imageHeight:200,
+            showCancelButton: false,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "OK"
+        }).then(async (result) => {
+                if (result.isConfirmed) {
+                   
+                    window.location.href="http://localhost:3003/showOrderFaliurePage"
+                }
+            });
+        })
 }
 
 
@@ -90,7 +114,12 @@ async function verifyPayment(payment, order) {
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "OK"
-            })
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    
+                    window.location.href="http://localhost:3003/showOrderSuccessPage"
+                }
+            });
         } else {
             Swal.fire({
                 title: "Ordering cancelled!",

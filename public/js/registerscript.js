@@ -8,6 +8,7 @@ const error3 = document.getElementById('error3')
 const error4 = document.getElementById('error4')
 const regform = document.getElementById('logform')
 
+
 function emailvalidate(e){
     const emailval = emailid.value
     const emailpattern = /^([a-zA-Z][a-zA-Z0-9._-]*)@(gmail\.com|yahoo\.com|outlook\.com)$/
@@ -95,7 +96,6 @@ emailid.addEventListener('blur', emailvalidate)
 nameid.addEventListener('blur',namevalidate)
 mobileid.addEventListener('blur',mobvalidate)
 passid.addEventListener('blur',passvalidate)
-
 
 
 regform.addEventListener('submit',function(e){

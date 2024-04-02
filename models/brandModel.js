@@ -1,31 +1,41 @@
 const mongoose = require('mongoose')
 
 
-const brandSchema= new mongoose.Schema({
-    brandName:{
-        type:String,
-        required:true
+const brandSchema = new mongoose.Schema({
+    brandName: {
+        type: String,
+        required: true
     },
-    description:{
-        type:String,
-        required:true
+    description: {
+        type: String,
+        required: true
     },
-    imageName:{
-        type:String,
-        required:true
+    imageName: {
+        type: String,
+        required: true
     },
-    isBlocked:{
+    brandOffer: {
+        type: Number,
+        default: 0,
+        required: true
+    },
+    categoryDiscountPrice:{
         type:Number,
-        required:true,
-        default:0
+        default:0,      
+        required:true
     },
-    isActive:{
-        type:Number,
-        required:true,
-        default:0
+    isBlocked: {
+        type: Number,
+        required: true,
+        default: 0
+    },
+    isActive: {
+        type: Number,
+        required: true,
+        default: 0
     }
 })
 
-const Brand = mongoose.model('brand',brandSchema)
+const Brand = mongoose.model('brand', brandSchema)
 
-module.exports= Brand
+module.exports = Brand

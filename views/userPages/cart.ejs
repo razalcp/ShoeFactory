@@ -15,14 +15,14 @@
                              <h2 class="page-title">OOps Cart is Empty...Try adding some products</h2>
                        <% }%>
                        
-                        <div class="breadcrumb-menu">
+                        <!-- <div class="breadcrumb-menu">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb justify-content-center">
                                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                                     <li class="breadcrumb-item"><a href="cart.html">cart</a></li>
                                 </ol>
                             </nav>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -100,14 +100,14 @@
                 <div class="col-xl-4 col-lg-4 col-md-12">
                     <div class="cart__acount">
                         <h5>Cart totals:</h5>
-                        <% if(locals.cart) { %>
+                        <% if(locals.cartTotal) { %>
 
                             <table>
 
 
                                 <tr class="first-child">
 
-                                    <td id="subTotal">₹<%= cart.total %>
+                                    <td id="subTotal">₹<%= cartTotal %>
                                     </td>
 
                                 </tr>

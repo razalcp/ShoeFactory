@@ -95,12 +95,16 @@
                             <span class="pl-left">(1 customer review)</span>
                         </div> -->
                         <div class="s-price pt-30 mb-30">
-                            <%if(productdata.productOffer>0){%>
+                            <%if(productdata.discountPrice>productdata.brandDiscountPrice &&productdata.brandDiscountPrice>0){%>
                               <h5>Actual price : <span style="text-decoration: line-through;">₹<%= productdata.price %></span></h5>  <br>
-                               <h5><%=productdata.productOffer %> Percentage Offer Price: <span>₹<%= productdata.discountPrice %></span></h5> 
+                               <h5> Offer Price (<%=productdata.offerBrand%>% Brand discount): <span>₹<%= productdata.brandDiscountPrice %></span></h5> 
+                            <%}else if(productdata.brandDiscountPrice>productdata.discountPrice){%>
+                                <h5>Actual price : <span style="text-decoration: line-through;">₹<%= productdata.price %></span></h5>  <br>
+                                <h5>Offer Price (<%=productdata.productOffer%>% Product discount): <span>₹<%= productdata.discountPrice %></span></h5> 
                             <%}else{%>
                                 <span>₹<%= productdata.price %></span>
-                            <%}%>
+
+                           <% }%>
                            
                         </div>
                         <div class="s-des">

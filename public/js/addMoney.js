@@ -5,7 +5,7 @@ function addMoneyConfirm() {
     Swal.fire({
         title: "Are you sure?",
         text: "Do You want to Add Money To Your Wallet!",
-        icon: "warning",
+        icon: "success",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
@@ -89,7 +89,22 @@ async function verifyPayment(payment, order) {
 
     const data = await result.json()
     if (data.status==true) {
+        Swal.fire({
+            title: "Successfull",
+            text: "Money Added To Your Wallet!",
+            icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "OK, Continue Surfing!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
         window.location.reload()
+                
+            }
+        })
+        
+       
     }else{
         console.log(data.status);
     }

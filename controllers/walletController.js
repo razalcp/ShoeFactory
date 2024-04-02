@@ -1,14 +1,24 @@
 const User = require("../models/userModel");
 const razorPayHelper = require('../helpers/razarPayHelper');
 // const { json } = require("body-parser");
-
+const Cart = require('../models/cart');
 
 
 
 const showWallet = async (req, res) => {
-  const userdata = await User.findOne({ _id: req.session.user });
 
-  res.render('userPages/walletPage', { userdata })
+  const userdata = await User.findOne({ _id: req.session.user })
+  let cartData = await Cart.findOne({ userId: req.session.user }).populate('products.productId')
+  let cartQuantity = 0;
+  
+  if(cartData){
+    cartData.products.forEach(product => {
+      // Add the quantity of each product to the totalQuantity
+      cartQuantity += product.quantity;
+    });
+  }
+
+  res.render('userPages/walletPage', { userdata ,totalQuantity:cartQuantity?cartQuantity:0 })
 
 }
 
@@ -40,7 +50,12 @@ const verifyPaymentWallet = async (req, res) => {
   razorPayHelper.verifyPaymentOfWallet(paymentData).then(async () => {
 
 
-
+    const walletTranscation ={
+      date:new Date(),
+      type:'Credit',
+      amount:walletAmount
+    }
+    const transUpgrade= await User.updateOne({_id:req.session.user},{$push:{walletTranscation:walletTranscation}})
     const upgrade = await User.findOneAndUpdate({ _id: req.session.user }, { $inc: { walletBalance: walletAmount } })
     if (upgrade) {
 

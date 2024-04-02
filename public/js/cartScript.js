@@ -69,7 +69,18 @@ totalArray.forEach(element => {
 
 buttons.forEach(button => {
     button.addEventListener('click', async (event) => {
-        const productId = button.dataset.id;
+          
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You want to delete this Product!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete!"
+    }).then(async(result) => {
+        if (result.isConfirmed) {
+            const productId = button.dataset.id;
 
         url = `http://localhost:3003/deleteCartItem?productid=${productId}`
         const result = await fetch(url)
@@ -80,8 +91,36 @@ buttons.forEach(button => {
             buttonClicked.parentElement.parentElement.remove()
         }
 
+        
+        if(result){
+            Swal.fire({
+                title: "Deleted Successfully!",
+                text: "The product has been deleted.",
+                icon: "error"
+            }) .then(async(result) => {
+                if (result.isConfirmed) {
+                window.location.reload();
 
-    });
+                }
+            })
+        } else {
+            Swal.fire({
+                title: "Product deletion not Possible!",
+                text: "Error in deleting product.Please after some time!!",
+                icon: "error"
+            });
+        }
+    
+            // const add = await addToCart(); 
+        }
+        })})
+            
+             
+    
+        
+
+
+
 });
 
 

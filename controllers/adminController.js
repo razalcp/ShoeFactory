@@ -3,6 +3,8 @@ const Product = require("../models/productModel");
 const bcrypt = require("bcrypt");
 const Brand = require("../models/brandModel");
 const Order = require("../models/orderModel")
+const sharp = require('sharp')
+const path = require('path')
 
 const adminLogin = (req, res) => {
     if (req.session.admin) {
@@ -50,7 +52,7 @@ const admincheck = async (req, res) => {
 const adminHome = async (req, res) => {
     if (req.session.admin) {
         const orderData = await Order.find({ "products.status": { $all: ["Delivered"] } })
-    
+
         let totalPriceSum = 0;
         let count = 0;
         for (const order of orderData) {
@@ -146,8 +148,8 @@ const adminHome = async (req, res) => {
         });
         brandQtyArray.sort((a, b) => b.totalQuantity - a.totalQuantity);
 
-   
-       
+
+
         res.render("adminHome", { totalPriceSum, count, totalQtySum, onlinePriceSum, productQtyArray, brandQtyArray });
     } else {
         res.redirect("/admin");
@@ -165,9 +167,15 @@ const addproducttodb = async (req, res) => {
 
     try {
         const Images = req.files;
+
         const imagefilename = Images.map((img) => {
+
             return img.filename;
         });
+
+        const { hiddenField1, hiddenField2, hiddenField3, hiddenField4 } = req.body
+
+        
         const productIn = {
             producttitle: req.body.producttitle,
             description: req.body.description,
@@ -181,6 +189,50 @@ const addproducttodb = async (req, res) => {
 
         const result = await Product.create(productIn);
 
+
+
+
+        if(hiddenField1){
+            cropImage(hiddenField1)
+        }
+        if(hiddenField2){
+            cropImage(hiddenField2)
+        }
+        if(hiddenField3){
+            cropImage(hiddenField3)
+        }
+        if(hiddenField4){
+            cropImage(hiddenField4)
+        }
+        function cropImage(hiddenfield) {
+            let parts = hiddenfield.split(" ");
+
+
+            let ind = parseInt(parts[1]);
+            let x = parseInt(parts[3]);
+            let y = parseInt(parts[5]);
+            let width = parseInt(parts[7]);
+            let height = parseInt(parts[9]);
+
+
+            // console.log("Index:", ind);
+            // console.log("X-coordinate:", x);
+            // console.log("Y-coordinate:", y);
+            // console.log("Width:", width);
+            // console.log("Height:", height);
+
+            result.imageurl.forEach((el, index) => {
+                if(index == ind){
+                    let newel = '1' + el
+                    sharp(path.join(__dirname, `../public/images/${el}`))
+                        .extract({ left: x, top: y, width: width, height: height })
+                        .toFile(path.join(__dirname, `../public/images/${newel}`))
+                    result.imageurl[index] = newel
+                }
+            })
+        }
+
+        result.save()
         res.redirect("/admin/home/addproduct");
     } catch (error) {
         console.log(error);
@@ -192,6 +244,7 @@ const usermanagement = async (req, res) => {
 
     res.render("list-users-page", { user });
 };
+
 
 const blockuser = async (req, res) => {
     try {
@@ -279,24 +332,47 @@ const editProduct = async (req, res) => {
 };
 
 const editProductandUpdate = async (req, res) => {
+
     try {
+        let productIn
         const { id } = req.query;
 
         const Images = req.files;
         const imagefilename = Images.map((img) => {
             return img.filename;
         });
+        if (Images.length === 0) {
+            productIn = {
+                producttitle: req.body.producttitle,
+                description: req.body.description,
+                brandId: req.body.brandid,
+                price: req.body.price,
+                stock: req.body.stock,
 
-        const productIn = {
-            producttitle: req.body.producttitle,
-            description: req.body.description,
-            brandId: req.body.brandid,
-            price: req.body.price,
-            category: req.body.category,
-            imageurl: imagefilename,
-            isProduct: 0,
-            isBlocked: 0,
-        };
+                isProduct: 0,
+                isBlocked: 0,
+            };
+            console.log(productIn.stock);
+
+
+        } else {
+            productIn = {
+                producttitle: req.body.producttitle,
+                description: req.body.description,
+                brandId: req.body.brandid,
+                price: req.body.price,
+                stock: req.body.stock,
+
+                isProduct: 0,
+                isBlocked: 0,
+            };
+            console.log(productIn.stock);
+            const dataupdate = await Product.findByIdAndUpdate(
+                { _id: id },
+                { $push: { imageurl: { $each: imagefilename } } },
+                { new: true },
+            );
+        }
 
         const dataupdate = await Product.findByIdAndUpdate(
             { _id: id },
@@ -356,6 +432,7 @@ const editBrand = async (req, res) => {
 
 const listBrand = async (req, res) => {
     const brand = await Brand.find({ isActive: 0 });
+
     res.render("listBrand", { brand });
 };
 
@@ -407,7 +484,7 @@ const UnblockBrand = async (req, res) => {
 
 const listOrders = async (req, res) => {
     try {
-        const orderData = await Order.find({ __v: 0 }).populate('userId products.product_id')
+        const orderData = await Order.find({ __v: 0 }).populate('userId products.product_id').sort({ "createdAt": -1 });
 
 
         res.render('adminPages/orderList', { orderData })

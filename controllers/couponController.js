@@ -64,9 +64,10 @@ const applyCouponLogic = async (req, res) => {
     if (result) {
         const update = await Coupon.findOneAndUpdate({_id: couponId},{$set:{isBlocked:1}})
         const reducedAmount = number-(number * discount / 100);
+       const discountAmount = number* discount /100;
         if (reducedAmount) {
 
-            res.json({ status: true, number: reducedAmount })
+            res.json({ status: true, number: reducedAmount ,discountAmount:discountAmount?discountAmount:0 ,discountPercentage:discount?discount:0})
         }
 ``
     } else {

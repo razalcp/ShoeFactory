@@ -1,4 +1,4 @@
-<%- include("adminLayouts/header.ejs")%>
+ <%- include("adminLayouts/header.ejs")%>
 
     <main class="main-wrap">
 
@@ -126,18 +126,41 @@
                                             <div id="error6" style="display: none;" class="alert alert-danger err">
                                             </div>
                                             </p>
-                                            <div id="preview-container"></div>
+                                            <div id="preview-container">
 
+                                            </div>
+
+                                         
+                                            
 
                                         </div>
                                     </div> <!-- col.// -->
+                                    
                                 </div> <!-- .row end// -->
                             </div>
                         </div>
                     </div>
                 </div>
                 </div>
+                <input type="hidden" id="hiddenField1" name="hiddenField1" value="">
+                <input type="hidden" id="hiddenField2" name="hiddenField2" value="">
+                <input type="hidden" id="hiddenField3" name="hiddenField3" value="">
+                <input type="hidden" id="hiddenField4" name="hiddenField4" value="">
+
+                <div id="myModal" class="modal">
+                    <span class="close">&times;</span>
+                    <!-- <img class="modal-content" height="100%" id="img01"> -->
+                    <div class="modal-content img-container">
+                        <img id='image' src="" alt="">
+                    </div>
+                    <button id="btn-crop" type="button">Crop</button>
+                    <div class="cropped-container">
+                        <img id="output" src="" alt="">
+                    </div>
+                </div>
             </section> <!-- content-main end// -->
+               <!-- Modal -->
+             
         </form>
 
         <footer class="main-footer font-xs">
@@ -155,6 +178,7 @@
             </div>
         </footer>
     </main>
+    <script src="/public/js/cropProductScript.js"></script>
     <script src="/public/assetss/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/public/assetss/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/public/assetss/js/vendors/select2.min.js"></script>
@@ -285,47 +309,53 @@
 
             if (error1.innerHTML || error2.innerHTML || error3.innerHTML || error4.innerHTML || error5.innerHTML || error6.innerHTML) {
                 e.preventDefault()
-                console.log("prevent")
+
             }
             else {
-                console.log("prevent")
+
             }
         })
     </script>
 
     <script>
-        document.getElementById('imageField').addEventListener('change', handleFileSelect);
+        // document.getElementById('imageField').addEventListener('change', handleFileSelect);
 
-        function handleFileSelect(event) {
-            var previewContainer = document.getElementById('preview-container');
-            previewContainer.innerHTML = ''; // Clear previous previews
+        // function handleFileSelect(event) {
+        //     var previewContainer = document.getElementById('preview-container');
+        //     previewContainer.innerHTML = ''; // Clear previous previews
 
-            var files = event.target.files;
+        //     var files = event.target.files;
 
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
+        //     for (var i = 0; i < files.length; i++) {
+        //         var file = files[i];
 
-                if (!file.type.startsWith('image/')) {
-                    continue; // Skip non-image files
-                }
+        //         if (!file.type.startsWith('image/')) {
+        //             continue; // Skip non-image files
+        //         }
 
-                var reader = new FileReader();
+        //         var reader = new FileReader();
 
-                reader.onload = (function (currentFile) {
-                    return function (e) {
-                        var previewImage = document.createElement('img');
-                        previewImage.className = 'preview-image';
-                        previewImage.src = e.target.result;
-                        previewImage.title = currentFile.name;
+        //         reader.onload = (function (currentFile) {
+        //             return function (e) {
+        //                 var previewImage = document.createElement('img');
+        //                 previewImage.className = 'preview-image';
+        //                 previewImage.src = e.target.result;
+        //                 previewImage.title = currentFile.name;
+        //                 console.log(currentFile.name);
 
-                        previewContainer.appendChild(previewImage);
-                    };
-                })(file);
+        //                 previewContainer.appendChild(previewImage);
+        //             };
+        //         })(file);
 
-                reader.readAsDataURL(file);
-            }
-        }
+        //         reader.readAsDataURL(file);
+        //     }
+        // }
+
+
+      
+      
     </script>
+
 
 
     </body>

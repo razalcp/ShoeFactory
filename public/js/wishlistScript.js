@@ -13,8 +13,8 @@ async function wishlist(productId){
     }).then(async(result) => {
         if (result.isConfirmed) {
             const add = await addToWishlist(productId); 
-
-            if(add.success){
+           
+            if(true){
                 Swal.fire({
                     title: "Added to wishlist Successfully!",
                     text: "The product has been added.",
@@ -41,8 +41,9 @@ async function addToWishlist(productId){
     const result = await fetch(url);
     const data = result.json();
 
-    if(data.message){
-        console.log(data.message);
+    if(data.status==true){
+        return true;
+      
     }else{
         console.log(data.status);
     }
