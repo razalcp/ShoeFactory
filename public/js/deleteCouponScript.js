@@ -43,7 +43,7 @@ function deleteConfirm(couponId) {
 
 
 async function confirmDelete(couponId) {
-    url = `http://localhost:3003/admin/deleteCoupon?couponId=${couponId}`
+    url = `/admin/deleteCoupon?couponId=${couponId}`
     const result = await fetch(url)
     const data = await result.json();
    

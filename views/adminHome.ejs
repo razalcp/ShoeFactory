@@ -268,7 +268,7 @@
 
         async function getYearlyData() {
 
-            url = `http://localhost:3003/admin/bringSalesDataYearly`
+            url = `/admin/bringSalesDataYearly`
             const result = await fetch(url)
             const data = await result.json()
             if (data) {
@@ -387,7 +387,7 @@
     <script>
 
         async function getMonthlyData() {
-            url = `http://localhost:3003/admin/bringSalesDataMonthly`
+            url = `/admin/bringSalesDataMonthly`
             const result = await fetch(url)
             const data = await result.json()
             if (data) {
@@ -510,7 +510,7 @@
         };
 
         async function getSalesDataFunction() {
-            url = `http://localhost:3003/admin/bringSalesData`
+            url = `/admin/bringSalesData`
             const result = await fetch(url)
             const data = await result.json()
             if (data) {

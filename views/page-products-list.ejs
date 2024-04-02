@@ -182,7 +182,7 @@
         });
 
         async function updateOffer(productId, offerValue) {
-            url = `http://localhost:3003/admin/updateProductOffer?productId=${productId}&offerValue=${offerValue}`
+            url = `/admin/updateProductOffer?productId=${productId}&offerValue=${offerValue}`
             const result = await fetch(url)
             const data = await result.json()
 
@@ -244,7 +244,7 @@
 
             try {
                 console.log("Entered blockuser");
-                url = `http://localhost:3003/admin/usermanagement/blockproduct?id=${productId}`
+                url = `/admin/usermanagement/blockproduct?id=${productId}`
 
                 const response = await fetch(url);
                 if (response.ok) {
@@ -263,7 +263,7 @@
         async function unblockProduct(productId) {
             try {
                 console.log("Entered blockuser");
-                url = `http://localhost:3003/admin/usermanagement/unblockproduct?id=${productId}`
+                url = `/admin/usermanagement/unblockproduct?id=${productId}`
 
                 const response = await fetch(url);
                 if (response.ok) {
@@ -284,7 +284,7 @@
 
             try {
                 console.log("Entered editproduct");
-                url = `http://localhost:3003/admin/usermanagement/editproduct?id=${productId}`
+                url = `/admin/usermanagement/editproduct?id=${productId}`
 
                 const response = await fetch(url);
                 if (response.ok) {
@@ -325,7 +325,7 @@
 
             try {
                 console.log("Entered deleteProduct");
-                url = `http://localhost:3003/admin/usermanagement/deleteproduct?id=${productId}`
+                url = `/admin/usermanagement/deleteproduct?id=${productId}`
 
                 const response = await fetch(url);
                 if (response.ok) {

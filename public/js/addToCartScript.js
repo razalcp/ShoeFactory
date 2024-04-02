@@ -50,7 +50,7 @@ function confirmAddToCart() {
 async function addToCart() {
 
 
-    url = `http://localhost:3003/addToCart?productId=${productId}&quantity=${quantity}`
+    url = `/addToCart?productId=${productId}&quantity=${quantity}`
 
     var cart = await fetch(url)
 

@@ -48,7 +48,7 @@ async function createOrder() {
    const total =  document.getElementById('subTotal').innerHTML
 
    
-    url = `http://localhost:3003/orderPlace?cartId=${cartId}&addressId=${addressId}&modeOfPayment=${updatedStatus}&total=${total}`
+    url = `/orderPlace?cartId=${cartId}&addressId=${addressId}&modeOfPayment=${updatedStatus}&total=${total}`
 
     const result = await fetch(url)
     var data = await result.json()
@@ -73,11 +73,11 @@ console.log(data.success);
                         text: "The money has been debited from Wallet.",
                         icon: "success"
                     }).then(()=>{
-                        window.location.href="http://localhost:3003/showOrderSuccessPage"
+                        window.location.href="/showOrderSuccessPage"
                     })
 
                 }else{
-                    window.location.href="http://localhost:3003/showOrderFaliurePage"
+                    window.location.href="/showOrderFaliurePage"
                 }
         });
     } else {
@@ -89,7 +89,7 @@ console.log(data.success);
             cancelButtonColor: "#d33",
             confirmButtonText: "Ok"
         }).then(()=>{
-            window.location.href="http://localhost:3003/showOrderFaliurePage"
+            window.location.href="showOrderFaliurePage"
         })
 
            
@@ -142,7 +142,7 @@ function razorPayPayment(order) {
         }).then(async (result) => {
                 if (result.isConfirmed) {
                    
-                    window.location.href="http://localhost:3003/showOrderFaliurePage"
+                    window.location.href="/showOrderFaliurePage"
                 }
             });
         
@@ -170,7 +170,7 @@ async function verifyPayment(payment, order) {
             }).then(async (result) => {
                     if (result.isConfirmed) {
                        
-                        window.location.href="http://localhost:3003/showOrderSuccessPage"
+                        window.location.href="/showOrderSuccessPage"
                     }
                 });
         } else {

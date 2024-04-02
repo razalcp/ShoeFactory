@@ -3,7 +3,7 @@
 
 
 async function deleteImg(productId,imgName) {
-   url=`http://localhost:3003/admin/deleteImage?productId=${productId}&imgName=${imgName}`
+   url=`/admin/deleteImage?productId=${productId}&imgName=${imgName}`
    
    const result = await fetch(url)
    const data = await result.json()

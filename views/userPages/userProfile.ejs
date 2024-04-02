@@ -244,7 +244,7 @@
 
 
                         async function deleteAddress() {
-                            url = `http://localhost:3003/deleteAddress?addressId=${addressid}`
+                            url = `/deleteAddress?addressId=${addressid}`
 
                             const result = await fetch(url)
                             if (result) {

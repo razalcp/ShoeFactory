@@ -113,7 +113,7 @@ couponForm.addEventListener('submit', function (e) {
         e.preventDefault()      
     }
     else {
-        console.log("prevent")
+        console.log("prevented");
     }
 })
 

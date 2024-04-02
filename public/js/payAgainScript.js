@@ -8,7 +8,7 @@ for (var i = 0; i < buttons.length; i++) {
         var orderId = this.dataset.orderid;
 
       
-       url=`http://localhost:3003/pendingPayment?orderId=${orderId}`
+       url=`/pendingPayment?orderId=${orderId}`
        const result= await fetch(url)
        var data = await result.json()
    
@@ -29,7 +29,7 @@ for (var i = 0; i < buttons.length; i++) {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 
-                window.location.href="http://localhost:3003/showOrderSuccessPage"
+                window.location.href="/showOrderSuccessPage"
             }
         });
     } else {
@@ -89,7 +89,7 @@ function razorPayPayment(order) {
         }).then(async (result) => {
                 if (result.isConfirmed) {
                    
-                    window.location.href="http://localhost:3003/showOrderFaliurePage"
+                    window.location.href="/showOrderFaliurePage"
                 }
             });
         })
@@ -117,7 +117,7 @@ async function verifyPayment(payment, order) {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     
-                    window.location.href="http://localhost:3003/showOrderSuccessPage"
+                    window.location.href="/showOrderSuccessPage"
                 }
             });
         } else {

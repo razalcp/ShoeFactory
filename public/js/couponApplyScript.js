@@ -39,7 +39,7 @@ async function couponLogic(couponId) {
     const total = document.getElementById("subTotal").innerHTML
 
 
-    url = `http://localhost:3003/applyCoupon?couponId=${couponId}&total=${total}`
+    url = `/applyCoupon?couponId=${couponId}&total=${total}`
     const result = await fetch(url)
     var data = await result.json();
     let couponAppliedPrice = data.number;

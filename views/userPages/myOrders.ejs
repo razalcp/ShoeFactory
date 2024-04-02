@@ -321,11 +321,11 @@ Array.from(statusElements).forEach(statusElement => {
         const selectedOption = event.target.value;
         
        
-        console.log('Selected option:', selectedOption);
+        // console.log('Selected option:', selectedOption);
     //  console.log('orderID: ',orderId);
     //  console.log('productID: ',productId);
 
-     let url = `http://localhost:3003/updateOrderStatus?status=${selectedOption}&productId=${productId}&orderId=${orderId}`
+     let url = `/updateOrderStatus?status=${selectedOption}&productId=${productId}&orderId=${orderId}`
 
 const result = await fetch(url)
 // console.log(result);

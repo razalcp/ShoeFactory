@@ -170,7 +170,7 @@
 
         async function updateOffer(brandId, offerValue) {
 
-            url = `http://localhost:3003/admin/updateBrandOffer?brandId=${brandId}&offerValue=${offerValue}`
+            url = `/admin/updateBrandOffer?brandId=${brandId}&offerValue=${offerValue}`
             const result = await fetch(url)
             const data = await result.json()
 
@@ -183,9 +183,9 @@
 
 
         async function removeOffer(brandId) {
-            console.log("productId = " + brandId);
+       
 
-            url = `http://localhost:3003/admin/removeBrandOffer?brandId=${brandId}`;
+            url = `/admin/removeBrandOffer?brandId=${brandId}`;
 
             const result = await fetch(url)
             const data = await result.json();
@@ -250,8 +250,8 @@
         async function blockBrand(brandId) {
 
             try {
-                console.log("Entered blockBrand");
-                url = `http://localhost:3003/admin/home/listbrand/blockbrand?id=${brandId}`
+                
+                url = `/admin/home/listbrand/blockbrand?id=${brandId}`
 
                 const response = await fetch(url);
                 if (response.ok) {
@@ -269,13 +269,13 @@
 
         async function unblockBrand(brandId) {
             try {
-                console.log("Entered blockuser");
-                url = `http://localhost:3003/admin/home/listbrand/unblockbrand?id=${brandId}`
+              
+                url = `/admin/home/listbrand/unblockbrand?id=${brandId}`
 
                 const response = await fetch(url);
                 if (response.ok) {
                     const data = await response.json();
-                    console.log(data.data);
+                
                     window.location.reload();
                 } else {
                     console.error(`Error:${response.status}`);
@@ -287,11 +287,10 @@
 
         async function editProduct(brandId) {
 
-            console.log(productId)
 
             try {
                 console.log("Entered editproduct");
-                url = `http://localhost:3003/admin/usermanagement/editproduct?id=${brandId}`
+                url = `/admin/usermanagement/editproduct?id=${brandId}`
 
                 const response = await fetch(url);
                 if (response.ok) {
@@ -331,8 +330,8 @@
         async function deleteBrand(brandId) {
 
             try {
-                console.log("Entered deleteProduct");
-                url = `http://localhost:3003/admin/home/listbrand/deletebrand?id=${brandId}`
+                
+                url = `/admin/home/listbrand/deletebrand?id=${brandId}`
 
                 const response = await fetch(url);
                 if (response.ok) {

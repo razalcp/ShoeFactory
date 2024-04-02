@@ -329,11 +329,11 @@
             </div>
         </div>
     </footer>
-    <!-- footer area end -->
 
 
-    <!-- JS here -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/easyinvoice/dist/easyinvoice.min.js"></script> -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/easyinvoice/dist/easyinvoice.min.js"></script> 
     <script src="/public/js/downloadInvoice.js"></script>
     <script>
 
@@ -353,7 +353,7 @@
                 console.log('orderID: ', orderId);
                 console.log('productID: ', productId);
 
-                let url = `http://localhost:3003/updateOrderStatus?status=${selectedOption}&productId=${productId}&orderId=${orderId}`
+                let url = `/updateOrderStatus?status=${selectedOption}&productId=${productId}&orderId=${orderId}`
 
                 const result = await fetch(url)
                 console.log(result);
@@ -392,6 +392,6 @@
     <script src="assets/js/main.js"></script>
     </body>
 
-    <!-- Mirrored from wphix.com/template/gota/gota/contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 11 Dec 2023 18:30:47 GMT -->
+   
 
     </html>

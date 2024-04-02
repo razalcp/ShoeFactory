@@ -36,7 +36,7 @@ async function wishlist(productId){
 
 async function addToWishlist(productId){
 
-    url=`http://localhost:3003/addToWishlist?productId=${productId}`
+    url=`/addToWishlist?productId=${productId}`
 
     const result = await fetch(url);
     const data = result.json();

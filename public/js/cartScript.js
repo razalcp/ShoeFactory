@@ -82,7 +82,7 @@ buttons.forEach(button => {
         if (result.isConfirmed) {
             const productId = button.dataset.id;
 
-        url = `http://localhost:3003/deleteCartItem?productid=${productId}`
+        url = `/deleteCartItem?productid=${productId}`
         const result = await fetch(url)
 
         if (result) {
@@ -171,7 +171,7 @@ buttons.forEach(button => {
 
 
 async function updatePriceInDataBase(price) {
-    url = `http://localhost:3003/updateCartTotal?price=${price}`
+    url = `/updateCartTotal?price=${price}`
     const result = await fetch(url)
     var data = await result.json()
     console.log(data.success);
@@ -179,7 +179,7 @@ async function updatePriceInDataBase(price) {
 }
 
 async function updateQuantityInDataBase(updatedQuantity, productid) {
-    url = `http://localhost:3003/updateCartQuantity?quantity=${updatedQuantity}&productid=${productid}`
+    url = `/updateCartQuantity?quantity=${updatedQuantity}&productid=${productid}`
     const updateQty = await fetch(url)
 
     var data = await updateQty.json();

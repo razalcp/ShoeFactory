@@ -49,8 +49,8 @@ function handleFileSelect(event) {
                     document.querySelector('#btn-crop').addEventListener('click',async function(){
                         var croppedImage = await cropper.getCroppedCanvas().toDataURL("image/png");
                         let dimensions = cropper.getData()
-                        console.log(ind);
-                        console.log(dimensions);
+                        // console.log(ind);
+                        // console.log(dimensions);
                         previewImage.src= croppedImage
                         let x=dimensions.x
                         let y=dimensions.y
@@ -60,7 +60,7 @@ function handleFileSelect(event) {
                         let width=dimensions.width
 
                         const imagedata="index= "+ind+" x= "+x+" y= "+y+" width= "+width+" height= "+height
-                        console.log(imagedata);
+                        // console.log(imagedata);
 
                         if(ind == 0){
                             hidden1.value = imagedata

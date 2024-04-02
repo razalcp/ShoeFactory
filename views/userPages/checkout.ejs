@@ -494,7 +494,7 @@
             const addressid = document.getElementById('addresshiddenfield').value
             const button = document.getElementsByClassName('removebtn')
 
-            url = `http://localhost:3003/deleteAddress?addressId=${addressid}`
+            url = `/deleteAddress?addressId=${addressid}`
             const result = await fetch(url)
             if (result.status === 200) {
                 console.log("data deleted");

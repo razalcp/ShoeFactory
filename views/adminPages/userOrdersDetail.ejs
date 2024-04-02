@@ -309,7 +309,7 @@
                 const qty = document.getElementsByClassName('quantityTag')[i].value
                 let returnAmount = prize*qty
 
-                let url = `http://localhost:3003/admin/updateOrderStatus?status=${updatedStatus}&productId=${product_id}&orderId=${orderid}&refundAmount=${returnAmount}`
+                let url = `/admin/updateOrderStatus?status=${updatedStatus}&productId=${product_id}&orderId=${orderid}&refundAmount=${returnAmount}`
 
                 const result = await fetch(url)
                 if (result) {
@@ -317,7 +317,7 @@
                 }
                 var data = await result.json()
 
-                console.log(data.success);
+                // console.log(data.success);
 
 
             });
