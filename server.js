@@ -64,7 +64,7 @@ app.use("/admin", adminfeatRoute);
 
 
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.Port, () => {
   console.log("Server Started at port  http://localhost:3003");
   console.log("Admin interface over here http://localhost:3003/admin");
 });

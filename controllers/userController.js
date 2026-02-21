@@ -309,7 +309,11 @@ const verifyotp = async (req, res) => {
 
 const loadProductDetail = async (req, res) => {
   const { id } = req.query;
+  console.log(id,"ssss");
+  
   let productdata = await Product.findOne({ _id: id, isProduct: 0 })
+  console.log("ggg",productdata);
+  
   let actualPrice = productdata.price
   // ///////////////////////brand offer////////////////////////////////
   let brandId = productdata.brandId
