@@ -6,11 +6,12 @@ require("dotenv").config();
 
 
 
+
 // Configure nodemailer with your email provider's details
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "cprazalnazim", // replace with your email
+    user: "cprazalnazim@gmail.com", // replace with your email
     pass: process.env.apppassword // replace with your email password
   },
 });
@@ -25,7 +26,7 @@ const generateOTP = () => {
 
 // Function to send OTP via email
 const sendOTP = async (email, otp) => {
-   
+
   const mailOptions = {
     from: "cprazalnazim@gmail.com", // replace with your email
     to: email,
@@ -33,14 +34,14 @@ const sendOTP = async (email, otp) => {
     text: `Your OTP for verification is: ${otp}`,
   };
 
-    const send = await transporter.sendMail(mailOptions)
-    if(send){
-        console.log("OTP Send Sucessfully !!!");
-    }
+  const send = await transporter.sendMail(mailOptions)
+  if (send) {
+    console.log("OTP Send Sucessfully !!!");
+  }
 };
 
 const sendMail = async (email, otp) => {
-   
+
   const mailOptions = {
     from: "cprazalnazim@gmail.com", // replace with your email
     to: email,
@@ -48,10 +49,10 @@ const sendMail = async (email, otp) => {
     text: `${otp}`,
   };
 
-    const send = await transporter.sendMail(mailOptions)
-    if(send){
-        console.log("Link Send Sucessfully !!!");
-    }
+  const send = await transporter.sendMail(mailOptions)
+  if (send) {
+    console.log("Link Send Sucessfully !!!");
+  }
 };
 
-module.exports={generateOTP,sendOTP,sendMail}
+module.exports = { generateOTP, sendOTP, sendMail }
