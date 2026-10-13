@@ -39,7 +39,7 @@
                                         <td><%=ele.minPurchase%></td>
                                         <td><%=ele.minDiscountPercentage%></td>
                                         <td><%=ele.maxDiscountValue%></td>
-                                        <td><%=ele.validity.toISOString().split('T')[0]%></td>
+                                        <td><%= (ele.validity && !isNaN(new Date(ele.validity).getTime())) ? new Date(ele.validity).toISOString().split('T')[0] : 'N/A' %></td>
                                                
                               
                                 <!-- <td class="text-end">

@@ -13,49 +13,55 @@
                                         <td>Product Image</td>
                                         <td>Product Name</td>
 
-
-
                                         <td>Action</td>
 
                                     </tr>
                                     <tbody>
                                         <% if(locals.cartData){ %>
                                             <%locals.cartData.forEach(el=>{%>
+                                                <% let variant = null; %>
+                                                <% if(el.productId && el.productId.variants && el.productId.variants.id(el.variantId)) { %>
+                                                    <% variant = el.productId.variants.id(el.variantId); %>
+                                                <% } %>
                                                 <tr class="max-width-set">
                                                     <td>
-                                                        <img src="/public/images/<%=el.productId.imageurl[1]%>" alt="">
+                                                        <% if(variant && variant.imageurl && variant.imageurl.length > 0) { %>
+                                                            <img src="/public/images/<%=variant.imageurl[0]%>" alt="">
+                                                        <% } else { %>
+                                                            <img src="/public/assets/img/product/placeholder.jpg" alt="">
+                                                        <% } %>
                                                     </td>
                                                     <td>
                                                         <%= el.productId.producttitle %> <span>x<%=el.quantity%></span>
                                                     </td>
-
-
-
+                                                    <td>
+                                                        <div class="variant-info">
+                                                            <span class="badge bg-info">Size: <%= el.size %></span>
+                                                            <span class="badge bg-secondary">Color: <%= el.color %></span>
+                                                        </div>
+                                                    </td>
+                                                    <td>₹<%= variant ? variant.price : 0 %></td>
                                                     <td><button type="button" class="btn btn-danger removeBtn"
+                                                            data-variant-id="<%=el.variantId%>"
                                                             data-id="<%=el.productId._id%>">Remove</button></td>
-
                                                 </tr>
-                                            
                                                 <input type="hidden" value="<%=el.productId._id%>" class="hiddenField">
-
+                                                <input type="hidden" value="<%=el.variantId%>" class="hiddenVariantField">
                                                 <% }) %>
-
-                                                    <% } %>
+                                            <% } %>
 
                                     </tbody>
 
                                     <%if(locals.cart){%>
                                         <input type="hidden" id="cartidhidden" value="<%=cart._id%>">
                                         <%}%>
-                                            <!-- <tfoot>
+                                        <tfoot>
                                 <tr class="design-footer">
-                                    <td>
-                                        <input type="text" placeholder="Coupon Code">
+                                    <td colspan="5" class="text-end">
+                                        <button type="button" onclick="updateCart()" class="btn btn-secondary">Update Cart</button>
                                     </td>
-                                    <td><button type="submit">Apply Coupon</button></td>
-                                    <td colspan="3"><a href="#">update cart</a></td>
                                 </tr>
-                            </tfoot> -->
+                            </tfoot>
                                 </table>
                             </div>
                         </div>
@@ -69,7 +75,7 @@
 
                                         <tr class="first-child">
                                             <td>Price</td>
-                                            <td id="">₹<%= cart.total %>
+                                            <td id="">₹<%= cartTotal || 0 %>
                                             </td>
                                             
                                         </tr>
@@ -81,7 +87,7 @@
                                         </tr>
                                         <tr class="first-child">
                                             <td>Total Price</td>
-                                            <td id="subTotal">₹<%= cart.total %>
+                                            <td id="subTotal">₹<%= cartTotal || 0 %>
                                                 
                                             </td>
                                             
@@ -95,9 +101,13 @@
                                     <% } %>
                                         <br>
                                         <h5>Available Coupons:</h5>
-                                        <% if(locals.coupons){%>
+                                        <% 
+                                            const usedCouponsList = (locals.userdata && locals.userdata.couponApplied) ? locals.userdata.couponApplied.map(String) : [];
+                                            const availableCoupons = (locals.coupons || []).filter(c => !usedCouponsList.includes(c._id.toString()) && !usedCouponsList.includes(c.couponCode));
+                                        %>
+                                        <% if(availableCoupons && availableCoupons.length > 0){ %>
                                             <table>
-                                                <% locals.coupons.forEach(ele=>{ %>
+                                                <% availableCoupons.forEach(ele=>{ %>
                                                     <tr>
                                                         <td class="couponName">
                                                             <%=ele.couponCode%>
@@ -105,10 +115,11 @@
                                                         <td><button class="styled-button"
                                                                 onclick="couponApply('<%=ele._id%>')">Apply</button></td>
                                                     </tr>
-                                                    <% }) %>
-
+                                                <% }) %>
                                             </table>
-                                        <%}%>
+                                        <% } else { %>
+                                            <p class="text-muted" style="font-size: 14px; margin-top: 10px;">No available coupons</p>
+                                        <% } %>
 
                             </div>
                         </div>
@@ -210,8 +221,8 @@
 
                         <select name="" class="paymentOptions">
                             <option value="">Select a Payment Methord</option>
-                            <% if(locals.cart) { %>
-                                <% if(cart.total<=1000){ %>
+                            <% if(locals.cartTotal) { %>
+                                <% if(cartTotal<=1000){ %>
                                     <option value="Cash on Delivery">Cash on Delivery</option>
                               <%  } %>
                             <% } %>
@@ -271,8 +282,8 @@
                             </div>
                         </div> -->
                         <div class="terms pt-50 pb-20">
-                            <% if(locals.cart) { %>
-                                <% if(cart.total>=1000){ %>
+                            <% if(locals.cartTotal) { %>
+                                <% if(cartTotal>=1000){ %>
                                     <p>*Cash on delivery only available for orders below ₹1000 </p>
                               <%  } %>
                             <% } %>
@@ -449,10 +460,93 @@
 
 
     <!-- JS here -->
+    <!-- Custom CSS for checkout page -->
+    <style>
+        .coupon-section {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .coupon-section input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .coupon-section button {
+            padding: 8px 16px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .coupon-section button:hover {
+            background: #1e7e34;
+        }
+        
+        .variant-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 5px;
+        }
+        
+        .variant-info .badge {
+            align-self: flex-start;
+        }
+        
+        .btn-secondary {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: inline-block !important;
+            padding: 8px 16px !important;
+            background-color: #6c757d !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 4px !important;
+            cursor: pointer !important;
+            font-weight: 500 !important;
+            transition: background-color 0.3s !important;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268 !important;
+            opacity: 0.9 !important;
+        }
+    </style>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
     <script src="/public/js/checkoutScript.js"></script>
     <script src="/public/js/cartScript.js"></script>
     <script src="/public/js/couponApplyScript.js"></script>
+    
+    <!-- Define updateCart function globally -->
+    <script>
+        // Global updateCart function
+        window.updateCart = function() {
+            try {
+                // Redirect to cart page
+                window.location.href = '/cart';
+            } catch (error) {
+                console.error('Error updating cart:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to redirect to cart. Please try again.',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            }
+        };
+    </script>
+    
     <script>
 
 
@@ -507,8 +601,144 @@
 
     </script>
 
+    <script>
+        // Remove item functionality - same as cart page
+        document.querySelectorAll('.removeBtn').forEach(btn => {
+            btn.addEventListener('click', async function(event) {
+                const result = await Swal.fire({
+                    title: "Are you sure?",
+                    text: "You want to delete this Product!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete!"
+                });
+                
+                if (result.isConfirmed) {
+                    const productId = this.dataset.id;
+                    const variantId = this.dataset.variantId;
+                    
+                    try {
+                        const url = `/deleteCartItem?productid=${productId}&variantId=${variantId}`;
+                        const fetchResult = await fetch(url);
+                        
+                        if (fetchResult) {
+                            const buttonClicked = event.target;
+                            buttonClicked.parentElement.parentElement.remove();
+                            
+                            Swal.fire({
+                                title: "Deleted Successfully!",
+                                text: "The product has been deleted.",
+                                icon: "success"
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Product deletion not Possible!",
+                                text: "Error in deleting product. Please try after some time!!",
+                                icon: "error"
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error removing item:', error);
+                        Swal.fire({
+                            title: "Product deletion not Possible!",
+                            text: "Error in deleting product. Please try after some time!!",
+                            icon: "error"
+                        });
+                    }
+                }
+            });
+        });
 
-    <!-- <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> -->
+        // Order confirmation
+        // async function orderConfirm() {
+        //     const selectedAddress = document.querySelector('input[name="rad"]:checked');
+        //     const paymentMethod = document.querySelector('.paymentOptions').value;
+        //     const termsAccepted = document.querySelector('.check_term input[type="checkbox"]').checked;
+            
+        //     if (!selectedAddress) {
+        //         Swal.fire({
+        //             icon: 'warning',
+        //             title: 'Address Required',
+        //             text: 'Please select a delivery address',
+        //             timer: 2000,
+        //             showConfirmButton: false
+        //         });
+        //         return;
+        //     }
+            
+        //     if (!paymentMethod) {
+        //         Swal.fire({
+        //             icon: 'warning',
+        //             title: 'Payment Method Required',
+        //             text: 'Please select a payment method',
+        //             timer: 2000,
+        //             showConfirmButton: false
+        //         });
+        //         return;
+        //     }
+            
+        //     if (!termsAccepted) {
+        //         Swal.fire({
+        //             icon: 'warning',
+        //             title: 'Terms Required',
+        //             text: 'Please accept the terms and conditions',
+        //             timer: 2000,
+        //             showConfirmButton: false
+        //         });
+        //         return;
+        //     }
+            
+        //     // Proceed with order placement
+        //     try {
+        //         const cartId = document.getElementById('cartidhidden')?.value || '';
+        //         const subTotal = document.getElementById('subTotal')?.innerText || '₹0';
+        //         const orderUrl = `/orderPlace?addressId=${encodeURIComponent(selectedAddress.value)}&paymentMethord=${encodeURIComponent(paymentMethod)}&cartId=${encodeURIComponent(cartId)}&total=${encodeURIComponent(subTotal)}`;
+        //         const response = await fetch(orderUrl, { method: 'GET' });
+                
+        //         const data = await response.json();
+                
+        //         if (data.success) {
+        //             razorPayPayment(data.success)
+        //             Swal.fire({
+        //                 icon: 'success',
+        //                 title: 'Order Placed',
+        //                 text: 'Your order has been placed successfully!',
+        //                 timer: 3000,
+        //                 showConfirmButton: false
+        //             }).then(() => {
+        //                 window.location.href = '/showOrderSuccessPage';
+        //             });
+        //         } else {
+        //             Swal.fire({
+        //                 icon: 'error',
+        //                 title: 'Order Failed',
+        //                 text: data.message || 'Failed to place order. Please try again.',
+        //                 timer: 3000,
+        //                 showConfirmButton: true
+        //             });
+        //         }
+        //     } catch (error) {
+        //         console.error('Error placing order:', error);
+        //         Swal.fire({
+        //             icon: 'error',
+        //             title: 'Error',
+        //             text: 'Network error. Please try again.',
+        //             timer: 3000,
+        //             showConfirmButton: false
+        //         });
+        //     }
+        // }
+
+        
+
+    </script>
+
+
+    <!-- <!-- <script data-cfasync="false" src="https://cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> --> -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>

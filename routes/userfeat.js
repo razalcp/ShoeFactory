@@ -17,9 +17,4 @@ router.get("/productdetail",userController.loadProductDetail)
 
 
 
-
-
-
-
-
 module.exports = router

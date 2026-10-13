@@ -8,6 +8,8 @@ const path = require('path')
 
 const adminLogin = (req, res) => {
     if (req.session.admin) {
+        console.log(req.session.admin);
+        
         res.redirect("/admin/home");
     } else {
         res.render("adminlogin");
@@ -29,10 +31,11 @@ const admincheck = async (req, res) => {
             if (userpassword) {
                 if (loggedadmin.isAdmin === 1) {
                     req.session.admin = loggedadmin._id;
-
                     res.redirect("/admin/home");
                 } else {
-                    console.log("Fail");
+                    res.render("adminlogin", {
+                        errmessage: "Login Failed ! Not an admin",
+                    });
                 }
             } else {
                 res.render("adminlogin", {
@@ -159,83 +162,132 @@ const adminHome = async (req, res) => {
 const addproduct = async (req, res) => {
     const brand = await Brand.find({ isBlocked: 0 });
 
-    res.render("add-product-page", { brand });
+    res.render("add-product-page-variants", { brand });
 };
 
 const addproducttodb = async (req, res) => {
-
-
     try {
-        const Images = req.files;
-
-        const imagefilename = Images.map((img) => {
-
-            return img.filename;
-        });
-
-        const { hiddenField1, hiddenField2, hiddenField3, hiddenField4 } = req.body
-
         
-        const productIn = {
+        const { hiddenField1, hiddenField2, hiddenField3, hiddenField4 } = req.body;
+        
+        // Validate required fields
+        if (!req.body.producttitle || !req.body.brandname) {
+            return res.status(400).render('add-product-page-variants', { 
+                brand: await Brand.find({ isBlocked: 0 }),
+                error: 'Product title and brand are required'
+            });
+        }
+        
+        // Parse variants from form data
+        const variants = [];
+        
+        // Check if variants is sent as an array
+        if (req.body.variants && Array.isArray(req.body.variants)) {
+            
+            // Process each variant from the array
+            
+            for (const [index, variant] of req.body.variants.entries()) {
+                
+                if (variant && variant.size && variant.color && variant.price && variant.stock) {
+                    // Get images for this variant - filter the req.files array by fieldname
+                    const variantImages = req.files.filter(file => file.fieldname === `variantImages_${index}`);
+                    const imageFilenames = variantImages.map(img => img.filename);
+                    
+                    
+                    
+                    if (imageFilenames.length === 0) {
+                        return res.status(400).render('add-product-page-variants', { 
+                            brand: await Brand.find({ isBlocked: 0 }),
+                            error: `Variant at index ${index} (size: ${variant.size}, color: ${variant.color}) must have at least one image. Looking for fieldname: variantImages_${index}`
+                        });
+                    }
+
+                    variants.push({
+                        size: variant.size,
+                        color: variant.color,
+                        price: parseFloat(variant.price),
+                        stock: parseInt(variant.stock),
+                        imageurl: imageFilenames,
+                        isBlocked: 0
+                    });
+                }
+            }
+        } else {
+            // Fallback to original parsing logic
+            const variantKeys = Object.keys(req.body).filter(key => key.startsWith('variants['));
+            
+            // Group variant data by variant index
+            const variantData = {};
+            variantKeys.forEach(key => {
+                const match = key.match(/^variants\[(\d+)\]\[(.+)\]$/);
+                if (match) {
+                    const variantIndex = match[1];
+                    const field = match[2];
+                    if (!variantData[variantIndex]) {
+                        variantData[variantIndex] = {};
+                    }
+                    variantData[variantIndex][field] = req.body[key];
+                }
+            });
+            
+
+            // Process each variant
+            for (const [index, data] of Object.entries(variantData)) {
+                // Get images for this variant
+                const variantImages = req.files[`variantImages_${index}`] || [];
+                const imageFilenames = variantImages.map(img => img.filename);
+                
+                
+                if (imageFilenames.length === 0) {
+                    return res.status(400).render('add-product-page-variants', { 
+                        brand: await Brand.find({ isBlocked: 0 }),
+                        error: 'Each variant must have at least one image'
+                    });
+                }
+
+                variants.push({
+                    size: data.size,
+                    color: data.color,
+                    price: parseFloat(data.price),
+                    stock: parseInt(data.stock),
+                    imageurl: imageFilenames,
+                    isBlocked: 0
+                });
+            }
+        }
+
+        if (variants.length === 0) {
+            return res.status(400).render('add-product-page-variants', { 
+                brand: await Brand.find({ isBlocked: 0 }),
+                error: 'Please add at least one variant'
+            });
+        }
+
+        // Create product with variants
+        const product = await Product.create({
             producttitle: req.body.producttitle,
             description: req.body.description,
             brandId: req.body.brandname,
-            price: req.body.price,
-            stock: req.body.stock,
-            imageurl: imagefilename,
+            variants: variants,
             isProduct: 0,
-            isBlocked: 0,
-        };
+            isBlocked: 0
+        });
 
-        const result = await Product.create(productIn);
-
-
-
-
-        if(hiddenField1){
-            cropImage(hiddenField1)
+        if (product) {
+            res.redirect("/admin/home/addproduct");
+        } else {
+            res.status(500).render('add-product-page-variants', { 
+                brand: await Brand.find({ isBlocked: 0 }),
+                error: 'Failed to create product'
+            });
         }
-        if(hiddenField2){
-            cropImage(hiddenField2)
-        }
-        if(hiddenField3){
-            cropImage(hiddenField3)
-        }
-        if(hiddenField4){
-            cropImage(hiddenField4)
-        }
-        function cropImage(hiddenfield) {
-            let parts = hiddenfield.split(" ");
-
-
-            let ind = parseInt(parts[1]);
-            let x = parseInt(parts[3]);
-            let y = parseInt(parts[5]);
-            let width = parseInt(parts[7]);
-            let height = parseInt(parts[9]);
-
-
-            // console.log("Index:", ind);
-            // console.log("X-coordinate:", x);
-            // console.log("Y-coordinate:", y);
-            // console.log("Width:", width);
-            // console.log("Height:", height);
-
-            result.imageurl.forEach((el, index) => {
-                if(index == ind){
-                    let newel = '1' + el
-                    sharp(path.join(__dirname, `../public/images/${el}`))
-                        .extract({ left: x, top: y, width: width, height: height })
-                        .toFile(path.join(__dirname, `../public/images/${newel}`))
-                    result.imageurl[index] = newel
-                }
-            })
-        }
-
-        result.save()
-        res.redirect("/admin/home/addproduct");
     } catch (error) {
-        console.log(error);
+        console.error("Error in addproducttodb:", error);
+        res.status(500).render('add-product-page-variants', { 
+            brand: await Brand.find({ isBlocked: 0 }),
+            error: 'Server error: ' + error.message
+        });
+    }finally{
     }
 };
 
@@ -279,7 +331,7 @@ const unblockuser = async (req, res) => {
 
 const productsList = async (req, res) => {
     const product = await Product.find({ isProduct: 0 }).populate('brandId')
-
+    
     res.render("page-products-list", { product });
 };
 
@@ -321,67 +373,154 @@ const editProduct = async (req, res) => {
 
         const product = await Product.findById({ _id: id }).populate('brandId')
 
+        if (!product) {
+            return res.status(404).render('error', { message: 'Product not found' });
+        }
 
         const brand = await Brand.find({ isActive: 0 });
 
-
-        res.render("edit-product-page", { product, brand });
+        res.render("edit-product-page-variants", { product, brand });
     } catch (err) {
-        console.error(err);
+        console.error('Error in editProduct:', err);
+        res.status(500).render('error', { message: 'Server error' });
     }
 };
 
 const editProductandUpdate = async (req, res) => {
-
     try {
-        let productIn
         const { id } = req.query;
+        
 
-        const Images = req.files;
-        const imagefilename = Images.map((img) => {
-            return img.filename;
-        });
-        if (Images.length === 0) {
-            productIn = {
-                producttitle: req.body.producttitle,
-                description: req.body.description,
-                brandId: req.body.brandid,
-                price: req.body.price,
-                stock: req.body.stock,
-
-                isProduct: 0,
-                isBlocked: 0,
-            };
-            console.log(productIn.stock);
-
-
-        } else {
-            productIn = {
-                producttitle: req.body.producttitle,
-                description: req.body.description,
-                brandId: req.body.brandid,
-                price: req.body.price,
-                stock: req.body.stock,
-
-                isProduct: 0,
-                isBlocked: 0,
-            };
-            console.log(productIn.stock);
-            const dataupdate = await Product.findByIdAndUpdate(
-                { _id: id },
-                { $push: { imageurl: { $each: imagefilename } } },
-                { new: true },
-            );
+        // Validate required fields
+        if (!req.body.producttitle || !req.body.description || !req.body.brandid) {
+            return res.status(400).render('edit-product-page-variants', { 
+                product: await Product.findById(id).populate('brandId'),
+                brand: await Brand.find({ isActive: 0 }),
+                error: 'Please fill all required fields'
+            });
         }
 
-        const dataupdate = await Product.findByIdAndUpdate(
+        // Get the existing product to preserve unchanged variants
+        const existingProduct = await Product.findById(id);
+        if (!existingProduct) {
+            return res.status(404).render('edit-product-page-variants', { 
+                product: null,
+                brand: await Brand.find({ isActive: 0 }),
+                error: 'Product not found'
+            });
+        }
+
+        // Group files by field name
+        const filesByField = {};
+        if (req.files) {
+            req.files.forEach(file => {
+                if (!filesByField[file.fieldname]) {
+                    filesByField[file.fieldname] = [];
+                }
+                filesByField[file.fieldname].push(file);
+            });
+        }
+        
+        
+        // Process variants from the form data
+        const updatedVariants = [];
+        
+        // Check which variants have been updated (have new data or files)
+        for (const [index, variant] of req.body.variants.entries()) {
+            
+            if (variant && variant.size && variant.color && variant.price && variant.stock) {
+                // Get images for this variant from grouped files
+                const variantImages = filesByField[`variantImages_${index}`] || [];
+                const imageFilenames = variantImages.map(img => img.filename);
+                
+                
+                // Check if this variant has new images or updated data
+                const hasNewImages = imageFilenames.length > 0;
+                const existingVariant = existingProduct.variants[index];
+                
+                // Compare with existing variant to detect changes
+                const hasUpdatedData = existingVariant ? (
+                    variant.size !== existingVariant.size ||
+                    variant.color !== existingVariant.color ||
+                    parseFloat(variant.price) !== existingVariant.price ||
+                    parseInt(variant.stock) !== existingVariant.stock
+                ) : true;
+                
+                if (hasNewImages || hasUpdatedData) {
+                    // This variant was updated - use new data
+                    let finalImages = imageFilenames;
+                    
+                    // If no new images but variant was updated, keep existing images
+                    if (!hasNewImages && existingVariant && existingVariant.imageurl) {
+                        finalImages = existingVariant.imageurl;
+                    }
+                    
+                    if (finalImages.length === 0) {
+                        return res.status(400).render('edit-product-page-variants', { 
+                            product: await Product.findById(id).populate('brandId'),
+                            brand: await Brand.find({ isActive: 0 }),
+                            error: `Variant at index ${index} (size: ${variant.size}, color: ${variant.color}) must have at least one image.`
+                        });
+                    }
+                    
+                    updatedVariants.push({
+                        size: variant.size,
+                        color: variant.color,
+                        price: parseFloat(variant.price),
+                        stock: parseInt(variant.stock),
+                        imageurl: finalImages,
+                        isBlocked: 0
+                    });
+                    
+                } else if (existingVariant) {
+                    // This variant wasn't updated - keep existing data
+                    updatedVariants.push(existingVariant);
+                }
+            }
+        }
+        
+        // If no variants were processed but we have existing variants, keep them
+        if (updatedVariants.length === 0 && existingProduct.variants.length > 0) {
+            updatedVariants.push(...existingProduct.variants);
+        }
+
+        if (updatedVariants.length === 0) {
+            return res.status(400).render('edit-product-page-variants', { 
+                product: await Product.findById(id).populate('brandId'),
+                brand: await Brand.find({ isActive: 0 }),
+                error: 'At least one variant is required with all details and images.'
+            });
+        }
+
+        // Update the product with new data
+        const updatedProduct = await Product.findByIdAndUpdate(
             { _id: id },
-            { $set: productIn },
-            { new: true },
+            {
+                $set: {
+                    producttitle: req.body.producttitle,
+                    description: req.body.description,
+                    brandId: req.body.brandid,
+                    variants: updatedVariants,
+                    isProduct: 0,
+                    isBlocked: 0
+                }
+            },
+            { new: true }
         );
-        res.redirect("/admin/home/listproducts");
+
+        if (updatedProduct) {
+                res.redirect("/admin/home/listproducts");
+        } else {
+            throw new Error('Failed to update product');
+        }
+
     } catch (err) {
-        console.error(err);
+        console.error('Error updating product:', err);
+        res.status(500).render('edit-product-page-variants', { 
+            product: await Product.findById(req.query.id).populate('brandId'),
+            brand: await Brand.find({ isActive: 0 }),
+            error: 'Server error: ' + err.message
+        });
     }
 };
 
@@ -509,10 +648,26 @@ const orderDetails = async (req, res) => {
 const updateStatus = async (req, res) => {
     const { status, productId, orderId, refundAmount } = req.query
 
-
+    // First, get the order to find the user ID
+    const order = await Order.findOne({ _id: orderId })
+    
     const upgrade = await Order.findOneAndUpdate({ _id: orderId, 'products._id': productId }, { $set: { 'products.$.status': status } })
     if (status == "Return Accepted") {
-        const result = await User.findOneAndUpdate({ _id: req.session.user }, { $inc: { walletBalance: refundAmount } })
+        // Create wallet transaction record
+        const walletTranscation = {
+            date: new Date(),
+            type: 'Credit',
+            amount: parseInt(refundAmount)
+        }
+        
+        // Update both wallet balance and add transaction record
+        const result = await User.findOneAndUpdate(
+            { _id: order.userId }, 
+            { 
+                $inc: { walletBalance: refundAmount },
+                $push: { walletTranscation: walletTranscation }
+            }
+        )
     }
     if (upgrade) {
         res.status(200).json({ message: 'STATUS Updated' });

@@ -45,6 +45,7 @@ const orerSchema = new mongoose.Schema({
      ],
      products:[{
         product_id:{type:mongoose.Schema.Types.ObjectId,ref:'product',required:true},
+        variantId:{type:mongoose.Schema.Types.ObjectId,required:true},
         qty:{
             type:Number,
             required:true
@@ -74,5 +75,8 @@ const orerSchema = new mongoose.Schema({
 })
 
 const orderModel = mongoose.model("order",orerSchema);
+
+// Enable strict population to work correctly
+orderModel.schema.set('strictPopulate', false);
 
 module.exports = orderModel;

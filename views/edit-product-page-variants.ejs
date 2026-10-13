@@ -1,0 +1,217 @@
+<%- include("adminLayouts/header.ejs")%>
+
+    <main class="main-wrap">
+       
+        <form id='regform' method="post" action="/admin/home/editproduct/?id=<%= product._id %>" enctype="multipart/form-data">
+        <section class="content-main">
+            
+            <div class="row">
+                <div class="col-6">
+                    <div class="content-header">
+                        <h2 class="content-title">Edit Product</h2>
+                        <div>
+                            
+                            <button class="btn btn-md rounded font-sm hover-up">Update Product</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>1. General info</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="mb-4">
+                                         <label class="form-label">Product title</label>
+                                        <input id="productTitle" name="producttitle" type="text" placeholder="Type here" class="form-control" value="<%= product.producttitle %>">
+                                        <p><div id="error1" style="display: none;" class="alert alert-danger err"></div></p>     
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Description</label>
+                                        <textarea id="descriptionBox" name="description" placeholder="Type here" class="form-control" rows="4" ><%= product.description %></textarea>
+                                        <p><div id="error2" style="display: none;" class="alert alert-danger err"></div></p>
+
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Brand name</label>
+                                        <select id="dropdown" class="form-select" name="brandid">
+                                            
+                                            <option value="<%= product.brandId._id %>"><%= product.brandId.brandName%></option>
+                                            <% if(locals.brand && locals.brand.length > 0){ for(let i = 0 ; i < locals.brand.length  ; i++) { %>
+                                                <% if(locals.brand[i]._id == product.brandId._id) {%>
+                                                    <% continue; %>
+                                                    <% } else { %>
+                                               
+                                            <option value="<%=brand[i]._id %>"> <%=brand[i].brandName %> </option>
+                                                        <% } %>
+                                                        <% } }%>
+                                            
+
+                                        </select>
+                                        <p><div id="error3" style="display: none;" class="alert alert-danger err"></div></p>
+
+                                    </div>
+
+                                </div> <!-- col.// -->
+                            </div> <!-- row.// -->
+                            <hr class="mb-4 mt-0">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <h6>2. Product Variants</h6>
+                                </div>
+                                <div class="col-md-9">
+                                    <div id="variantsContainer">
+                                        <% product.variants.forEach(function(variant, index) { %>
+                                            <div class="variant-card card mb-3" data-index="<%= index %>">
+                                                <div class="card-body">
+                                                    <h6>Variant <%= index + 1 %></h6>
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <label class="form-label">Size</label>
+                                                            <input type="text" name="variants[<%= index %>][size]" class="form-control" value="<%= variant.size %>" required>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label">Color</label>
+                                                            <input type="text" name="variants[<%= index %>][color]" class="form-control" value="<%= variant.color %>" required>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label">Price (₹)</label>
+                                                            <input type="number" name="variants[<%= index %>][price]" class="form-control" value="<%= variant.price %>" required>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label class="form-label">Stock</label>
+                                                            <input type="number" name="variants[<%= index %>][stock]" class="form-control" value="<%= variant.stock %>" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-3">
+                                                        <div class="col-12">
+                                                            <label class="form-label">Images</label>
+                                                            <div class="existing-images">
+                                                                <% variant.imageurl.forEach(function(image, imgIndex) { %>
+                                                                    <div class="image-preview d-inline-block me-2 mb-2">
+                                                                        <img src="/public/images/<%= image %>" width="60" height="60" class="img-thumbnail">
+                                                                        <br>
+                                                                        <small><%= image %></small>
+                                                                    </div>
+                                                                <% }); %>
+                                                            </div>
+                                                            <input type="file" name="variantImages_<%= index %>" multiple class="form-control" accept="image/*">
+                                                            <small class="text-muted">Upload new images (will replace existing ones). You can select multiple files for this variant.</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <% }); %>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="addNewVariant()">Add New Variant</button>
+                                </div> <!-- col.// -->
+                            </div> <!-- row.// -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </section> <!-- content-main end// -->
+    </form>
+
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                    document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        let variantIndex = <%- JSON.stringify(product.variants.length) %>;
+
+        function addNewVariant() {
+            const variantsContainer = document.getElementById('variantsContainer');
+            const newVariant = document.createElement('div');
+            newVariant.className = 'variant-card card mb-3';
+            newVariant.dataset.index = variantIndex;
+            
+            newVariant.innerHTML = `
+                <div class="card-body">
+                    <h6>Variant ${variantIndex + 1}</h6>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="form-label">Size</label>
+                            <input type="text" name="variants[${variantIndex}][size]" class="form-control" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Color</label>
+                            <input type="text" name="variants[${variantIndex}][color]" class="form-control" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Price (₹)</label>
+                            <input type="number" name="variants[${variantIndex}][price]" class="form-control" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Stock</label>
+                            <input type="number" name="variants[${variantIndex}][stock]" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <label class="form-label">Images</label>
+                            <input type="file" name="variantImages_${variantIndex}" multiple class="form-control" accept="image/*" required>
+                            <small class="text-muted">Upload at least one image</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            variantsContainer.appendChild(newVariant);
+            variantIndex++;
+        }
+
+        // Form validation
+        document.getElementById('regform').addEventListener('submit', function(e) {
+            const productTitle = document.getElementById('productTitle').value.trim();
+            const description = document.getElementById('descriptionBox').value.trim();
+            const brandId = document.getElementById('dropdown').value;
+            
+            // Reset error messages
+            document.querySelectorAll('.err').forEach(err => err.style.display = 'none');
+            
+            let hasError = false;
+            
+            if (!productTitle) {
+                document.getElementById('error1').style.display = 'block';
+                document.getElementById('error1').textContent = 'Product title is required';
+                hasError = true;
+            }
+            
+            if (!description) {
+                document.getElementById('error2').style.display = 'block';
+                document.getElementById('error2').textContent = 'Description is required';
+                hasError = true;
+            }
+            
+            if (!brandId) {
+                document.getElementById('error3').style.display = 'block';
+                document.getElementById('error3').textContent = 'Brand selection is required';
+                hasError = true;
+            }
+            
+            if (hasError) {
+                e.preventDefault();
+                return false;
+            }
+        });
+    </script>
+    </body>
+</html>

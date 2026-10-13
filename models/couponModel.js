@@ -7,7 +7,7 @@ const couponSchema =new mongoose.Schema({
     },
     validity:{
         type:Date,
-        default:new Date()
+        default:Date.now
     },
     minPurchase:{
         type:Number

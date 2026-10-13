@@ -14,7 +14,7 @@ const deleteImgInEditProduct = require('../controllers/deleteImgInEditProduct')
 
 router.get('/home', adminController.adminHome)
 router.get('/home/addproduct', adminController.addproduct)
-router.post('/home/addproduct', upload.array('images', 4), adminController.addproducttodb)
+router.post('/home/addproduct', upload.any(), adminController.addproducttodb)
 router.get('/home/usermanagement', adminController.usermanagement)
 router.get('/usermanagement/block', adminController.blockuser)
 router.get('/usermanagement/unblock', adminController.unblockuser)
@@ -24,7 +24,7 @@ router.get('/usermanagement/blockproduct', adminController.blockProduct)
 router.get('/usermanagement/unblockproduct', adminController.unblockProduct)
 
 router.get('/home/editproduct', adminController.editProduct)
-router.post('/home/editproduct', upload.array('images', 4), adminController.editProductandUpdate)
+router.post('/home/editproduct', upload.any(), adminController.editProductandUpdate)
 
 router.get('/usermanagement/deleteproduct', adminController.deleteproduct)
 

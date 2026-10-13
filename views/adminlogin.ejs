@@ -93,7 +93,7 @@ body {
         <div class="login">
           <div class="login-header">
             <h3>LOGIN</h3>
-            <p>Please enter your credentials to login.</p>
+            <p>Please enter your credentials to login</p>
           </div>
         </div>
         <form id="logform" class="login-form" method="post" action="/admin" >
@@ -182,13 +182,15 @@ else{
       password.addEventListener('blur',passwordValidate)
 
 
-      logForm.addEventListener('submit',function(e){
-        emailValidate();
-        passwordValidate();
+      const logform = document.getElementById('logform')
+      logform.addEventListener('submit',function(e){
+        // Temporarily disable validation to test backend
+        // emailValidate();
+        // passwordValidate();
 
-        if(!error1.innerHTML === '' || !error2.innerHTML === ''){
-          e.preventDefault()
-        }
+        // if(!error1.innerHTML === '' || !error2.innerHTML === ''){
+        //   e.preventDefault()
+        // }
       })
     </script>
 </body>

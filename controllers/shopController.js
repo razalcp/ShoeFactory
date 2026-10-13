@@ -6,7 +6,7 @@ const Cart = require('../models/cart');
 
 const viewShop = async (req, res) => {
     const userdata = await User.findOne({ _id: req.session.user });
-    const product = await Product.find({ isBlocked: 0 });
+    const product = await Product.find({ isBlocked: 0 }).populate('brandId');
     let cartData = await Cart.findOne({ userId: req.session.user }).populate('products.productId')
     let cartQuantity = 0;
     if (cartData) {

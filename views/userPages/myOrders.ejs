@@ -25,7 +25,28 @@
                                      <%el.products.forEach(ele =>{%>
                                         <%if(el.paymentStatus=='Payment not received') {%>
                                          <tr>
-                                             <td><img style="height:50px;width:38px" src="/public/images/<%=ele.product_id.imageurl[1]%>" alt=""> <%=ele.product_id.producttitle%> x <%=ele.qty%></td>
+                                             <td>
+                                                <% if(ele.product_id && ele.product_id.variants && ele.variantId) { %>
+                                                    <% 
+                                                    // Find the specific variant for this order
+                                                    let variant = ele.product_id.variants.find(v => v._id.toString() === ele.variantId.toString());
+                                                    if(variant && variant.imageurl && variant.imageurl[1]) { %>
+                                                        <img style="height:50px;width:38px" src="/public/images/<%=variant.imageurl[1]%>" alt="">
+                                                    <% } else if(ele.product_id.imageurl && ele.product_id.imageurl[1]) { %>
+                                                        <img style="height:50px;width:38px" src="/public/images/<%=ele.product_id.imageurl[1]%>" alt="">
+                                                    <% } %>
+                                                    <%=ele.product_id.producttitle%> 
+                                                    <% if(variant) { %>
+                                                        (Size: <%=variant.size%>, Color: <%=variant.color%>)
+                                                    <% } %>
+                                                    x <%=ele.qty%>
+                                                <% } else { %>
+                                                    <% if(ele.product_id && ele.product_id.imageurl && ele.product_id.imageurl[1]) { %>
+                                                        <img style="height:50px;width:38px" src="/public/images/<%=ele.product_id.imageurl[1]%>" alt="">
+                                                    <% } %>
+                                                    <%=ele.product_id.producttitle || 'Product'%> x <%=ele.qty%>
+                                                <% } %>
+                                             </td>
                                              <td>
                                               <a href="/orderDetail?orderId=<%=el._id%>" style="color:tomato;text-decoration: underline;">Details</a>   
      
@@ -80,7 +101,28 @@
                                 
                                 <%el.products.forEach(ele =>{%>
                                     <tr>
-                                        <td><img style="height:50px;width:38px" src="/public/images/<%=ele.product_id.imageurl[1]%>" alt=""> <%=ele.product_id.producttitle%> x <%=ele.qty%></td>
+                                        <td>
+                                            <% if(ele.product_id && ele.product_id.variants && ele.variantId) { %>
+                                                <% 
+                                                // Find the specific variant for this order
+                                                let variant = ele.product_id.variants.find(v => v._id.toString() === ele.variantId.toString());
+                                                if(variant && variant.imageurl && variant.imageurl[1]) { %>
+                                                    <img style="height:50px;width:38px" src="/public/images/<%=variant.imageurl[1]%>" alt="">
+                                                <% } else if(ele.product_id.imageurl && ele.product_id.imageurl[1]) { %>
+                                                    <img style="height:50px;width:38px" src="/public/images/<%=ele.product_id.imageurl[1]%>" alt="">
+                                                <% } %>
+                                                <%=ele.product_id.producttitle%> 
+                                                <% if(variant) { %>
+                                                    (Size: <%=variant.size%>, Color: <%=variant.color%>)
+                                                <% } %>
+                                                x <%=ele.qty%>
+                                            <% } else { %>
+                                                <% if(ele.product_id && ele.product_id.imageurl && ele.product_id.imageurl[1]) { %>
+                                                    <img style="height:50px;width:38px" src="/public/images/<%=ele.product_id.imageurl[1]%>" alt="">
+                                                <% } %>
+                                                <%=ele.product_id.producttitle || 'Product'%> x <%=ele.qty%>
+                                            <% } %>
+                                        </td>
                                         <td>
                                          <a href="/orderDetail?orderId=<%=el._id%>" style="color:tomato;text-decoration: underline;">Details</a>   
 
@@ -343,7 +385,7 @@ var data = await result.json()
 
 
         </script>
-        <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
+        <script data-cfasync="false" src="https://cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
         <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
         <script src="assets/js/popper.min.js"></script>
         <script src="assets/js/bootstrap.min.js"></script>

@@ -11,6 +11,7 @@ const error4 = document.getElementById('error4')
 const descriptionBox= document.getElementById('descriptionBox')
 const error5 = document.getElementById('error5')
 const expiryDate = document.getElementById('expiryDate')
+const errorDate = document.getElementById('error')
 
 
 function validateCouponCode() {
@@ -96,6 +97,21 @@ function validateDescriptionBox(){
     }
 }
 
+function validateExpiryDate() {
+    let value = expiryDate ? expiryDate.value : "";
+    if (!value || value.trim() === "") {
+        if (errorDate) {
+            errorDate.style.display = "block";
+            errorDate.innerHTML = "Please select an Expiry Date";
+        }
+    } else {
+        if (errorDate) {
+            errorDate.innerHTML = "";
+            errorDate.style.display = "none";
+        }
+    }
+}
+
 
 
 couponTag.addEventListener('blur', validateCouponCode)
@@ -103,17 +119,23 @@ minPurchase.addEventListener('blur', validatePurchase)
 discount.addEventListener('blur',validateDiscount)
 maxDiscount.addEventListener('blur',validateMaxDiscount)
 descriptionBox.addEventListener('blur',validateDescriptionBox)
+if (expiryDate) {
+    expiryDate.addEventListener('blur', validateExpiryDate)
+    expiryDate.addEventListener('change', validateExpiryDate)
+}
 
 couponForm.addEventListener('submit', function (e) {
     validateCouponCode();
-    validatePurchase(),
-    validateDiscount()
-    validateMaxDiscount()
-    if (error1.innerHTML ||error2.innerHTML || error3.innerHTML || error4.innerHTML||expiryDate.innerHTML||error5.innerHTML) {
+    validatePurchase();
+    validateDiscount();
+    validateMaxDiscount();
+    validateDescriptionBox();
+    validateExpiryDate();
+    if (error1.innerHTML || error2.innerHTML || error3.innerHTML || error4.innerHTML || error5.innerHTML || (errorDate && errorDate.innerHTML)) {
         e.preventDefault()      
     }
     else {
-        console.log("prevented");
+        console.log("Form validated successfully");
     }
 })
 

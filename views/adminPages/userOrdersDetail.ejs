@@ -10,7 +10,7 @@
                     <div class="content-header">
                         <div>
                             <h2 class="content-title card-title">Order detail</h2>
-                            <p>Details for Order ID: <%=el._id%>
+                            <p>Details for Order ID: <%=el.orderId%>
                             </p>
                         </div>
                     </div>
@@ -23,7 +23,7 @@
                                             <%=el.createdAt%>
                                         </b>
                                     </span> <br>
-                                    <small class="text-muted">Order ID: <%=el._id%></small>
+                                    <small class="text-muted">Order ID: <%=el.orderId%></small>
                                 </div>
 
                             </div>
@@ -118,21 +118,64 @@
 
                                                                 <div class="left">
 
-                                                                    <img src="/public/images/<%=elem.product_id.imageurl[1]%>"
-                                                                        width="40" height="40" class="img-xs"
-                                                                        alt="Item">
+                                                                    <% if(elem.product_id && elem.product_id.variants && elem.variantId) { %>
+                                                                        <% 
+                                                                            // Find the specific variant for this order
+                                                                            let variant = elem.product_id.variants.find(v => v._id.toString() === elem.variantId.toString());
+                                                                            if(variant && variant.imageurl && variant.imageurl[1]) { %>
+                                                                                <img src="/public/images/<%=variant.imageurl[1]%>"
+                                                                                    width="40" height="40" class="img-xs"
+                                                                                    alt="Item">
+                                                                            <% } else if(elem.product_id.imageurl && elem.product_id.imageurl[1]) { %>
+                                                                                <img src="/public/images/<%=elem.product_id.imageurl[1]%>"
+                                                                                    width="40" height="40" class="img-xs"
+                                                                                    alt="Item">
+                                                                            <% } %>
+                                                                    <% } else { %>
+                                                                        <% if(elem.product_id && elem.product_id.imageurl && elem.product_id.imageurl[1]) { %>
+                                                                            <img src="/public/images/<%=elem.product_id.imageurl[1]%>"
+                                                                                width="40" height="40" class="img-xs"
+                                                                                alt="Item">
+                                                                        <% } %>
+                                                                    <% } %>
                                                                 </div>
                                                                 <div class="info">
                                                                     <%=elem.product_id.producttitle%>
+                                                                    <% if(elem.product_id && elem.product_id.variants && elem.variantId) { %>
+                                                                        <% 
+                                                                            let variant = elem.product_id.variants.find(v => v._id.toString() === elem.variantId.toString());
+                                                                            if(variant) { %>
+                                                                                <br><small class="text-muted">Size: <%=variant.size%>, Color: <%=variant.color%></small>
+                                                                            <% } %>
+                                                                        <% } %>
                                                                 </div>
                                                             </a>
                                                         </td>
-                                                        <td id="price"> ₹<%=elem.product_id.price%>
+                                                        <td id="price"> ₹<% 
+                                                            if(elem.product_id && elem.product_id.variants && elem.variantId) {
+                                                                let variant = elem.product_id.variants.find(v => v._id.toString() === elem.variantId.toString());
+                                                                if(variant) { %>
+                                                                    <%=variant.price%>
+                                                                <% } else { %>
+                                                                    <%=elem.product_id.price || elem.product_id.discountPrice || 0%>
+                                                                <% }
+                                                            } else { %>
+                                                                <%=elem.product_id.price || elem.product_id.discountPrice || 0%>
+                                                            <% } %>
                                                         </td>
 
-
                                                         <input type="hidden" class="priceTag"
-                                                            value="<%=elem.product_id.price%>">
+                                                            value="<% 
+                                                                if(elem.product_id && elem.product_id.variants && elem.variantId) {
+                                                                    let variant = elem.product_id.variants.find(v => v._id.toString() === elem.variantId.toString());
+                                                                    if(variant) { %>
+                                                                        <%=variant.price%>
+                                                                    <% } else { %>
+                                                                        <%=elem.product_id.price || elem.product_id.discountPrice || 0%>
+                                                                    <% }
+                                                                } else { %>
+                                                                    <%=elem.product_id.price || elem.product_id.discountPrice || 0%>
+                                                                <% } %>">
 
                                                         <input type="hidden" class="hiddenField" value="<%=elem._id%>">
 

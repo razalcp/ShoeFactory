@@ -223,13 +223,14 @@
                                 <li><a href="/myOrder">My Orders</a></li>
                                 <li><a href="/wallet">Wallet</a></li>
 
-                                <li><a href="/cart">Cart</a></li>
+                                <li class="position-relative"><a href="/cart">Cart</a>
                                 <% if(locals.totalQuantity) { %>
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="margin-left: -200px; margin-top: 8px;">
+                                    <span class="position-absolute badge rounded-pill bg-danger" style="top: 3px; right:-14px;">
                                    <%=totalQuantity %>
                                     <span class="visually-hidden">unread messages</span>
                                   </span>
                               <%  } %>
+                                </li>
                                 
                                 <li><a href="/wishlist">Wishlist</a></li>
                                 <% if(locals.userdata) { %>
@@ -489,28 +490,32 @@
                     <%if(locals.cartData){%>
 
                         <% locals.cartData.forEach(el=>{%>
-
+                            <% if (el.productId && el.productId.variants && el.productId.variants.length > 0) { %>
+                                <% const cartVariant = el.productId.variants.find(v => v._id.toString() === el.variantId) || el.productId.variants[0]; %>
                             <div class="add_cart_product">
                                 <div class="add_cart_product__thumb">
-                                    <img src="/public/images/<%=el.productId.imageurl[0]%>" alt="">
+                                    <% if (cartVariant.imageurl && cartVariant.imageurl.length > 0) { %>
+                                        <img src="/public/images/<%= cartVariant.imageurl[0] %>" alt="">
+                                    <% } else { %>
+                                        <img src="/assets/img/product/placeholder.jpg" alt="">
+                                    <% } %>
                                 </div>
                                 <div class="add_cart_product__content"></div>
 
-
-                                <h5><a href="shop.html" class="price">
-                                        <%= el.productId.producttitle%>
+                                <h5><a href="/userhome/productdetail?id=<%= el.productId._id %>" class="price">
+                                        <%= el.productId.producttitle %> (<%= el.size %>, <%= el.color %>)
                                     </a></h5>
                                 <p class="priceElement">
-                                    <%= el.productId.price %>
+                                    ₹<%= cartVariant.price %> x <%= el.quantity %>
                                 </p>
                                 <button class="cart_close"><i class="fal fa-times"></i></button>
                             </div>
+                            <% } %>
                 </div>
 
                 <%})%>
 
                     <% } %>
-
 
             </div>
 

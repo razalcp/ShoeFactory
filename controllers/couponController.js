@@ -23,57 +23,97 @@ const viewCreateCouponPage = async (req, res) => {
 
 
 const addCopounToDB = async (req, res) => {
-    const couponIn = {
-        couponCode: req.body.couponCode,
-        validity: req.body.expiryDate,
-        minPurchase: req.body.minPurchase,
-        minDiscountPercentage: req.body.discount,
-        maxDiscountValue: req.body.maxDiscount,
-        description: req.body.description
-    }
+    try {
+        let validityDate = new Date();
+        if (req.body.expiryDate) {
+            const parsed = new Date(req.body.expiryDate);
+            if (!isNaN(parsed.getTime())) {
+                validityDate = parsed;
+            }
+        }
 
+        const couponIn = {
+            couponCode: req.body.couponCode,
+            validity: validityDate,
+            minPurchase: req.body.minPurchase,
+            minDiscountPercentage: req.body.discount,
+            maxDiscountValue: req.body.maxDiscount,
+            description: req.body.description
+        }
 
- 
-    const result = await Coupon.create(couponIn)
-    if (result) {
-        res.redirect('/admin/coupon')
+        const result = await Coupon.create(couponIn)
+        if (result) {
+            res.redirect('/admin/coupon')
+        } else {
+            res.redirect('/admin/createCoupon')
+        }
+    } catch (error) {
+        console.error('Error adding coupon:', error.message);
+        res.redirect('/admin/createCoupon');
     }
 }
 
 const applyCouponLogic = async (req, res) => {
-    const userData = await User.findOne({ _id: req.session.user })
-    
-    const { couponId } = req.query;
-    const { total } = req.query;
-
-
-    const couponFindData = await Coupon.findOne({ _id: couponId })
-
-
-    let number = total.substring(1); // Remove the first character (rupee symbol)
-
-
-    const discount = couponFindData.minDiscountPercentage;
-    const couponName = couponFindData.couponCode
-
-    const result = await User.findOneAndUpdate(
-        { _id: req.session.user, couponApplied: { $ne: couponId} },
-        { $addToSet: { couponApplied : couponId } })
-
-    const used = "Coupon already used"
-    if (result) {
-        const update = await Coupon.findOneAndUpdate({_id: couponId},{$set:{isBlocked:1}})
-        const reducedAmount = number-(number * discount / 100);
-       const discountAmount = number* discount /100;
-        if (reducedAmount) {
-
-            res.json({ status: true, number: reducedAmount ,discountAmount:discountAmount?discountAmount:0 ,discountPercentage:discount?discount:0})
+    try {
+        const { couponId, total } = req.query;
+        if (!couponId || !total) {
+            return res.json({ status: false, message: "Invalid request parameters" });
         }
-``
-    } else {
-        res.json({ status: false, message: used })
-    }
 
+        const couponFindData = await Coupon.findOne({ _id: couponId, isBlocked: 0 });
+        if (!couponFindData) {
+            return res.json({ status: false, message: "Coupon not found or inactive" });
+        }
+
+        // Check if coupon is expired
+        if (couponFindData.validity && !isNaN(new Date(couponFindData.validity).getTime()) && new Date(couponFindData.validity) < new Date()) {
+            return res.json({ status: false, message: "This coupon has expired" });
+        }
+
+        // Parse total price safely
+        const numericTotal = parseFloat(total.replace(/[^0-9.]/g, ''));
+        if (isNaN(numericTotal) || numericTotal <= 0) {
+            return res.json({ status: false, message: "Invalid order total" });
+        }
+
+        // Check minimum purchase requirement
+        if (couponFindData.minPurchase && numericTotal < couponFindData.minPurchase) {
+            return res.json({ 
+                status: false, 
+                message: `Minimum purchase of ₹${couponFindData.minPurchase} required for this coupon` 
+            });
+        }
+
+        const discount = couponFindData.minDiscountPercentage || 0;
+        let discountAmount = Math.round((numericTotal * discount) / 100);
+
+        // Cap discount if maxDiscountValue is set
+        if (couponFindData.maxDiscountValue && discountAmount > couponFindData.maxDiscountValue) {
+            discountAmount = couponFindData.maxDiscountValue;
+        }
+
+        const reducedAmount = numericTotal - discountAmount;
+
+        // Ensure user hasn't already used this coupon
+        const result = await User.findOneAndUpdate(
+            { _id: req.session.user, couponApplied: { $ne: couponId } },
+            { $addToSet: { couponApplied: couponId } }
+        );
+
+        if (result) {
+            return res.json({ 
+                status: true, 
+                number: reducedAmount, 
+                discountAmount: discountAmount, 
+                discountPercentage: discount 
+            });
+        } else {
+            return res.json({ status: false, message: "Coupon already used" });
+        }
+    } catch (error) {
+        console.error("Error applying coupon:", error);
+        return res.json({ status: false, message: "Error applying coupon" });
+    }
 }
 
 const deleteCoupon = async (req,res) => {

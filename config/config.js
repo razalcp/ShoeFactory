@@ -1,9 +1,13 @@
 const mongoose=require('mongoose')
 
 const connection =()=>{
+
+  console.log("All env vars:", Object.keys(process.env).filter(key => key.includes('database')));
+  
 mongoose.connect(process.env.database);
 
 mongoose.connection.on("connected", () => {
+
   console.log("Connected to MongoDB");
 })
 

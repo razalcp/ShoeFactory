@@ -1,5 +1,8 @@
-const cartId = document.getElementById('cartidhidden').value
-const addressId = document.getElementById('addresshiddenfield').value
+// Add null checks to prevent errors
+const cartIdElement = document.getElementById('cartidhidden');
+const addressIdElement = document.getElementById('addresshiddenfield');
+const cartId = cartIdElement ? cartIdElement.value : null;
+const addressId = addressIdElement ? addressIdElement.value : null;
 const paymentMethord = document.getElementsByClassName('paymentOptions')
 let updatedStatus;
 
@@ -44,11 +47,47 @@ function orderConfirm() {
 }
 
 async function createOrder() {
+    // Check if required elements exist
+    if (!cartId) {
+        console.error('Cart ID not found');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Cart information not found. Please try again.',
+            timer: 3000,
+            showConfirmButton: false
+        });
+        return;
+    }
+    
+    if (!addressId) {
+        console.error('Address ID not found');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Please select a delivery address.',
+            timer: 3000,
+            showConfirmButton: false
+        });
+        return;
+    }
 
-   const total =  document.getElementById('subTotal').innerHTML
+    const totalElement = document.getElementById('subTotal');
+    if (!totalElement) {
+        console.error('Total element not found');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Cart total not found. Please try again.',
+            timer: 3000,
+            showConfirmButton: false
+        });
+        return;
+    }
 
-   
-    url = `/orderPlace?cartId=${cartId}&addressId=${addressId}&modeOfPayment=${updatedStatus}&total=${total}`
+    const total = totalElement.innerHTML;
+    
+    url = `/orderPlace?cartId=${cartId}&addressId=${addressId}&paymentMethord=${updatedStatus}&total=${total}`
 
     const result = await fetch(url)
     var data = await result.json()

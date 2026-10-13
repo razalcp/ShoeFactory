@@ -34,6 +34,7 @@ app.use(
 );
 
 
+  console.log(process.env.database);
 
 app.set("view engine", "ejs");
 
@@ -64,7 +65,16 @@ app.use("/admin", adminfeatRoute);
 
 
 
-app.listen(process.env.Port, () => {
+const server = app.listen(3003, () => {
   console.log("Server Started at port  http://localhost:3003");
   console.log("Admin interface over here http://localhost:3003/admin");
+});
+
+// Handle server errors gracefully
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error('Port 3003 is already in use. Please close the other application and try again.');
+  } else {
+    console.error('Server error:', err);
+  }
 });

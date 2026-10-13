@@ -132,7 +132,7 @@ const loadregister = function (req, res) {
 const loaduserHome = async function (req, res) {
   try {
     const userdata = await User.findOne({ _id: req.session.user });
-    const product = await Product.find({ isBlocked: 0 });
+    const product = await Product.find({ isBlocked: 0 }).populate('brandId');
     const cartData = await Cart.findOne({ userId: req.session.user }).populate('products.productId')
 
     let cartQuantity = 0;
@@ -309,38 +309,15 @@ const verifyotp = async (req, res) => {
 
 const loadProductDetail = async (req, res) => {
   const { id } = req.query;
-  console.log(id,"ssss");
-  
+  console.log(id, "ssss");
+
   let productdata = await Product.findOne({ _id: id, isProduct: 0 })
-  console.log("ggg",productdata);
-  
-  let actualPrice = productdata.price
-  // ///////////////////////brand offer////////////////////////////////
-  let brandId = productdata.brandId
-  let brandData = await Brand.findOne({ _id: brandId })
-  // console.log(brandData);
-  let brandOffer = brandData.brandOffer;
-  let brandDiscountPrice = actualPrice - Math.floor((actualPrice *  brandOffer / 100))
-// console.log(brandDiscountPrice);
-
-if (brandDiscountPrice!= 0) {
-  let productdata = await Product.findOneAndUpdate({ _id: id }, { $set: {brandDiscountPrice: brandDiscountPrice } });
-
-}
-// ////////////////////////////////////////product offer//////////////////////////////////
-  let discount = productdata.productOffer
- 
-  let discountPrice = actualPrice - Math.floor((actualPrice * discount / 100))
-// console.log(discountPrice);
 
 
-  if (discountPrice != 0) {
-    let productdata = await Product.findOneAndUpdate({ _id: id }, { $set: { discountPrice: discountPrice } });
-
-  }
+  // Skip price calculation for variant-based products
+  // Prices are now handled at variant level
   const userdata = await User.findOne({ _id: req.session.user });
   const cartData = await Cart.findOne({ userId: req.session.user }).populate('products.productId')
-
 
   let cartQuantity = 0;
   if (cartData) {
@@ -349,43 +326,86 @@ if (brandDiscountPrice!= 0) {
       cartQuantity += product.quantity;
     });
   }
- 
-  res.render("productdetailpage", { productdata, userdata, cartData: cartData ? cartData.products : [], totalQuantity: cartQuantity ? cartQuantity : 0 });
+
+  res.render("productdetailpage-variants", { productdata, userdata, cartData: cartData ? cartData.products : [], totalQuantity: cartQuantity ? cartQuantity : 0 });
 };
 
-
-
 const addToCart = async (req, res) => {
-  let { productId } = req.query;
-  let { quantity } = req.query;
+  let { productId, variantId, size, color, quantity } = req.query;
+
+  if (!variantId || !size || !color) {
+    return res.json({ failure: "Please select size and color" });
+  }
 
   let userid = req.session.user;
-  let productData = await Product.findOne({ _id: productId })
-  let currentStock = productData.stock;
 
-  let products = [];
-  if (currentStock > 0) {
-    products.push({ productId: productId, quantity: quantity });
+  // Find the product and the specific variant
+  let productData = await Product.findOne({ _id: productId });
+  if (!productData) {
+    return res.json({ failure: "Product not found" });
+  }
 
+  let variantData = productData.variants.id(variantId);
+  if (!variantData) {
+    return res.json({ failure: "Variant not found" });
+  }
 
+  let currentStock = variantData.stock;
+  quantity = parseInt(quantity) || 1;
 
-    let cartData = {
-      userId: userid,
-      products: products,
-    };
-
-
+  if (currentStock >= quantity) {
     let alreadyCreated = await Cart.findOne({ userId: userid });
 
     if (!alreadyCreated) {
-      let create = await Cart.create(cartData);
+      // Create new cart
+      let cartData = {
+        userId: userid,
+        products: [{
+          productId: productId,
+          variantId: variantId,
+          size: size,
+          color: color,
+          quantity: quantity
+        }]
+      };
+      await Cart.create(cartData);
     } else {
-      let sameProduct = await Cart.findOne({ "products.productId": productId });
-      if (!sameProduct) {
-        let update = await Cart.findOneAndUpdate(
+      // Check if the same variant is already in cart
+      let existingCart = await Cart.findOne({
+        userId: userid,
+        "products.variantId": variantId
+      });
+
+      if (existingCart) {
+        // Update quantity of existing variant
+        let existingProduct = existingCart.products.find(p => p.variantId === variantId);
+        let newQuantity = existingProduct.quantity + quantity;
+
+        if (newQuantity <= currentStock) {
+          await Cart.findOneAndUpdate(
+            { userId: userid, "products.variantId": variantId },
+            { $set: { "products.$.quantity": newQuantity } },
+            { new: true }
+          );
+        } else {
+          return res.json({ failure: "Not enough stock available" });
+        }
+      } else {
+        // Add new variant to cart
+        await Cart.findOneAndUpdate(
           { userId: userid },
-          { $push: { products: { productId: productId, quantity: quantity } } },
-          { new: true },
+          {
+            $push: {
+              products: {
+                productId: productId,
+                variantId: variantId,
+                size: size,
+                color: color,
+                quantity: quantity
+              }
+            }
+          },
+          { new: true }
         );
       }
     }
@@ -394,9 +414,59 @@ const addToCart = async (req, res) => {
   } else {
     res.json({ failure: "Out of Stock" })
   }
-
 };
 
+const getCartCount = async (req, res) => {
+  try {
+    const userId = req.session.user;
+    if (!userId) {
+      return res.json({ totalQuantity: 0 });
+    }
+
+    const cartData = await Cart.findOne({ userId: userId });
+    let totalQuantity = 0;
+
+    if (cartData && cartData.products) {
+      cartData.products.forEach(product => {
+        totalQuantity += product.quantity;
+      });
+    }
+
+    res.json({ totalQuantity });
+  } catch (error) {
+    console.error('Error getting cart count:', error);
+    res.json({ totalQuantity: 0 });
+  }
+};
+
+const getVariantStock = async (req, res) => {
+  try {
+    const { productId, variantId } = req.query;
+
+    if (!productId || !variantId) {
+      return res.status(400).json({ message: 'Product ID and Variant ID are required' });
+    }
+
+    const product = await Product.findOne({ _id: productId });
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    const variant = product.variants.id(variantId);
+    if (!variant) {
+      return res.status(404).json({ message: 'Variant not found' });
+    }
+
+    res.json({
+      stock: variant.stock,
+      productId: productId,
+      variantId: variantId
+    });
+  } catch (error) {
+    console.error('Error getting variant stock:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
 const showCart = async (req, res) => {
   const userdata = await User.findOne({ _id: req.session.user });
@@ -412,7 +482,15 @@ const showCart = async (req, res) => {
   }
 
   function calculateProductTotal(product) {
-    const { productId, quantity } = product;
+    const { productId, quantity, variantId } = product;
+
+    // Find the specific variant
+    const variant = productId.variants.id(variantId);
+    if (variant) {
+      return variant.price * quantity;
+    }
+
+    // Fallback to product price if variant not found
     const { price, discountPrice } = productId;
     const totalPrice = discountPrice != null ? discountPrice * quantity : price * quantity;
     return totalPrice;
@@ -426,10 +504,8 @@ const showCart = async (req, res) => {
     });
   }
 
-
   // console.log("Cart Total:", cartTotal)
-  res.render('userPages/cart', { cart, userdata, cartData: cartData ? cartData.products : [], totalQuantity: cartQuantity ? cartQuantity : 0, cartTotal: cartTotal ? cartTotal : 0 })
-
+  res.render('userPages/cart-variants', { cart, userdata, cartData: cartData ? cartData.products : [], totalQuantity: cartQuantity ? cartQuantity : 0, cartTotal: cartTotal ? cartTotal : 0 })
 }
 
 
@@ -437,18 +513,33 @@ const showCart = async (req, res) => {
 const deleteCartItem = async (req, res) => {
   //this is a fetch handling route
 
-  const { productid } = req.query;
-
-  const del = await Cart.findOneAndUpdate({ userId: req.session.user }, { $pull: { "products": { "productId": productid } } })
+  const { productid, variantId } = req.query;
 
   try {
-    if (del) {
-      res.status(200).json({ message: 'Deleted successfully' });
+    let del;
+
+    if (variantId) {
+      // For variant products (checkout page)
+      del = await Cart.findOneAndUpdate(
+        { userId: req.session.user },
+        { $pull: { "products": { "productId": productid, "variantId": variantId } } }
+      );
     } else {
-      res.status(404).json({ message: 'Product not found to be deleted' });
+      // For simple products (cart page) - remove by productId only
+      del = await Cart.findOneAndUpdate(
+        { userId: req.session.user },
+        { $pull: { "products": { "productId": productid } } }
+      );
+    }
+
+    if (del) {
+      res.status(200).json({ success: true, message: 'Item removed from cart successfully' });
+    } else {
+      res.status(404).json({ success: false, message: 'Product not found in cart' });
     }
   } catch (error) {
     console.log(error);
+    res.status(500).json({ success: false, message: 'Failed to remove item from cart' });
   }
 };
 
@@ -460,42 +551,73 @@ const updateCartTotal = async (req, res) => {
   res.json({ success: "cart Total Updated" })
 
 }
-
 const updateQuantity = async function (req, res) {
   try {
     let { quantity } = req.query
     let { productid } = req.query
+    let { variantId } = req.query
 
-    let cartData = await Cart.findOne({ userId: req.session.user })
     const userId = req.session.user;
+    if (!userId) {
+      return res.status(401).json({ message: 'User not authenticated' });
+    }
+
+    const value = parseInt(quantity);
+    if (isNaN(value) || value < 1) {
+      return res.status(400).json({ message: 'Invalid quantity. Must be at least 1.' });
+    }
 
     const product = await Product.findOne({ _id: productid })
-    const currentStock = product.stock
-
-    const index = cartData.products.findIndex(product => product.productId == productid);
-
-    const value = parseInt(quantity)
-    if (currentStock >= value) {
-      if (index !== -1) {
-        // Increment the quantity of the matched product
-        const updateQuery = {};
-        updateQuery["products." + index + ".quantity"] = value;
-
-        const data = await Cart.findOneAndUpdate(
-          { userId: req.session.user },
-
-          { $set: updateQuery }, { new: true }
-        );
-
-        // const updateStock = await Product.findOneAndUpdate({ _id: productid }, { $inc: { stock: -quantity } })
-
-        res.status(200).json({ message: 'Quantity updated successfully', stockQuantity: currentStock });
-      }
-    } else {
-
-      res.status(404).json({ message: 'Out Of Stock', stockQuantity: currentStock });
-
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
     }
+
+    // Find the specific variant
+    const variant = product.variants.id(variantId);
+    if (!variant) {
+      return res.status(404).json({ message: 'Variant not found' });
+    }
+
+    const currentStock = variant.stock;
+
+    if (value > currentStock) {
+      return res.status(400).json({
+        message: `Only ${currentStock} ${currentStock === 1 ? 'item' : 'items'} available in stock`,
+        stockQuantity: currentStock,
+        availableStock: currentStock,
+        stockLimit: true
+      });
+    }
+
+    const cartData = await Cart.findOne({ userId: userId })
+    if (!cartData) {
+      return res.status(404).json({ message: 'Cart not found' });
+    }
+
+    const index = cartData.products.findIndex(product =>
+      product.productId == productid && product.variantId == variantId
+    );
+
+    if (index === -1) {
+      return res.status(404).json({ message: 'Item not found in cart' });
+    }
+
+    // Update quantity of matched variant
+    const updateQuery = {};
+    updateQuery["products." + index + ".quantity"] = value;
+
+    const data = await Cart.findOneAndUpdate(
+      { userId: userId },
+      { $set: updateQuery },
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: 'Quantity updated successfully',
+      stockQuantity: currentStock,
+      newQuantity: value
+    });
+
   } catch (error) {
     console.error('Error updating quantity:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -510,6 +632,11 @@ const updateQuantity = async function (req, res) {
 const showUserProfile = async (req, res) => {
   const userdata = await User.findOne({ _id: req.session.user })
   const addressData = await Address.findOne({ userId: req.session.user })
+
+  console.log('User ID from session:', req.session.user);
+  console.log('Address data found:', addressData);
+  console.log('Address data address array:', addressData ? addressData.address : 'No addressData');
+
   const orderData = await Order.find({ userId: req.session.user }).populate('userId products.product_id');
   let cartData = await Cart.findOne({ userId: req.session.user }).populate('products.productId')
 
@@ -688,20 +815,55 @@ const deleteUserAddress = async (req, res) => {
 
 
 const checkOut = async (req, res) => {
-  const userdata = await User.findOne({ _id: req.session.user });
-  let cartData = await Cart.findOne({ userId: req.session.user }).populate('products.productId')
-  let cart = await Cart.findOne({ userId: req.session.user })
-  const addressData = await Address.findOne({ userId: req.session.user })
-  const coupons = await Coupon.find({ isBlocked: 0 })
-  let cartQuantity = 0;
-  if (cartData) {
-    cartData.products.forEach(product => {
-      // Add the quantity of each product to the totalQuantity
-      cartQuantity += product.quantity;
-    });
-  }
+  try {
+    const userdata = await User.findOne({ _id: req.session.user });
+    let cartData = await Cart.findOne({ userId: req.session.user }).populate('products.productId')
+    let cart = await Cart.findOne({ userId: req.session.user })
+    const addressData = await Address.findOne({ userId: req.session.user })
 
-  res.render("userPages/checkout", { userdata, cart, cartData: cartData ? cartData.products : [], addressData, coupons });
+    // Fetch only active, unblocked coupons that this user has not already used
+    const usedCoupons = (userdata && userdata.couponApplied)
+      ? userdata.couponApplied.map(String)
+      : [];
+    const allCoupons = await Coupon.find({ isBlocked: 0 });
+    const now = new Date();
+    const coupons = allCoupons.filter(coupon => {
+      const couponIdStr = coupon._id ? coupon._id.toString() : '';
+      const couponCode = coupon.couponCode || '';
+      const isAlreadyUsed = usedCoupons.includes(couponIdStr) || usedCoupons.includes(couponCode);
+      const isExpired = coupon.validity && !isNaN(new Date(coupon.validity).getTime()) && new Date(coupon.validity) < now;
+      return !isAlreadyUsed && !isExpired;
+    });
+
+    // Calculate cart total
+    function calculateProductTotal(product) {
+      const { productId, quantity, variantId } = product;
+
+      // Find the specific variant
+      const variant = productId.variants.id(variantId);
+      if (variant) {
+        return variant.price * quantity;
+      }
+
+      // Fallback to product price if variant not found
+      const { price, discountPrice } = productId;
+      const totalPrice = discountPrice != null ? discountPrice * quantity : price * quantity;
+      return totalPrice;
+    }
+
+    // Calculate total price for all products in the cart
+    let cartTotal = 0;
+    if (cartData) {
+      cartData.products.forEach(product => {
+        cartTotal += calculateProductTotal(product);
+      });
+    }
+
+    res.render("userPages/checkout", { userdata, cart, cartData: cartData ? cartData.products : [], addressData, coupons, cartTotal });
+  } catch (error) {
+    console.error("Error in checkout:", error);
+    res.status(500).render("error", { message: "An error occurred during checkout" });
+  }
 };
 
 
@@ -711,7 +873,7 @@ const orderPlacing = async function (req, res) {
 
     let { cartId } = req.query;
     let { addressId } = req.query;
-    let { modeOfPayment } = req.query;
+    let { paymentMethord } = req.query;
     let { total } = req.query
     // console.log(modeOfPayment);
 
@@ -737,6 +899,7 @@ const orderPlacing = async function (req, res) {
     cartData.products.forEach(el => {
       const productIn = {
         product_id: el.productId,
+        variantId: el.variantId,
         qty: el.quantity
       }
 
@@ -752,31 +915,56 @@ const orderPlacing = async function (req, res) {
         address: addressToAdd,
         products: productsToAdd,
         totalPrice: number,
-        paymentMethord: modeOfPayment,
+        paymentMethord: paymentMethord,
       };
+
+      console.log('Order data before saving:', orderData);
+
       const result = await Order.create(orderData)
+
+      console.log('Order creation result:', result);
+      console.log('Order created with ID:', result?._id);
 
       let orderId = result._id;
       let price = result.totalPrice
 
-
       if (result) {
+        console.log('-------------result block-----------------------------');
+
         const orderData = await Order.findOne({ _id: orderId })
 
         orderData.products.forEach(async el => {
           const productId = el.product_id;
+          const variantId = el.variantId;
           const quantity = el.qty;
 
           const productdata = await Product.findOne({ _id: productId })
-          const productStock = productdata.stock
-          if (productStock > 0) {
-            const updateStock = await Product.findOneAndUpdate({ _id: productId }, { $inc: { stock: -quantity } })
 
-          } else if (productStock <= 0) {
-            const updateStock = await Product.findOneAndUpdate({ _id: productId }, { $set: { stock: 0 } })
+          // Find the specific variant
+          const variant = productdata.variants.id(variantId);
+          if (variant) {
+            const variantStock = variant.stock;
+            if (variantStock > 0) {
+              const updateStock = await Product.findOneAndUpdate(
+                { _id: productId, 'variants._id': variantId },
+                { $inc: { 'variants.$.stock': -quantity } }
+              )
+            } else if (variantStock <= 0) {
+              const updateStock = await Product.findOneAndUpdate(
+                { _id: productId, 'variants._id': variantId },
+                { $set: { 'variants.$.stock': 0 } }
+              )
+            }
+          } else {
+            // Fallback to main product stock if variant not found
+            const productStock = productdata.stock;
+            if (productStock > 0) {
+              const updateStock = await Product.findOneAndUpdate({ _id: productId }, { $inc: { stock: -quantity } })
+            } else if (productStock <= 0) {
+              const updateStock = await Product.findOneAndUpdate({ _id: productId }, { $set: { stock: 0 } })
+            }
           }
         })
-
 
         const delcart = await Cart.findOneAndDelete({ _id: cartId })
 
@@ -808,14 +996,18 @@ const orderPlacing = async function (req, res) {
           }
 
         } else {
+          console.log('-------------razorpay block block-----------------------------');
+          // razorPayHelper.generateRazorpay(orderId, price).then((response) => {
 
-          razorPayHelper.generateRazorpay(orderId, price).then((response) => {
+          //   res.status(200).json({ success: response });
 
-            res.status(200).json({ success: response });
+          // }).catch(er => {
+          //   console.log(er);
+          // })
 
-          }).catch(er => {
-            console.log(er);
-          })
+          const response = await razorPayHelper.generateRazorpay(orderId, price);
+
+          res.status(200).json({ success: response });
         }
 
       }
@@ -903,6 +1095,8 @@ module.exports = {
   checkOut,
   updateCartTotal,
   addToCart,
+  getCartCount,
+  getVariantStock,
   showCart,
   submit,
   sendotp,

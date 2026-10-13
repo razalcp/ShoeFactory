@@ -3,6 +3,7 @@ const Razorpay = require('razorpay')
 var instance = new Razorpay({ key_id: 'rzp_test_Agh9pxODuKBtWD', key_secret: 'MdBtgRFs5NROEU7xxiQUzChR' })
 
 function generateRazorpay(orderId, total) {
+console.log("razor");
 
     return new Promise((resolve, reject) => {
         var options = {

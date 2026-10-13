@@ -32,6 +32,10 @@ router.post("/email-verification", userController.verifyotp)
 
 router.get('/addToCart',middle.userToLogin,userController.addToCart)
 
+router.get('/getCartCount', middle.userToLogin, userController.getCartCount)
+
+router.get('/getVariantStock', middle.userToLogin, userController.getVariantStock)
+
 router.get('/deleteCartItem', middle.userToLogin, userController.deleteCartItem)
 
 // router.get('/updateCartTotal', middle.userToLogin, userController.updateCartTotal)

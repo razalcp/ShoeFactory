@@ -1,0 +1,706 @@
+<%- include('../userLayouts/userHeader.ejs') %>
+
+
+
+    <!-- breadcrumb area start -->
+    <div class="page-layout" data-background="/public/assets/img/slider/shop.jpg">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                    <div class="breadcrumb-area text-center">
+                        <% if(locals.cartData && locals.cartData.length > 0){ %>
+                           
+                        <h2 class="page-title">Cart</h2>
+                        <% } else{ %>
+                             <h2 class="page-title">OOps Cart is Empty...Try adding some products</h2>
+                       <% }%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- breadcrumb area end -->
+
+    <div class="f_cart_area pt-110 mb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 col-md-12">
+                    <div class="cart_table">
+                        <% if(locals.cartData){%>
+                            <table>
+                                <tr>
+                                    <td>Product Image</td>
+                                    <td>Product Name</td>
+                                    <td>Variant</td>
+                                    <td>Price</td>
+                                    <td>Quantity</td>
+                                    <td>Total</td>
+                                    <td>Action</td>
+                                </tr>
+                                <tbody>
+                                        <%locals.cartData.forEach(el=>{%>
+                                            <% let variant = null; %>
+                                            <% if(el.productId && el.productId.variants && el.productId.variants.id(el.variantId)) { %>
+                                                <% variant = el.productId.variants.id(el.variantId); %>
+                                            <% } %>
+                                            <tr class="max-width-set">
+                                                <td>
+                                                    <% if(variant && variant.imageurl && variant.imageurl.length > 0) { %>
+                                                        <img src="/public/images/<%=variant.imageurl[0]%>" alt="">
+                                                    <% } else { %>
+                                                        <img src="/public/assets/img/product/placeholder.jpg" alt="">
+                                                    <% } %>
+                                                </td>
+                                                <td>
+                                                    <%= el.productId.producttitle %>
+                                                </td>
+                                                <td>
+                                                    <div class="variant-info">
+                                                        <span class="badge bg-info">Size: <%= el.size %></span>
+                                                        <span class="badge bg-secondary">Color: <%= el.color %></span>
+                                                    </div>
+                                                </td>
+                                                <td id="price" data-stock="<%= variant ? variant.stock : 0 %>">
+                                                    ₹<%= variant ? variant.price : 0 %>
+                                                </td>
+
+                                                <td>
+                                                    <div class="viewcontent__action single_action pt-30">
+                                                        <span><input type="number"
+                                                                data-variant-id="<%=el.variantId%>"
+                                                                data-id="<%=el.productId._id%>" 
+                                                                class="quantityField"
+                                                                value="<%=el.quantity%>" min="1" ></span>
+                                                        <small class="text-muted d-block mt-1">
+                                                            <% if(variant) { %>
+                                                                <% if(variant.stock > 0) { %>
+                                                                    <span class="badge bg-success">Stock: <%= variant.stock %></span>
+                                                                <% } else { %>
+                                                                    <span class="badge bg-danger">Out of Stock</span>
+                                                                <% } %>
+                                                            <% } else { %>
+                                                                <span class="badge bg-secondary">Stock: N/A</span>
+                                                            <% } %>
+                                                        </small>
+                                                    </div>
+                                                </td>
+                                                <td class="totalField">
+                                                    ₹<%= variant ? (variant.price * el.quantity).toFixed(2) : '0.00' %>
+                                                </td>
+
+                                                <td>
+                                                    <button type="button" class="btn btn-danger removeBtn"
+                                                            data-variant-id="<%=el.variantId%>"
+                                                            data-id="<%=el.productId._id%>">Remove</button>
+                                                </td>
+
+                                            </tr>
+                                            <input type="hidden" value="<%=el.productId._id  %>" class="hiddenField">
+                                            <input type="hidden" value="<%=el.variantId  %>" class="hiddenVariantField">
+                                            <% })%>
+
+                                                <% } else { %>
+                            <h2 class="page-title">OOps Cart is Empty...Try adding some products</h2>
+                        <% } %>
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-12">
+                    <div class="cart_page_right">
+                        <div class="cart_total">
+                            <h5>Cart Total</h5>
+                            <ul>
+                                <li>
+                                    <span>Subtotal</span>
+                                    <span id="subtotal">₹<%= locals.cartTotal ? locals.cartTotal.toFixed(2) : '0.00' %></span>
+                                </li>
+                                <li>
+                                    <span>Shipping</span>
+                                    <span>₹0.00</span>
+                                </li>
+                                <li>
+                                    <span>Total</span>
+                                    <span id="total">₹<%= locals.cartTotal ? locals.cartTotal.toFixed(2) : '0.00' %></span>
+                                </li>
+                            </ul>
+                            <div class="cart_button">
+                                <% if(locals.cartData && locals.cartData.length > 0){ %>
+                                    <a href="/checkout" class="btn theme-btn checkout-btn">Proceed to Checkout</a>
+                                <% } else { %>
+                                    <a href="/userhome" class="btn theme-btn checkout-btn">Continue Shopping</a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Cart totals and button styling */
+        .cart_total {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin-bottom: 20px;
+        }
+        
+        .cart_total h5 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .cart_total ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .cart_total ul li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 16px;
+        }
+        
+        .cart_total ul li:last-child {
+            border-bottom: none;
+            padding-top: 15px;
+            margin-top: 5px;
+            border-top: 2px solid #28a745;
+        }
+        
+        .cart_total ul li span:first-child {
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .cart_total ul li span:last-child {
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .cart_total ul li:last-child span:last-child {
+            color: #28a745;
+            font-size: 20px;
+        }
+        
+        .cart_button {
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        .checkout-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 2px solid #f59e0b;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+            background: linear-gradient(135deg, #f97316 0%, #f59e0b 100%);
+            border-color: #f97316;
+        }
+        
+        .checkout-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3);
+        }
+        
+        .checkout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .checkout-btn:hover::before {
+            left: 100%;
+        }
+    </style>
+    
+    <script>
+        // Store stock information for each variant from the cart data
+        const variantStock = {};
+        
+        // Initialize stock data from page (using existing cart data)
+        document.querySelectorAll('.quantityField').forEach(field => {
+            const productId = field.dataset.id;
+            const variantId = field.dataset.variantId;
+            const row = field.closest('tr');
+            
+            // Get stock from the data attribute in price cell - use better selector
+            const priceCell = row.querySelector('td[data-stock]');
+            const stock = priceCell ? parseInt(priceCell.dataset.stock) : 10; // Default fallback
+            
+            variantStock[`${productId}-${variantId}`] = stock;
+            
+            console.log(`=== VARIANT STOCK INITIALIZATION ===`);
+            console.log(`Product ID: ${productId}`);
+            console.log(`Variant ID: ${variantId}`);
+            console.log(`Price cell found:`, !!priceCell);
+            console.log(`Stock from HTML: ${priceCell?.dataset?.stock}`);
+            console.log(`Parsed stock: ${stock}`);
+            console.log(`Stored in variantStock: ${variantStock[`${productId}-${variantId}`]}`);
+            console.log(`All variantStock data:`, variantStock);
+        });
+
+        // Debug: Check if stock data is loaded
+        console.log('=== FINAL VARIANTSTOCK DATA ===');
+        console.log(variantStock);
+
+        // Function to show stock toast message
+        function showStockToast(availableStock) {
+            // Create a simple toast element
+            const toast = document.createElement('div');
+            toast.className = 'stock-toast';
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <div class="toast-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                    </div>
+                    <div class="toast-text">
+                        <h4>Stock Limit</h4>
+                        <p>Only ${availableStock} ${availableStock === 1 ? 'item' : 'items'} available in stock</p>
+                    </div>
+                </div>
+            `;
+            
+            // Add styles
+            toast.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 20px 30px;
+                border-radius: 12px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                z-index: 10000;
+                min-width: 350px;
+                max-width: 450px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                animation: toastSlideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            `;
+            
+            // Add CSS animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes toastSlideIn {
+                    0% {
+                        transform: translate(-50%, -50%) scale(0.8) translateY(-20px);
+                        opacity: 0;
+                    }
+                    100% {
+                        transform: translate(-50%, -50%) scale(1) translateY(0);
+                        opacity: 1;
+                    }
+                }
+                @keyframes toastSlideOut {
+                    0% {
+                        transform: translate(-50%, -50%) scale(1) translateY(0);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translate(-50%, -50%) scale(0.8) translateY(-20px);
+                        opacity: 0;
+                    }
+                }
+                .stock-toast .toast-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                }
+                .stock-toast .toast-icon {
+                    background: rgba(255,255,255,0.2);
+                    border-radius: 50%;
+                    width: 48px;
+                    height: 48px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex-shrink: 0;
+                }
+                .stock-toast .toast-icon svg {
+                    color: white;
+                }
+                .stock-toast .toast-text h4 {
+                    margin: 0 0 4px 0;
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: white;
+                }
+                .stock-toast .toast-text p {
+                    margin: 0;
+                    font-size: 15px;
+                    color: rgba(255,255,255,0.9);
+                    line-height: 1.4;
+                }
+            `;
+            
+            // Only add style once
+            if (!document.querySelector('#toast-styles')) {
+                style.id = 'toast-styles';
+                document.head.appendChild(style);
+            }
+            
+            // Add to page
+            document.body.appendChild(toast);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.style.animation = 'toastSlideOut 0.3s ease-in forwards';
+                setTimeout(() => {
+                    if (document.body.contains(toast)) {
+                        document.body.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Function to show stock limit warning
+        function showStockLimitWarning(availableStock) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Stock Limit',
+                text: `Only ${availableStock} ${availableStock === 1 ? 'item' : 'items'} available in stock`,
+                timer: 2500,
+                showConfirmButton: true,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#3085d6'
+            });
+        }
+
+        // Update quantity functionality
+        document.querySelectorAll('.quantityField').forEach(field => {
+            // Add keydown event for up arrow detection
+            field.addEventListener('keydown', function(e) {
+                const currentQuantity = parseInt(this.value);
+                const productId = this.dataset.id;
+                const variantId = this.dataset.variantId;
+                const availableStock = variantStock[`${productId}-${variantId}`];
+                
+                console.log(`Keydown: ${e.key}, Current: ${currentQuantity}, Available: ${availableStock}`);
+                
+                // Check if user is pressing up arrow and already at or above stock limit
+                if ((e.key === 'ArrowUp' || e.key === 'ArrowUp') && currentQuantity >= availableStock) {
+                    console.log('Preventing up arrow - at stock limit');
+                    e.preventDefault(); // Prevent the up arrow
+                    e.stopPropagation(); // Stop the event
+                    showStockToast(availableStock); // Show toast to inform user
+                    return;
+                }
+            });
+            
+            // Add input event for real-time validation
+            field.addEventListener('input', function(e) {
+                const newQuantity = parseInt(this.value);
+                const productId = this.dataset.id;
+                const variantId = this.dataset.variantId;
+                const originalValue = this.defaultValue;
+                
+                console.log(`Input changed: ${newQuantity}, original: ${originalValue}`);
+                
+                if (isNaN(newQuantity) || newQuantity < 1) {
+                    this.value = originalValue;
+                    return;
+                }
+                
+                // Get current stock from our stored data
+                const availableStock = variantStock[`${productId}-${variantId}`];
+                console.log(`Available stock: ${availableStock}, New quantity: ${newQuantity}`);
+                
+                // Update row total immediately for better UX
+                const row = this.closest('tr');
+                const priceCell = row.querySelector('td[data-stock]');
+                const totalCell = row.querySelector('.totalField');
+                
+                if (priceCell && totalCell) {
+                    const price = parseFloat(priceCell.textContent.replace('₹', ''));
+                    const newTotal = price * newQuantity;
+                    totalCell.textContent = `₹${newTotal.toFixed(2)}`;
+                    console.log('Updated row total to:', `₹${newTotal.toFixed(2)}`);
+                }
+                
+                // Check if user is trying to exceed stock
+                if (newQuantity > availableStock) {
+                    console.log('Exceeding stock, showing toast and resetting');
+                    showStockToast(availableStock);
+                    
+                    // Reset to maximum available stock
+                    this.value = availableStock;
+                    return;
+                }
+                
+                // Update cart totals immediately for better UX
+                updateCartTotals();
+            });
+            
+            // Keep the existing change event for actual updates
+            field.addEventListener('change', async function() {
+                const newQuantity = parseInt(this.value);
+                const productId = this.dataset.id;
+                const variantId = this.dataset.variantId;
+                const originalValue = this.defaultValue;
+                
+                console.log(`Change event: ${newQuantity}`);
+                
+                // Validate minimum quantity
+                if (newQuantity < 1) {
+                    this.value = originalValue;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Invalid Quantity',
+                        text: 'Quantity must be at least 1',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    return;
+                }
+                
+                // Validate maximum quantity (set a reasonable limit)
+                if (newQuantity > 100) {
+                    this.value = originalValue;
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Invalid Quantity',
+                        text: 'Maximum quantity allowed is 100',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    return;
+                }
+                
+                try {
+                    const response = await fetch(`/updateCartQuantity?productid=${productId}&quantity=${newQuantity}&variantId=${variantId}`);
+                    const data = await response.json();
+                    
+                    if (response.ok && data.message === 'Quantity updated successfully') {
+                        // Update the total for this row
+                        const row = this.closest('tr');
+                        const priceCell = row.querySelector('#price');
+                        const totalCell = row.querySelector('.totalField');
+                        
+                        const price = parseFloat(priceCell.textContent.replace('₹', ''));
+                        const newTotal = price * newQuantity;
+                        totalCell.textContent = `₹${newTotal.toFixed(2)}`;
+                        
+                        // Update cart totals
+                        updateCartTotals();
+                        
+                        // Update cart bubble
+                        updateCartBubble();
+                        
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Quantity Updated',
+                            text: `Quantity updated to ${newQuantity}`,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        // Handle specific stock limit error
+                        if (data.stockLimit || (data.message && data.message.includes('available in stock'))) {
+                            this.value = originalValue;
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Stock Limit',
+                                text: data.message,
+                                timer: 3000,
+                                showConfirmButton: true,
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#3085d6'
+                            });
+                        } else {
+                            this.value = originalValue;
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Update Failed',
+                                text: data.message || 'Failed to update quantity'
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error updating quantity:', error);
+                    this.value = originalValue;
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Network Error',
+                        text: 'An error occurred while updating quantity. Please try again.'
+                    });
+                }
+            });
+        });
+
+        // Remove item functionality
+        document.querySelectorAll('.removeBtn').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const productId = this.dataset.id;
+                const variantId = this.dataset.variantId;
+                
+                const result = await Swal.fire({
+                    title: 'Remove Item',
+                    text: 'Are you sure you want to remove this item from cart?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Remove',
+                    cancelButtonText: 'Cancel'
+                });
+                
+                if (result.isConfirmed) {
+                    try {
+                        const response = await fetch(`/deleteCartItem?productid=${productId}&variantId=${variantId}`);
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Item Removed',
+                                text: data.message || 'Item has been removed from cart.',
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.reload(); // Reload to update cart display
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failed to Remove',
+                                text: data.message || 'Unable to remove item from cart'
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error removing item:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Network Error',
+                            text: 'Please check your connection and try again'
+                        });
+                    }
+                }
+            });
+        });
+
+        // Update cart totals function
+        function updateCartTotals() {
+            let subtotal = 0;
+            const totalCells = document.querySelectorAll('.totalField');
+            
+            console.log('Found total cells:', totalCells.length);
+            
+            totalCells.forEach((totalCell, index) => {
+                const totalText = totalCell.textContent.replace('₹', '');
+                const total = parseFloat(totalText);
+                console.log(`Total cell ${index}:`, totalText, '->', total);
+                
+                if (!isNaN(total)) {
+                    subtotal += total;
+                } else {
+                    console.log('Invalid total value:', totalText);
+                }
+            });
+            
+            console.log('Calculated subtotal:', subtotal);
+            
+            // Update the subtotal display
+            const subtotalElement = document.getElementById('subtotal');
+            if (subtotalElement) {
+                subtotalElement.textContent = `₹${subtotal.toFixed(2)}`;
+                console.log('Updated subtotal element to:', `₹${subtotal.toFixed(2)}`);
+            } else {
+                console.log('Subtotal element not found!');
+            }
+            
+            // Update the total display (same as subtotal for now, can add shipping later)
+            const totalElement = document.getElementById('total');
+            if (totalElement) {
+                totalElement.textContent = `₹${subtotal.toFixed(2)}`;
+                console.log('Updated total element to:', `₹${subtotal.toFixed(2)}`);
+            } else {
+                console.log('Total element not found!');
+            }
+            
+            console.log('Final cart totals updated:', subtotal);
+        }
+
+        // Update cart bubble function
+        async function updateCartBubble() {
+            try {
+                const response = await fetch('/getCartCount');
+                const data = await response.json();
+                
+                // Find the cart bubble element
+                const cartBubble = document.querySelector('.badge.rounded-pill.bg-danger');
+                if (cartBubble) {
+                    if (data.totalQuantity > 0) {
+                        cartBubble.textContent = data.totalQuantity;
+                        cartBubble.style.display = 'inline-block';
+                    } else {
+                        cartBubble.style.display = 'none';
+                    }
+                } else {
+                    // Create cart bubble if it doesn't exist
+                    const cartLink = document.querySelector('a[href="/cart"]');
+                    if (cartLink && data.totalQuantity > 0) {
+                        const bubble = document.createElement('span');
+                        bubble.className = 'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger';
+                        bubble.style.cssText = 'margin-left: -200px; margin-top: 8px;';
+                        bubble.textContent = data.totalQuantity;
+                        cartLink.appendChild(bubble);
+                    }
+                }
+            } catch (error) {
+                console.error('Error updating cart bubble:', error);
+            }
+        }
+    </script>
+
+    <script src="/public/assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="/public/assets/js/bootstrap.min.js"></script>
+    <script src="/public/assets/js/jquery.meanmenu.min.js"></script>
+    <script src="/public/assets/js/wow.min.js"></script>
+    <script src="/public/assets/js/countdown.js"></script>
+    <script src="/public/assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="/public/assets/js/plugins.js"></script>
+    <script src="/public/assets/js/swiper-bundle.min.js"></script>
+    <script src="/public/assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
+</body>
+</html>

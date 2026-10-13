@@ -6,7 +6,21 @@
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                     <div class="breadcrumb-area text-center">
-                        <% if(wishlistData.length>0){ %>
+                        <% 
+                            let hasWishlistItems = false;
+                            if (locals.wishlistData && locals.wishlistData.length > 0) {
+                                locals.wishlistData.forEach(function(el) {
+                                    if (el.wishList && el.wishList.length > 0) {
+                                        el.wishList.forEach(function(item) {
+                                            if (item && item.productId) {
+                                                hasWishlistItems = true;
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        %>
+                        <% if(hasWishlistItems){ %>
                              <h2 class="page-title">WishList</h2>
                        <% } else { %>
                         <h2 class="page-title">WishList is Empty...Add to your List</h2>
@@ -43,34 +57,67 @@
                                 
                                </tr>
                             <tbody>
-                                <% if(locals.wishlistData) { %>
+                                <% if(hasWishlistItems) { %>
                                    <% locals.wishlistData.forEach(el=>{ %>
-                                        <% el.wishList.forEach(productData=>{ %>
-                                            <tr class="max-width-set">
-                                        <td>
-                                            <img src="/public/images/<%=productData.productId.imageurl[1]%>" alt="">
-                                        </td>
-                                       
-                                        <td><%= productData.productId.producttitle %></td>
-                                        <% if(productData.productId.discountPrice>0) { %>
-                                            <td><%=productData.productId.discountPrice%> </td>  
+                                        <% if(el.wishList && el.wishList.length > 0) { %>
+                                         <% el.wishList.forEach(productData=>{ %>
+                                            <% if(productData && productData.productId) { %>
+                                             <tr class="max-width-set">
+                                         <td>
+                                             <% 
+                                                 let imageSrc = '/public/assets/img/product/placeholder.jpg';
+                                                 if (productData.productId.variants && productData.productId.variants.length > 0 && productData.productId.variants[0].imageurl && productData.productId.variants[0].imageurl.length > 0) {
+                                                     imageSrc = '/public/images/' + productData.productId.variants[0].imageurl[0];
+                                                 } else if (productData.productId.imageurl && productData.productId.imageurl.length > 0) {
+                                                     imageSrc = '/public/images/' + productData.productId.imageurl[0];
+                                                 }
+                                             %>
+                                             <a href="/userhome/productdetail?id=<%=productData.productId._id%>">
+                                                 <img src="<%=imageSrc%>" alt="<%=productData.productId.producttitle || ''%>">
+                                             </a>
+                                         </td>
                                         
-                                        <%}else{%>
-                                            <td><%=productData.productId.price%></td>
-                                       <% } %>
-                                       <td class="width-set" style="width: 201px;">
-                                       
+                                         <td>
+                                             <a href="/userhome/productdetail?id=<%=productData.productId._id%>">
+                                                 <%= productData.productId.producttitle %>
+                                             </a>
+                                         </td>
+                                         <% 
+                                             let displayPrice = 0;
+                                             let variant = null;
+                                             if (productData.productId.variants && productData.productId.variants.length > 0) {
+                                                 variant = productData.productId.variants[0];
+                                                 displayPrice = variant.price;
+                                             } else if (productData.productId.price) {
+                                                 displayPrice = productData.productId.price;
+                                             }
+                                             if (productData.productId.discountPrice > 0) {
+                                                 displayPrice = productData.productId.discountPrice;
+                                             }
+                                         %>
+                                         <td>₹<%=displayPrice%></td>
+                                        <td class="width-set" style="width: 201px;">
                                                 <button class="btn-danger deleteBtn" data-idproduct="<%=productData.productId._id%>">Delete</button>
-                                                <button class="btn-primary cartBtn" data-idproduct="<%=productData.productId._id%>" data-quantity="1">Add to Cart</button>
-                                              
-                                    </td>
-                                       <% }) %>
-                                  <%  }) %>
-                                    
-                      
-                                       
-                                    </tr>
-                             <%  } %>
+                                                <button class="btn-primary cartBtn" 
+                                                    data-idproduct="<%=productData.productId._id%>" 
+                                                    data-variant-id="<%=variant ? variant._id : ''%>"
+                                                    data-size="<%=variant ? variant.size : ''%>"
+                                                    data-color="<%=variant ? variant.color : ''%>"
+                                                    data-quantity="1">Add to Cart</button>
+                                        </td>
+                                             </tr>
+                                            <% } %>
+                                         <% }) %>
+                                        <% } %>
+                                   <%  }) %>
+                              <%  } else { %>
+                                  <tr>
+                                      <td colspan="4" class="text-center" style="padding: 40px 0;">
+                                          <p style="font-size: 18px; margin-bottom: 15px; color: #555;">No products found in your wishlist.</p>
+                                          <a href="/userhome/shop" class="btn btn-primary" style="padding: 10px 20px; background-color: #ff5722; border-color: #ff5722; color: #fff; border-radius: 4px; text-decoration: none;">Continue Shopping</a>
+                                      </td>
+                                  </tr>
+                              <% } %>
                               
                             </tbody>
                             <!-- <tfoot>
@@ -273,7 +320,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
 
     <script src="/public/js/insideWishlistScript.js"></script>
-    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
+    <!-- <script data-cfasync="false" src="https://cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> --><script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/owl.carousel.min.js"></script>

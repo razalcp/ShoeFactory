@@ -1,0 +1,289 @@
+<%- include("adminLayouts/header.ejs")%>
+
+    <main class="main-wrap">
+
+        <form id='regform' method="post" action="/admin/home/addproduct" enctype="multipart/form-data">
+            <section class="content-main">
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="content-header">
+                            <h2 class="content-title">Add New Product with Variants</h2>
+                            <div>
+                                <button type="submit" id="addproduct" class="btn btn-md rounded font-sm hover-up">Add
+                                    Product</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h6>1. General info</h6>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div class="mb-4">
+
+                                            <label class="form-label">Product title</label>
+                                            <input id="productTitle" name="producttitle" type="text"
+                                                placeholder="Type here" class="form-control">
+                                            <p>
+                                            <div id="error1" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+
+                                        </div>
+                                        <div class="mb-4">
+                                            <label class="form-label">Description</label>
+                                            <textarea id="descriptionBox" name="description" placeholder="Type here"
+                                                class="form-control" rows="4"></textarea>
+                                            <p>
+                                            <div id="error2" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+
+                                        </div>
+                                        <div class="mb-4">
+
+
+                                            <label class="form-label">Brand name</label>
+
+                                            <select id="dropdown" class="form-select" name="brandname">
+                                                <option value="">Select a Brand</option>
+                                                <% brand.forEach(function(brand) { %>
+                                                    <option value="<%=brand._id %>">
+                                                        <%=brand.brandName %>
+                                                    </option>
+
+                                                    <% }); %>
+
+                                            </select>
+                                            <p>
+                                            <div id="error3" style="display: none;" class="alert alert-danger err">
+                                            </div>
+                                            </p>
+
+                                        </div>
+
+                                    </div> <!-- col.// -->
+                                </div> <!-- row.// -->
+                                <hr class="mb-4 mt-0">
+                                
+                                <!-- Variants Section -->
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <h6>2. Product Variants</h6>
+                                        <button type="button" class="btn btn-sm btn-primary" onclick="addVariant()">Add Variant</button>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <div id="variants-container">
+                                            <!-- Variants will be added here dynamically -->
+                                        </div>
+                                        <p>
+                                        <div id="error7" style="display: none;" class="alert alert-danger err">
+                                            Please add at least one variant
+                                        </div>
+                                        </p>
+                                    </div>
+                                </div> <!-- row.// -->
+                                <hr class="mb-4 mt-0">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Hidden fields for cropping data -->
+                <input type="hidden" id="hiddenField1" name="hiddenField1" value="">
+                <input type="hidden" id="hiddenField2" name="hiddenField2" value="">
+                <input type="hidden" id="hiddenField3" name="hiddenField3" value="">
+                <input type="hidden" id="hiddenField4" name="hiddenField4" value="">
+
+                <!-- Modal for cropping -->
+                <div id="myModal" class="modal">
+                    <span class="close">&times;</span>
+                    <div class="modal-content img-container">
+                        <img id='image' src="" alt="">
+                    </div>
+                    <button id="btn-crop" type="button">Crop</button>
+                    <div class="cropped-container">
+                        <img id="output" src="" alt="">
+                    </div>
+                </div>
+            </section> <!-- content-main end// -->
+        </form>
+
+        <footer class="main-footer font-xs">
+            <div class="row pb-30 pt-15">
+                <div class="col-sm-6">
+                    <script>
+                        document.write(new Date().getFullYear())
+                    </script> ©, Evara - HTML Ecommerce Template .
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-sm-end">
+                        All rights reserved
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+    <script src="/public/js/cropVariantScript.js"></script>
+    <script src="/public/assetss/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/public/assetss/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/public/assetss/js/vendors/select2.min.js"></script>
+    <script src="/public/assetss/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/public/assetss/js/vendors/jquery.fullscreen.min.js"></script>
+    <script src="/public/assetss/js/main.js" type="text/javascript"></script>
+
+    <script>
+        let variantCount = 0;
+
+        function addVariant() {
+            variantCount++;
+            const variantHtml = `
+                <div class="variant-card border rounded p-3 mb-3" id="variant-${variantCount}">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6>Variant ${variantCount}</h6>
+                        <button type="button" class="btn btn-sm btn-danger" onclick="removeVariant(${variantCount})">Remove</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="form-label">Size</label>
+                            <input type="text" class="form-control" name="variants[${variantCount}][size]" placeholder="e.g., 9, 10, 11" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Color</label>
+                            <input type="text" class="form-control" name="variants[${variantCount}][color]" placeholder="e.g., Black, White" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Price (₹)</label>
+                            <input type="number" class="form-control" name="variants[${variantCount}][price]" placeholder="0.00" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Stock</label>
+                            <input type="number" class="form-control" name="variants[${variantCount}][stock]" placeholder="0" required>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <label class="form-label">Images for this variant</label>
+                            <input type="file" class="form-control" name="variantImages_${variantCount}" multiple accept="image/*" onchange="previewImages(${variantCount}, this)">
+                            <div id="preview-${variantCount}" class="mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('variants-container').insertAdjacentHTML('beforeend', variantHtml);
+        }
+
+        function removeVariant(id) {
+            const element = document.getElementById(`variant-${id}`);
+            if (element) {
+                element.remove();
+            }
+        }
+
+        function previewImages(variantId, input) {
+            const previewContainer = document.getElementById(`preview-${variantId}`);
+            previewContainer.innerHTML = '';
+            
+            Array.from(input.files).forEach((file, index) => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = 'img-thumbnail me-2 mb-2';
+                        img.style.maxWidth = '100px';
+                        img.style.maxHeight = '100px';
+                        previewContainer.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Form validation
+        const productTitle = document.getElementById('productTitle');
+        const regform = document.getElementById('regform');
+        const error1 = document.getElementById('error1');
+        const descriptionDetail = document.getElementById('descriptionBox');
+        const error2 = document.getElementById('error2');
+        const brandDetail = document.getElementById('dropdown');
+        const error3 = document.getElementById('error3');
+        const error7 = document.getElementById('error7');
+
+        function validateProductDetails() {
+            const val = productTitle.value;
+            var lettersRegex = /^[a-zA-Z0-9\s]+$/;
+
+            if (val.trim() === "" || !lettersRegex.test(val)) {
+                error1.style.display = "block";
+                error1.innerHTML = "Please Enter a valid Name.";
+            } else {
+                error1.innerHTML = "";
+                error1.style.display = "none";
+            }
+        }
+
+        function validateDescription() {
+            const val2 = descriptionDetail.value;
+
+            if (val2.trim() === '') {
+                error2.style.display = "block";
+                error2.innerHTML = "Please Enter a valid Description";
+            } else {
+                error2.innerHTML = "";
+                error2.style.display = "none";
+            }
+        }
+
+        function brandSelect() {
+            const val3 = brandDetail.value;
+            if (val3.trim() === '') {
+                error3.style.display = "block";
+                error3.innerHTML = "Select a Brand";
+            } else {
+                error3.innerHTML = "";
+                error3.style.display = "none";
+            }
+        }
+
+        function validateVariants() {
+            const variants = document.querySelectorAll('.variant-card');
+            if (variants.length === 0) {
+                error7.style.display = "block";
+                return false;
+            } else {
+                error7.style.display = "none";
+                return true;
+            }
+        }
+
+        productTitle.addEventListener('blur', validateProductDetails);
+        descriptionDetail.addEventListener('blur', validateDescription);
+        brandDetail.addEventListener('blur', brandSelect);
+
+        regform.addEventListener('submit', function (e) {
+            validateProductDetails();
+            validateDescription();
+            brandSelect();
+            const variantsValid = validateVariants();
+
+            if (error1.innerHTML || error2.innerHTML || error3.innerHTML || !variantsValid) {
+                e.preventDefault();
+            }
+        });
+
+        // Add first variant by default
+        addVariant();
+    </script>
+
+    </body>
+
+    </html>

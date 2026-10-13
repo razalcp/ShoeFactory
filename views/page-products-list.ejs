@@ -34,27 +34,59 @@
 
                                     <td>
                                         <%= product.producttitle %>
+                                            <% if(product.variants && product.variants.length> 1) { %>
+                                                <br><small class="text-muted">
+                                                    <a href="#"
+                                                        onclick="toggleVariants('<%= product._id %>'); return false;">
+                                                        View <%= product.variants.length %> variants ▼
+                                                    </a>
+                                                </small>
+                                                <% } %>
                                     </td>
                                     <td>
-                                        <%= product.price %>
+                                        <% if(product.variants && product.variants.length> 0) { %>
+                                            <%= product.variants[0].price %>
+                                                <% if(product.variants.length> 1) { %>
+                                                    <small class="text-muted">(<%= product.variants.length %>
+                                                            variants)</small>
+                                                    <% } %>
+                                                        <% } else { %>
+                                                            N/A
+                                                            <% } %>
                                     </td>
                                     <td>
-                                        <%= product.productOffer%>
+                                        <%= product.productOffer%>%
                                     </td>
-                                    
+
                                     <td>
                                         <%= product.discountPrice%>
                                     </td>
                                     <td>
-                                        <%= product.stock%>
+                                        <% if(product.variants && product.variants.length> 0) { %>
+                                            <%= product.variants.reduce((sum, v)=> sum + v.stock, 0) %>
+                                                <% if(product.variants.length> 1) { %>
+                                                    <small class="text-muted">(<%= product.variants.length %>
+                                                            variants)</small>
+                                                    <% } %>
+                                                        <% } else { %>
+                                                            0
+                                                            <% } %>
                                     </td>
                                     <td>
                                         <%= product.brandId.brandName %>
                                     </td>
 
 
-                                    <td><img width="60px" height="60px" src="/public/images/<%=product.imageurl[1]%>"
-                                            alt=""></td>
+                                    <td>
+                                        <% if(product.variants && product.variants.length> 0 &&
+                                            product.variants[0].imageurl && product.variants[0].imageurl.length > 0) {
+                                            %>
+                                            <img width="60px" height="60px"
+                                                src="/public/images/<%= product.variants[0].imageurl[0] %>" alt="">
+                                            <% } else { %>
+                                                <span class="text-muted">No Image</span>
+                                                <% } %>
+                                    </td>
                                     <!-- <td class="text-end">
                                         <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15">Block</a>
                                     </td> -->
@@ -95,7 +127,40 @@
 
                                     </td>
                                 </tr>
-                                <% }); %>
+                                <% if(product.variants && product.variants.length> 1) { %>
+                                    <tr id="variants-<%= product._id %>" style="display: none;">
+                                        <td colspan="9">
+                                            <div class="card bg-light">
+                                                <div class="card-body">
+                                                    <h6 class="card-title">Product Variants</h6>
+                                                    <div class="row">
+                                                        <% product.variants.forEach(function(variant, index) { %>
+                                                            <div class="col-md-3 mb-3">
+                                                                <div class="border p-2 rounded">
+                                                                    <strong>Size:</strong>
+                                                                    <%= variant.size %><br>
+                                                                        <strong>Color:</strong>
+                                                                        <%= variant.color %><br>
+                                                                            <strong>Price:</strong> ₹<%= variant.price
+                                                                                %><br>
+                                                                                <strong>Stock:</strong>
+                                                                                <%= variant.stock %><br>
+                                                                                    <% if(variant.imageurl &&
+                                                                                        variant.imageurl.length> 0) { %>
+                                                                                        <img src="/public/images/<%= variant.imageurl[0] %>"
+                                                                                            width="50" height="50"
+                                                                                            alt="">
+                                                                                        <% } %>
+                                                                </div>
+                                                            </div>
+                                                            <% }); %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                        <% }); %>
 
                         </tbody>
 
@@ -159,9 +224,8 @@
         });
 
         // Handle form submission
-        // Handle form submission
         document.querySelectorAll(".submitOffer").forEach(function (submitBtn) {
-            submitBtn.addEventListener("click", function () {
+            submitBtn.addEventListener("click", async function () {
                 var popup = submitBtn.closest(".popup"); // Get the closest parent element with class "popup"
                 var offerValue = popup.querySelector(".offerInput").value;
                 var productId = popup.parentNode.querySelector(".productId").value; // Search within the parent of the popup
@@ -169,27 +233,44 @@
                 console.log("Product ID:", productId);
                 console.log("Offer submitted:", offerValue);
 
-                const update = updateOffer(productId, offerValue);
+                try {
+                    const result = await updateOffer(productId, offerValue);
 
-                // Close the popup
-                if (update) {
-                    popup.style.display = "none";
-                    // Prevent the default form submission behavior
-                    return false;
+                    // Close the popup
+                    if (result) {
+                        popup.style.display = "none";
+                        // Prevent the default form submission behavior
+                        return false;
+                    }
+                } catch (error) {
+                    console.error('Error submitting offer:', error);
+                    alert('Error submitting offer: ' + error.message);
                 }
 
             });
         });
 
         async function updateOffer(productId, offerValue) {
+            console.log('Frontend: Calling updateOffer with productId:', productId, 'offerValue:', offerValue);
             url = `/admin/updateProductOffer?productId=${productId}&offerValue=${offerValue}`
-            const result = await fetch(url)
-            const data = await result.json()
+            console.log('Frontend: Making request to:', url);
 
-            if (data.status == true) {
-                window.location.reload()
-            } else {
-                console.log(data.status);
+            try {
+                const result = await fetch(url)
+                console.log('Frontend: Response status:', result.status);
+                const data = await result.json()
+                console.log('Frontend: Response data:', data);
+
+                if (data.status == true) {
+                    console.log('Frontend: Offer updated successfully, reloading page');
+                    window.location.reload()
+                } else {
+                    console.log('Frontend: Offer update failed:', data);
+                    alert('Failed to update offer: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Frontend: Network error:', error);
+                alert('Network error while updating offer');
             }
         }
     </script>
@@ -275,6 +356,15 @@
                 }
             } catch (err) {
                 console.error(err);
+            }
+        }
+
+        function toggleVariants(productId) {
+            const variantsRow = document.getElementById('variants-' + productId);
+            if (variantsRow.style.display === 'none') {
+                variantsRow.style.display = 'table-row';
+            } else {
+                variantsRow.style.display = 'none';
             }
         }
 

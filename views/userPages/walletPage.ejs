@@ -22,7 +22,7 @@
     <div class="m_service__area mb-100">
         <div class="container">
             <div class="service__wrapper text-center pt-100">
-                <h2>Your Wallet</h2>
+                <h2 style="margin-left: 228px;">Your Wallet</h2>
             </div>
             <div class="row">
                 <!-- <div class="col-xl-3 col-lg-3 col-md-4 offset-xl-1">
@@ -82,7 +82,7 @@
                                     <% if(locals.userdata){%>
                                        <% locals.userdata.walletTranscation.forEach((el,i)=>{ %>
                                         <tr >
-                                            <td class="text-center" style="color: white;"><%= i+1 %></td>
+                                            <td class="text-center" style="color: white;"><%= (pagination.currentPage - 1) * 10 + i + 1 %></td>
                                             <td class="text-center" style="color: white;"><%=el.date.toISOString().split('T')[0] %></td>
                                             <td class="text-center" style="color: white;"><%= el.amount %></td>
                                             <td class="text-center" style="color: white;"><%= el.type %></td>
@@ -94,6 +94,58 @@
                                     <!-- Add more rows as needed -->
                                 </tbody>
                             </table>
+                            
+                            <!-- Pagination Controls -->
+                            <% if(locals.pagination && pagination.totalPages > 0) { %>
+                            <nav aria-label="Transaction pagination">
+                                <ul class="pagination justify-content-center">
+                                    <!-- Previous Button -->
+                                    <% if(pagination.hasPrevPage) { %>
+                                    <li class="page-item">
+                                        <a class="page-link" href="/wallet?page=<%= pagination.prevPage %>" tabindex="-1">Previous</a>
+                                    </li>
+                                    <% } else { %>
+                                    <li class="page-item disabled">
+                                        <span class="page-link" tabindex="-1">Previous</span>
+                                    </li>
+                                    <% } %>
+                                    
+                                    <!-- Page Numbers -->
+                                    <% for(let i = 1; i <= pagination.totalPages; i++) { %>
+                                        <% if(i === pagination.currentPage) { %>
+                                        <li class="page-item active">
+                                            <span class="page-link"><%= i %><span class="sr-only">(current)</span></span>
+                                        </li>
+                                        <% } else { %>
+                                        <li class="page-item">
+                                            <a class="page-link" href="/wallet?page=<%= i %>"><%= i %></a>
+                                        </li>
+                                        <% } %>
+                                    <% } %>
+                                    
+                                    <!-- Next Button -->
+                                    <% if(pagination.hasNextPage) { %>
+                                    <li class="page-item">
+                                        <a class="page-link" href="/wallet?page=<%= pagination.nextPage %>">Next</a>
+                                    </li>
+                                    <% } else { %>
+                                    <li class="page-item disabled">
+                                        <span class="page-link">Next</span>
+                                    </li>
+                                    <% } %>
+                                </ul>
+                            </nav>
+                            
+                            <!-- Page Info -->
+                            <div class="text-center mt-3">
+                                <small class="text-muted">
+                                    Showing page <%= pagination.currentPage %> of <%= pagination.totalPages %> 
+                                    <% if(locals.userdata && locals.userdata.walletTranscation) { %>
+                                        (Total: <%= locals.userdata.walletTranscation.length + (pagination.currentPage - 1) * 10 %> transactions)
+                                    <% } %>
+                                </small>
+                            </div>
+                            <% } %>
                         </div>
                     </div>
                 </div>
@@ -319,7 +371,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.2/dist/sweetalert2.all.min.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-    <!-- <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> -->
+    <!-- <script data-cfasync="false" src="https://cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> -->
     <script src="assets/js/vendor/modernizr-3.5.0.min.js"></script>
     <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
     <script src="assets/js/popper.min.js"></script>

@@ -118,22 +118,35 @@
                                         <div class="product-active h-2-product-active swiper-container">
                                             <div class="swiper-wrapper">
                                                 <% product.forEach((pdt)=> { %>
+                                                <% if (pdt.variants && pdt.variants.length > 0) { %>
+                                                    <% const firstVariant = pdt.variants[0]; %>
+                                                    <% const displayPrice = pdt.discountPrice && pdt.discountPrice > 0 ? pdt.discountPrice : firstVariant.price; %>
                                                 <div class="product-item swiper-slide wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s">
                                                     <div class="product">
                                                         <div class="product__thumb">
                                                             <a href="/userhome/productdetail?id=<%= pdt._id %>">
-                                                               <img class="product-primary" src="/public/images/<%=pdt.imageurl[3]%>" alt="product_image"> 
-                                                               <img class="product-secondary" src="/public/images/<%=pdt.imageurl[2]%>" alt="product_image"> 
-
-
-                                                                
+                                                               <% if (firstVariant.imageurl && firstVariant.imageurl.length > 0) { %>
+                                                                   <% const imageIndex = Math.min(firstVariant.imageurl.length - 1, 3); %>
+                                                                   <% const imageIndex2 = Math.min(firstVariant.imageurl.length - 1, 2); %>
+                                                                   <img class="product-primary" src="/public/images/<%= firstVariant.imageurl[imageIndex] %>" alt="product_image"> 
+                                                                   <img class="product-secondary" src="/public/images/<%= firstVariant.imageurl[imageIndex2] %>" alt="product_image"> 
+                                                               <% } else { %>
+                                                                   <img class="product-primary" src="assets/img/product/placeholder.jpg" alt="product_image"> 
+                                                                   <img class="product-secondary" src="assets/img/product/placeholder.jpg" alt="product_image"> 
+                                                               <% } %>
                                                             </a>
+                                                            <% if (pdt.productOffer && pdt.productOffer > 0) { %>
+                                                            <div class="product__update">
+                                                                <a class="lightblueclr">-<%= pdt.productOffer %>%</a>
+                                                            </div>
+                                                            <% } else { %>
                                                             <div class="product__update">
                                                                 <a class="#">new</a>
                                                             </div>
+                                                            <% } %>
                                                             <div class="product-info mb-10">
                                                                 <div class="product_category">
-                                                                    <span>Shoes, Clothing</span>
+                                                                    <span><%= pdt.brandId ? pdt.brandId.brandname : 'Shoes' %></span>
                                                                 </div>
                                                                 <div class="product_rating">
                                                                     <a href="#"><i class="fal fa-star start-color"></i></a>
@@ -144,9 +157,13 @@
                                                                 </div>
                                                             </div>
                                                                <div class="product__name">
-                                                                <h4><a href="/userhome/productdetail"><%=pdt.producttitle%></a></h4>
+                                                                <h4><a href="/userhome/productdetail?id=<%= pdt._id %>"><%= pdt.producttitle %></a></h4>
                                                                 <div class="pro-price">
-                                                                    <p class="p-absoulute pr-1"><span>₹</span><%=pdt.price%></p>
+                                                                    <% if (pdt.discountPrice && pdt.discountPrice > 0 && pdt.discountPrice < firstVariant.price) { %>
+                                                                        <p class="p-absoulute pr-1"><span>₹</span><%= pdt.discountPrice %> <small style="text-decoration: line-through; color: #999; font-size: 12px;">₹<%= firstVariant.price %></small></p>
+                                                                    <% } else { %>
+                                                                        <p class="p-absoulute pr-1"><span>₹</span><%= firstVariant.price %></p>
+                                                                    <% } %>
                                                                     <a class="p-absoulute pr-2" href="#">add to cart</a>
                                                                 </div>
                                                             </div>
@@ -156,7 +173,7 @@
                                                                 <a href="#"><i class="fal fa-heart"></i></a>
                                                             </div>
                                                             <div class="view">
-                                                                <a href="javascript:void(0)"><i class="fal fa-eye"></i></a>
+                                                                <a href="/userhome/productdetail?id=<%= pdt._id %>"><i class="fal fa-eye"></i></a>
                                                             </div>
                                                             <div class="layer">
                                                                 <a href="#"><i class="fal fa-layer-group"></i></a>
@@ -166,6 +183,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <% } %>
                                                 <% }); %>
 
                                                 
@@ -1800,23 +1818,23 @@
 
 
     <!-- JS here -->
-    <!-- <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/modernizr-3.5.0.min.js"></script> -->
-    <script src="assets/js/vendor/jquery-1.12.4.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/isotope.pkgd.min.js"></script>
-    <script src="assets/js/one-page-nav-min.js"></script>
-    <script src="assets/js/slick.min.js"></script>
-    <script src="assets/js/jquery.meanmenu.min.js"></script>
-    <script src="assets/js/countdown.js"></script>
-    <script src="assets/js/ajax-form.js"></script>
-    <script src="assets/js/wow.min.js"></script>
-    <script src="assets/js/jquery.scrollUp.min.js"></script>
-    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
-    <script src="assets/js/jquery.magnific-popup.min.js"></script>
-    <script src="assets/js/plugins.js"></script>
-    <script src="assets/js/swiper-bundle.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <!-- <!-- <script data-cfasync="false" src="https://cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script> --><script src="/public/assets/js/vendor/modernizr-3.5.0.min.js"></script> -->
+    <script src="/public/assets/js/vendor/jquery-1.12.4.min.js"></script>
+    <script src="/public/assets/js/bootstrap.min.js"></script>
+    <script src="/public/assets/js/owl.carousel.min.js"></script>
+    <script src="/public/assets/js/isotope.pkgd.min.js"></script>
+    <script src="/public/assets/js/one-page-nav-min.js"></script>
+    <script src="/public/assets/js/slick.min.js"></script>
+    <script src="/public/assets/js/jquery.meanmenu.min.js"></script>
+    <script src="/public/assets/js/countdown.js"></script>
+    <script src="/public/assets/js/ajax-form.js"></script>
+    <script src="/public/assets/js/wow.min.js"></script>
+    <script src="/public/assets/js/jquery.scrollUp.min.js"></script>
+    <script src="/public/assets/js/imagesloaded.pkgd.min.js"></script>
+    <script src="/public/assets/js/jquery.magnific-popup.min.js"></script>
+    <script src="/public/assets/js/plugins.js"></script>
+    <script src="/public/assets/js/swiper-bundle.min.js"></script>
+    <script src="/public/assets/js/main.js"></script>
     
     
 </body>

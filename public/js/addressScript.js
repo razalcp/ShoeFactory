@@ -16,7 +16,7 @@ const error7 = document.getElementById('error7')
 
 
 function namevalidate(){
-    const namePattern =/^[A-Za-z]+(?:\s[A-Za-z]+)?$/
+    const namePattern = /^[a-zA-Z\s]+$/
 
     const nameval = username.value
     if(!namePattern.test(nameval))
