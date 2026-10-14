@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "server.js": {
+      "includeFiles": "views/**"
+    }
+  },
+  "rewrites": [
+    { "source": "/public/:path*", "destination": "/:path*" }
+  ]
+}

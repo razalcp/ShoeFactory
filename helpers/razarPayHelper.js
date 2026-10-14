@@ -1,6 +1,10 @@
 
 const Razorpay = require('razorpay')
-var instance = new Razorpay({ key_id: 'rzp_test_Agh9pxODuKBtWD', key_secret: 'MdBtgRFs5NROEU7xxiQUzChR' })
+
+const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID || process.env.key_id
+const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || process.env.key_secret
+
+var instance = new Razorpay({ key_id: RAZORPAY_KEY_ID, key_secret: RAZORPAY_KEY_SECRET })
 
 function generateRazorpay(orderId, total) {
 console.log("razor");
@@ -29,7 +33,7 @@ function verifyPayment(detail) {
 
   
    const crypto = require('crypto');
-   let hmac = crypto.createHmac('sha256','MdBtgRFs5NROEU7xxiQUzChR');
+   let hmac = crypto.createHmac('sha256', RAZORPAY_KEY_SECRET);
     
    hmac.update(detail.razorpay_order_id+'|'+detail.  razorpay_payment_id);
    hmac = hmac.digest('hex');
@@ -72,7 +76,7 @@ function verifyPaymentOfWallet(detail) {
 
   
    const crypto = require('crypto');
-   let hmac = crypto.createHmac('sha256','MdBtgRFs5NROEU7xxiQUzChR');
+   let hmac = crypto.createHmac('sha256', RAZORPAY_KEY_SECRET);
     
    hmac.update(detail.razorpay_order_id+'|'+detail.  razorpay_payment_id);
    hmac = hmac.digest('hex');

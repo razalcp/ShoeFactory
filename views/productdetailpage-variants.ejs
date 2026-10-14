@@ -17,7 +17,7 @@
                                                         <button class="nav-link <%= index === 0 ? 'active' : '' %>" id="variant-tab-<%= index %>" data-bs-toggle="tab"
                                                             data-bs-target="#variant-<%= index %>" type="button" role="tab"
                                                             aria-selected="<%= index === 0 ? 'true' : 'false' %>">
-                                                            <img src="/public/images/<%= image %>" alt="Variant 1 - Image <%= index + 1 %>">
+                                                            <img src="<%= imageUrl(image) %>" alt="Variant 1 - Image <%= index + 1 %>">
                                                         </button>
                                                     </li>
                                                 <% }) %>
@@ -28,24 +28,24 @@
                                                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
                                                     data-bs-target="#homde" type="button" role="tab"
                                                     aria-selected="true"><img
-                                                        src="/public/images/<%= productdata.imageurl[1] %>" alt=""></button>
+                                                        src="<%= imageUrl(productdata.imageurl[1]) %>" alt=""></button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
                                                     data-bs-target="#profidfdle" type="button" role="tab"
                                                     aria-selected="false"><img
-                                                        src="/public/images/<%= productdata.imageurl[0] %>" alt=""></button>
+                                                        src="<%= imageUrl(productdata.imageurl[0]) %>" alt=""></button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contadfdct"
                                                     type="button" role="tab" aria-selected="false"><img
-                                                        src="/public/images/<%= productdata.imageurl[2] %>" alt=""></button>
+                                                        src="<%= imageUrl(productdata.imageurl[2]) %>" alt=""></button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="kids-tab" data-bs-toggle="tab"
                                                     data-bs-target="#kidsdfd" type="button" role="tab"
                                                     aria-selected="false"><img
-                                                        src="/public/images/<%= productdata.imageurl[3] %>" alt=""></button>
+                                                        src="<%= imageUrl(productdata.imageurl[3]) %>" alt=""></button>
                                             </li>
                                         <% } %>
                                     </ul>
@@ -55,7 +55,7 @@
                         <div class="col-xl-10 col-lg-10 col-md-10">
                             <div class="single_preview_product">
                                 <div class="single-popup-view">
-                                    <a id="mainImageLink" class="popup-image" href="/public/images/<%= productdata.variants && productdata.variants[0] && productdata.variants[0].imageurl && productdata.variants[0].imageurl[0] ? productdata.variants[0].imageurl[0] : productdata.imageurl[3] %>"><i
+                                    <a id="mainImageLink" class="popup-image" href="<%= imageUrl(productdata.variants && productdata.variants[0] && productdata.variants[0].imageurl && productdata.variants[0].imageurl[0] ? productdata.variants[0].imageurl[0] : productdata.imageurl[3]) %>"><i
                                             class="fal fa-search"></i></a>
                                 </div>
                                 <div class="tab-content" id="myTabefContent">
@@ -64,7 +64,7 @@
                                             <% productdata.variants[0].imageurl.forEach((image, index) => { %>
                                                 <div class="tab-pane fade <%= index === 0 ? 'show active' : '' %>" id="variant-<%= index %>" role="tabpanel">
                                                     <div class="full-view">
-                                                        <img src="/public/images/<%= image %>" alt="Variant 1 - Image <%= index + 1 %>">
+                                                        <img src="<%= imageUrl(image) %>" alt="Variant 1 - Image <%= index + 1 %>">
                                                     </div>
                                                 </div>
                                             <% }) %>
@@ -73,22 +73,22 @@
                                         <!-- Fallback for old schema without variants -->
                                         <div class="tab-pane fade show active" id="homde" role="tabpanel">
                                             <div class="full-view">
-                                                <img src="/public/images/<%= productdata.imageurl[1] %>" alt="">
+                                                <img src="<%= imageUrl(productdata.imageurl[1]) %>" alt="">
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="profidfdle" role="tabpanel">
                                             <div class="full-view">
-                                                <img src="/public/images/<%= productdata.imageurl[0] %>" alt="">
+                                                <img src="<%= imageUrl(productdata.imageurl[0]) %>" alt="">
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="contadfdct" role="tabpanel">
                                             <div class="full-view">
-                                                <img src="/public/images/<%= productdata.imageurl[2] %>" alt="">
+                                                <img src="<%= imageUrl(productdata.imageurl[2]) %>" alt="">
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="kidsdfd" role="tabpanel">
                                             <div class="full-view">
-                                                <img src="/public/images/<%= productdata.imageurl[3] %>" alt="">
+                                                <img src="<%= imageUrl(productdata.imageurl[3]) %>" alt="">
                                             </div>
                                         </div>
                                     <% } %>
@@ -5424,6 +5424,12 @@
         const productData = <%- JSON.stringify(productdata) %>;
         let selectedVariant = null;
 
+        // Resolve stored image values: full blob URLs pass through, legacy
+        // filenames are served from the existing /public/images directory.
+        function imgUrl(value) {
+            return (value && (value.indexOf('http://') === 0 || value.indexOf('https://') === 0)) ? value : '/public/images/' + value;
+        }
+
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
             initializeColorOptions();
@@ -5493,14 +5499,14 @@
                     // Create thumbnail tab
                     const tab = document.createElement('li');
                     tab.className = 'nav-item';
-                    tab.innerHTML = '<button class="nav-link ' + (index === 0 ? 'active' : '') + '" id="variant-tab-' + index + '" data-bs-toggle="tab" data-bs-target="#variant-' + index + '" type="button" role="tab" aria-selected="' + (index === 0 ? 'true' : 'false') + '"><img src="/public/images/' + image + '" alt="' + variant.color + ' - Image ' + (index + 1) + '"></button>';
+                    tab.innerHTML = '<button class="nav-link ' + (index === 0 ? 'active' : '') + '" id="variant-tab-' + index + '" data-bs-toggle="tab" data-bs-target="#variant-' + index + '" type="button" role="tab" aria-selected="' + (index === 0 ? 'true' : 'false') + '"><img src="' + imgUrl(image) + '" alt="' + variant.color + ' - Image ' + (index + 1) + '"></button>';
                     tabsContainer.appendChild(tab);
                     
                     // Create content
                     const content = document.createElement('div');
                     content.className = 'tab-pane fade' + (index === 0 ? ' show active' : '');
                     content.id = 'variant-' + index;
-                    content.innerHTML = '<div class="full-view"><img src="/public/images/' + image + '" alt="' + variant.color + ' - Image ' + (index + 1) + '"></div>';
+                    content.innerHTML = '<div class="full-view"><img src="' + imgUrl(image) + '" alt="' + variant.color + ' - Image ' + (index + 1) + '"></div>';
                     contentContainer.appendChild(content);
                 });
             }
@@ -5559,14 +5565,14 @@
                     // Create tab
                     const tab = document.createElement('div');
                     tab.className = 'nav-item';
-                    tab.innerHTML = '<button class="nav-link ' + (index === 0 ? 'active' : '') + '" id="variant-tab-' + index + '" data-bs-toggle="tab" data-bs-target="#variant-' + index + '" type="button" role="tab" aria-selected="' + (index === 0 ? 'true' : 'false') + '"><img src="/public/images/' + image + '" alt="' + variant.color + ' ' + variant.size + '"></button>';
+                    tab.innerHTML = '<button class="nav-link ' + (index === 0 ? 'active' : '') + '" id="variant-tab-' + index + '" data-bs-toggle="tab" data-bs-target="#variant-' + index + '" type="button" role="tab" aria-selected="' + (index === 0 ? 'true' : 'false') + '"><img src="' + imgUrl(image) + '" alt="' + variant.color + ' ' + variant.size + '"></button>';
                     tabsContainer.appendChild(tab);
                     
                     // Create content
                     const content = document.createElement('div');
                     content.className = 'tab-pane fade' + (index === 0 ? ' show active' : '');
                     content.id = 'variant-' + index;
-                    content.innerHTML = '<div class="full-view"><img src="/public/images/' + image + '" alt="' + variant.color + ' ' + variant.size + ' - Image ' + (index + 1) + '"></div>';
+                    content.innerHTML = '<div class="full-view"><img src="' + imgUrl(image) + '" alt="' + variant.color + ' ' + variant.size + ' - Image ' + (index + 1) + '"></div>';
                     contentContainer.appendChild(content);
                 });
             }

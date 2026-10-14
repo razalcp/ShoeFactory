@@ -39,7 +39,7 @@ function addMoneyConfirm() {
 
 async function addMoney(money) {
 
-    url = `http://localhost:3003/addmoney?value=${money}`
+    url = `/addmoney?value=${money}`
     const result = await fetch(url)
     const data = await result.json()
     if (data.success) {

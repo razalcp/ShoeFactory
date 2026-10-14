@@ -42,7 +42,7 @@
                                             <div class="input-upload">
                                                 <img src="/public/assetss/imgs/theme/upload.svg" alt="">
                                                 <input class="form-control" type="file" name="brandImages" id="imageField" value="<%=brandData.imageName%>">
-                                                <img style="height: 76px;width: 80px;" src="/public/images/<%= brandData.imageName %>" alt="">
+                                                <img style="height: 76px;width: 80px;" src="<%= imageUrl(brandData.imageName) %>" alt="">
                                                <p><div id="error3" style="display: none;" class="alert alert-danger err"></div></p>
 
                                             </div>

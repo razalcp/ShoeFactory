@@ -26,7 +26,7 @@
                                                 <tr class="max-width-set">
                                                     <td>
                                                         <% if(variant && variant.imageurl && variant.imageurl.length > 0) { %>
-                                                            <img src="/public/images/<%=variant.imageurl[0]%>" alt="">
+                                                            <img src="<%= imageUrl(variant.imageurl[0]) %>" alt="">
                                                         <% } else { %>
                                                             <img src="/public/assets/img/product/placeholder.jpg" alt="">
                                                         <% } %>

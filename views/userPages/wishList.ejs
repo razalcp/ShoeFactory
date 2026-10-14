@@ -67,9 +67,9 @@
                                              <% 
                                                  let imageSrc = '/public/assets/img/product/placeholder.jpg';
                                                  if (productData.productId.variants && productData.productId.variants.length > 0 && productData.productId.variants[0].imageurl && productData.productId.variants[0].imageurl.length > 0) {
-                                                     imageSrc = '/public/images/' + productData.productId.variants[0].imageurl[0];
+                                                     imageSrc = imageUrl(productData.productId.variants[0].imageurl[0]);
                                                  } else if (productData.productId.imageurl && productData.productId.imageurl.length > 0) {
-                                                     imageSrc = '/public/images/' + productData.productId.imageurl[0];
+                                                     imageSrc = imageUrl(productData.productId.imageurl[0]);
                                                  }
                                              %>
                                              <a href="/userhome/productdetail?id=<%=productData.productId._id%>">

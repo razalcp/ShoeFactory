@@ -82,7 +82,7 @@
                                             product.variants[0].imageurl && product.variants[0].imageurl.length > 0) {
                                             %>
                                             <img width="60px" height="60px"
-                                                src="/public/images/<%= product.variants[0].imageurl[0] %>" alt="">
+                                                src="<%= imageUrl(product.variants[0].imageurl[0]) %>" alt="">
                                             <% } else { %>
                                                 <span class="text-muted">No Image</span>
                                                 <% } %>
@@ -147,7 +147,7 @@
                                                                                 <%= variant.stock %><br>
                                                                                     <% if(variant.imageurl &&
                                                                                         variant.imageurl.length> 0) { %>
-                                                                                        <img src="/public/images/<%= variant.imageurl[0] %>"
+                                                                                        <img src="<%= imageUrl(variant.imageurl[0]) %>"
                                                                                             width="50" height="50"
                                                                                             alt="">
                                                                                         <% } %>

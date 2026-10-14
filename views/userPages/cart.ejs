@@ -51,7 +51,7 @@
                                         <%locals.cartData.forEach(el=>{%>
                                             <tr class="max-width-set">
                                                 <td>
-                                                    <img src="/public/images/<%=el.productId.imageurl[1]%>" alt="">
+                                                    <img src="<%= imageUrl(el.productId.imageurl[1]) %>" alt="">
                                                 </td>
                                                 <td>
                                                     <%= el.productId.producttitle %>

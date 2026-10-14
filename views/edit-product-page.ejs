@@ -106,7 +106,7 @@
                                        <% product.imageurl.forEach(function(el){ %>
                                      <div>
                                         <br>
-                                        <img style="height: 76px;width: 80px;" src="/public/images/<%= el %>" alt="">
+                                        <img style="height: 76px;width: 80px;" src="<%= imageUrl(el) %>" alt="">
                                         <p><%=el %></p>
                                         <a  class="btn btn-sm btn-danger rounded font-sm mt-15" onclick="deleteImg('<%=product._id%>','<%=el%>')">Delete</a>
                                        <br>

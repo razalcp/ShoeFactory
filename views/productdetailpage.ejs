@@ -26,24 +26,24 @@
                                             <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
                                                 data-bs-target="#homde" type="button" role="tab"
                                                 aria-selected="true"><img
-                                                    src="/public/images/<%=productdata.imageurl[1]%>" alt=""></button>
+                                                    src="<%= imageUrl(productdata.imageurl[1]) %>" alt=""></button>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
                                                 data-bs-target="#profidfdle" type="button" role="tab"
                                                 aria-selected="false"><img
-                                                    src="/public/images/<%=productdata.imageurl[0]%>" alt=""></button>
+                                                    src="<%= imageUrl(productdata.imageurl[0]) %>" alt=""></button>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" data-bs-toggle="tab" data-bs-target="#contadfdct"
                                                 type="button" role="tab" aria-selected="false"><img
-                                                    src="/public/images/<%=productdata.imageurl[2]%>" alt=""></button>
+                                                    src="<%= imageUrl(productdata.imageurl[2]) %>" alt=""></button>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="kids-tab" data-bs-toggle="tab"
                                                 data-bs-target="#kidsdfd" type="button" role="tab"
                                                 aria-selected="false"><img
-                                                    src="/public/images/<%=productdata.imageurl[3]%>" alt=""></button>
+                                                    src="<%= imageUrl(productdata.imageurl[3]) %>" alt=""></button>
                                         </li>
                                     </ul>
                                 </div>
@@ -52,28 +52,28 @@
                         <div class="col-xl-10 col-lg-10 col-md-10">
                             <div class="single_preview_product">
                                 <div class="single-popup-view">
-                                    <a class="popup-image" href="/public/images/<%=productdata.imageurl[3]%>"><i
+                                    <a class="popup-image" href="<%= imageUrl(productdata.imageurl[3]) %>"><i
                                             class="fal fa-search"></i></a>
                                 </div>
                                 <div class="tab-content" id="myTabefContent">
                                     <div class="tab-pane fade show active" id="homde" role="tabpanel">
                                         <div class="full-view">
-                                            <img src="/public/images/<%=productdata.imageurl[1]%>" alt="">
+                                            <img src="<%= imageUrl(productdata.imageurl[1]) %>" alt="">
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="profidfdle" role="tabpanel">
                                         <div class="full-view">
-                                            <img src="/public/images/<%=productdata.imageurl[0]%>" alt="">
+                                            <img src="<%= imageUrl(productdata.imageurl[0]) %>" alt="">
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="contadfdct" role="tabpanel">
                                         <div class="full-view">
-                                            <img src="/public/images/<%=productdata.imageurl[2]%>" alt="">
+                                            <img src="<%= imageUrl(productdata.imageurl[2]) %>" alt="">
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="kidsdfd" role="tabpanel">
                                         <div class="full-view">
-                                            <img src="/public/images/<%=productdata.imageurl[3]%>" alt="">
+                                            <img src="<%= imageUrl(productdata.imageurl[3]) %>" alt="">
                                         </div>
                                     </div>
                                 </div>

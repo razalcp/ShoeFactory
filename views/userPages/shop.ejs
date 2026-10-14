@@ -244,28 +244,28 @@
                                                                         pdt.variants[0].imageurl &&
                                                                         pdt.variants[0].imageurl.length > 1) { %>
                                                                         <img class="product-primary"
-                                                                            src="/public/images/<%= pdt.variants[0].imageurl[0] %>"
+                                                                            src="<%= imageUrl(pdt.variants[0].imageurl[0]) %>"
                                                                             alt="product_image">
                                                                         <img class="product-secondary"
-                                                                            src="/public/images/<%= pdt.variants[0].imageurl[1] %>"
+                                                                            src="<%= imageUrl(pdt.variants[0].imageurl[1]) %>"
                                                                             alt="product_image">
                                                                         <% } else if(pdt.imageurl &&
                                                                             pdt.imageurl.length> 3) { %>
                                                                             <!-- Fallback for old schema -->
                                                                             <img class="product-primary"
-                                                                                src="/public/images/<%= pdt.imageurl[3] %>"
+                                                                                src="<%= imageUrl(pdt.imageurl[3]) %>"
                                                                                 alt="product_image">
                                                                             <img class="product-secondary"
-                                                                                src="/public/images/<%= pdt.imageurl[2] %>"
+                                                                                src="<%= imageUrl(pdt.imageurl[2]) %>"
                                                                                 alt="product_image">
                                                                             <% } else if(pdt.imageurl &&
                                                                                 pdt.imageurl.length> 0) { %>
                                                                                 <!-- Fallback for minimal images -->
                                                                                 <img class="product-primary"
-                                                                                    src="/public/images/<%= pdt.imageurl[0] %>"
+                                                                                    src="<%= imageUrl(pdt.imageurl[0]) %>"
                                                                                     alt="product_image">
                                                                                 <img class="product-secondary"
-                                                                                    src="/public/images/<%= pdt.imageurl[0] %>"
+                                                                                    src="<%= imageUrl(pdt.imageurl[0]) %>"
                                                                                     alt="product_image">
                                                                                 <% } else { %>
                                                                                     <!-- Default fallback -->

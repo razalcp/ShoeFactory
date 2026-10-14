@@ -10,7 +10,8 @@ const razorPayHelper = require('../helpers/razarPayHelper')
 const Coupon = require('../models/couponModel')
 const orderIdHelper = require('../helpers/orderIdHelper')
 const jwt = require('jsonwebtoken')
-const JWT_SECRET = 'some super secret...'
+const JWT_SECRET = process.env.JWT_SECRET || 'dev-only-insecure-jwt-secret'
+const APP_BASE_URL = process.env.APP_BASE_URL || 'http://localhost:3003'
 const Brand = require("../models/brandModel");
 
 
@@ -50,7 +51,7 @@ const forgetPassword = async (req, res) => {
       id: user._id
     }
     const token = jwt.sign(payload, secret, { expiresIn: '15m' })
-    const link = `http://localhost:3003/reset-password/${user._id}/${token}`
+    const link = `${APP_BASE_URL}/reset-password/${user._id}/${token}`
     // console.log(link);
 
     mailer.sendMail(user.email, link);

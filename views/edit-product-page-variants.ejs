@@ -93,7 +93,7 @@
                                                             <div class="existing-images">
                                                                 <% variant.imageurl.forEach(function(image, imgIndex) { %>
                                                                     <div class="image-preview d-inline-block me-2 mb-2">
-                                                                        <img src="/public/images/<%= image %>" width="60" height="60" class="img-thumbnail">
+                                                                        <img src="<%= imageUrl(image) %>" width="60" height="60" class="img-thumbnail">
                                                                         <br>
                                                                         <small><%= image %></small>
                                                                     </div>

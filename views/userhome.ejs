@@ -128,8 +128,8 @@
                                                                <% if (firstVariant.imageurl && firstVariant.imageurl.length > 0) { %>
                                                                    <% const imageIndex = Math.min(firstVariant.imageurl.length - 1, 3); %>
                                                                    <% const imageIndex2 = Math.min(firstVariant.imageurl.length - 1, 2); %>
-                                                                   <img class="product-primary" src="/public/images/<%= firstVariant.imageurl[imageIndex] %>" alt="product_image"> 
-                                                                   <img class="product-secondary" src="/public/images/<%= firstVariant.imageurl[imageIndex2] %>" alt="product_image"> 
+                                                                   <img class="product-primary" src="<%= imageUrl(firstVariant.imageurl[imageIndex]) %>" alt="product_image"> 
+                                                                   <img class="product-secondary" src="<%= imageUrl(firstVariant.imageurl[imageIndex2]) %>" alt="product_image"> 
                                                                <% } else { %>
                                                                    <img class="product-primary" src="assets/img/product/placeholder.jpg" alt="product_image"> 
                                                                    <img class="product-secondary" src="assets/img/product/placeholder.jpg" alt="product_image"> 

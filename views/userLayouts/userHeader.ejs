@@ -495,7 +495,7 @@
                             <div class="add_cart_product">
                                 <div class="add_cart_product__thumb">
                                     <% if (cartVariant.imageurl && cartVariant.imageurl.length > 0) { %>
-                                        <img src="/public/images/<%= cartVariant.imageurl[0] %>" alt="">
+                                        <img src="<%= imageUrl(cartVariant.imageurl[0]) %>" alt="">
                                     <% } else { %>
                                         <img src="/assets/img/product/placeholder.jpg" alt="">
                                     <% } %>

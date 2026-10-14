@@ -31,9 +31,9 @@
                                                     // Find the specific variant for this order
                                                     let variant = ele.product_id.variants.find(v => v._id.toString() === ele.variantId.toString());
                                                     if(variant && variant.imageurl && variant.imageurl[1]) { %>
-                                                        <img style="height:50px;width:38px" src="/public/images/<%=variant.imageurl[1]%>" alt="">
+                                                        <img style="height:50px;width:38px" src="<%= imageUrl(variant.imageurl[1]) %>" alt="">
                                                     <% } else if(ele.product_id.imageurl && ele.product_id.imageurl[1]) { %>
-                                                        <img style="height:50px;width:38px" src="/public/images/<%=ele.product_id.imageurl[1]%>" alt="">
+                                                        <img style="height:50px;width:38px" src="<%= imageUrl(ele.product_id.imageurl[1]) %>" alt="">
                                                     <% } %>
                                                     <%=ele.product_id.producttitle%> 
                                                     <% if(variant) { %>
@@ -42,7 +42,7 @@
                                                     x <%=ele.qty%>
                                                 <% } else { %>
                                                     <% if(ele.product_id && ele.product_id.imageurl && ele.product_id.imageurl[1]) { %>
-                                                        <img style="height:50px;width:38px" src="/public/images/<%=ele.product_id.imageurl[1]%>" alt="">
+                                                        <img style="height:50px;width:38px" src="<%= imageUrl(ele.product_id.imageurl[1]) %>" alt="">
                                                     <% } %>
                                                     <%=ele.product_id.producttitle || 'Product'%> x <%=ele.qty%>
                                                 <% } %>
@@ -107,9 +107,9 @@
                                                 // Find the specific variant for this order
                                                 let variant = ele.product_id.variants.find(v => v._id.toString() === ele.variantId.toString());
                                                 if(variant && variant.imageurl && variant.imageurl[1]) { %>
-                                                    <img style="height:50px;width:38px" src="/public/images/<%=variant.imageurl[1]%>" alt="">
+                                                    <img style="height:50px;width:38px" src="<%= imageUrl(variant.imageurl[1]) %>" alt="">
                                                 <% } else if(ele.product_id.imageurl && ele.product_id.imageurl[1]) { %>
-                                                    <img style="height:50px;width:38px" src="/public/images/<%=ele.product_id.imageurl[1]%>" alt="">
+                                                    <img style="height:50px;width:38px" src="<%= imageUrl(ele.product_id.imageurl[1]) %>" alt="">
                                                 <% } %>
                                                 <%=ele.product_id.producttitle%> 
                                                 <% if(variant) { %>
@@ -118,7 +118,7 @@
                                                 x <%=ele.qty%>
                                             <% } else { %>
                                                 <% if(ele.product_id && ele.product_id.imageurl && ele.product_id.imageurl[1]) { %>
-                                                    <img style="height:50px;width:38px" src="/public/images/<%=ele.product_id.imageurl[1]%>" alt="">
+                                                    <img style="height:50px;width:38px" src="<%= imageUrl(ele.product_id.imageurl[1]) %>" alt="">
                                                 <% } %>
                                                 <%=ele.product_id.producttitle || 'Product'%> x <%=ele.qty%>
                                             <% } %>

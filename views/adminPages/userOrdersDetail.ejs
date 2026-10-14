@@ -123,17 +123,17 @@
                                                                             // Find the specific variant for this order
                                                                             let variant = elem.product_id.variants.find(v => v._id.toString() === elem.variantId.toString());
                                                                             if(variant && variant.imageurl && variant.imageurl[1]) { %>
-                                                                                <img src="/public/images/<%=variant.imageurl[1]%>"
+                                                                                <img src="<%= imageUrl(variant.imageurl[1]) %>"
                                                                                     width="40" height="40" class="img-xs"
                                                                                     alt="Item">
                                                                             <% } else if(elem.product_id.imageurl && elem.product_id.imageurl[1]) { %>
-                                                                                <img src="/public/images/<%=elem.product_id.imageurl[1]%>"
+                                                                                <img src="<%= imageUrl(elem.product_id.imageurl[1]) %>"
                                                                                     width="40" height="40" class="img-xs"
                                                                                     alt="Item">
                                                                             <% } %>
                                                                     <% } else { %>
                                                                         <% if(elem.product_id && elem.product_id.imageurl && elem.product_id.imageurl[1]) { %>
-                                                                            <img src="/public/images/<%=elem.product_id.imageurl[1]%>"
+                                                                            <img src="<%= imageUrl(elem.product_id.imageurl[1]) %>"
                                                                                 width="40" height="40" class="img-xs"
                                                                                 alt="Item">
                                                                         <% } %>
