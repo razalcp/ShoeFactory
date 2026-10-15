@@ -235,111 +235,126 @@
                                         <div class="row">
                                             <%if(product){%>
                                                 <% product.forEach((pdt)=> { %>
-                                                    <div class="col-xl-6 col-lg-6 col-md-6 mb-4"
-                                                        data-brand="<%= pdt.brandId ? pdt.brandId.brandName : 'Unknown' %>">
-                                                        <div class="product product-4">
-                                                            <div class="product__thumb">
-                                                                <a href="/userhome/productdetail?id=<%= pdt._id %>">
-                                                                    <% if(pdt.variants && pdt.variants.length> 0 &&
-                                                                        pdt.variants[0].imageurl &&
-                                                                        pdt.variants[0].imageurl.length > 1) { %>
-                                                                        <img class="product-primary"
-                                                                            src="<%= imageUrl(pdt.variants[0].imageurl[0]) %>"
-                                                                            alt="product_image">
-                                                                        <img class="product-secondary"
-                                                                            src="<%= imageUrl(pdt.variants[0].imageurl[1]) %>"
-                                                                            alt="product_image">
-                                                                        <% } else if(pdt.imageurl &&
-                                                                            pdt.imageurl.length> 3) { %>
-                                                                            <!-- Fallback for old schema -->
-                                                                            <img class="product-primary"
-                                                                                src="<%= imageUrl(pdt.imageurl[3]) %>"
-                                                                                alt="product_image">
-                                                                            <img class="product-secondary"
-                                                                                src="<%= imageUrl(pdt.imageurl[2]) %>"
-                                                                                alt="product_image">
-                                                                            <% } else if(pdt.imageurl &&
-                                                                                pdt.imageurl.length> 0) { %>
-                                                                                <!-- Fallback for minimal images -->
+                                                    <% const pdtSizes=pdt.variants && pdt.variants.length> 0 ? [...new
+                                                        Set(pdt.variants.map(v => v.size))] : []; %>
+                                                        <% const pdtColors=pdt.variants && pdt.variants.length> 0 ?
+                                                            [...new Set(pdt.variants.map(v => v.color))] : []; %>
+                                                            <div class="col-xl-6 col-lg-6 col-md-6 mb-4"
+                                                                data-brand="<%= pdt.brandId ? pdt.brandId.brandName : 'Unknown' %>"
+                                                                data-sizes="<%= pdtSizes.join(',') %>"
+                                                                data-colors="<%= pdtColors.join(',') %>">
+                                                                <div class="product product-4">
+                                                                    <div class="product__thumb">
+                                                                        <a
+                                                                            href="/userhome/productdetail?id=<%= pdt._id %>">
+                                                                            <% if(pdt.variants && pdt.variants.length> 0
+                                                                                &&
+                                                                                pdt.variants[0].imageurl &&
+                                                                                pdt.variants[0].imageurl.length > 1) {
+                                                                                %>
                                                                                 <img class="product-primary"
-                                                                                    src="<%= imageUrl(pdt.imageurl[0]) %>"
+                                                                                    src="<%= imageUrl(pdt.variants[0].imageurl[0]) %>"
                                                                                     alt="product_image">
                                                                                 <img class="product-secondary"
-                                                                                    src="<%= imageUrl(pdt.imageurl[0]) %>"
+                                                                                    src="<%= imageUrl(pdt.variants[0].imageurl[1]) %>"
                                                                                     alt="product_image">
-                                                                                <% } else { %>
-                                                                                    <!-- Default fallback -->
+                                                                                <% } else if(pdt.imageurl &&
+                                                                                    pdt.imageurl.length> 3) { %>
+                                                                                    <!-- Fallback for old schema -->
                                                                                     <img class="product-primary"
-                                                                                        src="/public/assets/img/product/1.jpg"
+                                                                                        src="<%= imageUrl(pdt.imageurl[3]) %>"
                                                                                         alt="product_image">
                                                                                     <img class="product-secondary"
-                                                                                        src="/public/assets/img/product/1.jpg"
+                                                                                        src="<%= imageUrl(pdt.imageurl[2]) %>"
                                                                                         alt="product_image">
-                                                                                    <% } %>
-                                                                </a>
-                                                                <!-- <div class="product__update">
+                                                                                    <% } else if(pdt.imageurl &&
+                                                                                        pdt.imageurl.length> 0) { %>
+                                                                                        <!-- Fallback for minimal images -->
+                                                                                        <img class="product-primary"
+                                                                                            src="<%= imageUrl(pdt.imageurl[0]) %>"
+                                                                                            alt="product_image">
+                                                                                        <img class="product-secondary"
+                                                                                            src="<%= imageUrl(pdt.imageurl[0]) %>"
+                                                                                            alt="product_image">
+                                                                                        <% } else { %>
+                                                                                            <!-- Default fallback -->
+                                                                                            <img class="product-primary"
+                                                                                                src="/public/assets/img/product/1.jpg"
+                                                                                                alt="product_image">
+                                                                                            <img class="product-secondary"
+                                                                                                src="/public/assets/img/product/1.jpg"
+                                                                                                alt="product_image">
+                                                                                            <% } %>
+                                                                        </a>
+                                                                        <!-- <div class="product__update">
                                                                 <a class="#">new</a>
                                                             </div> -->
-                                                                <div class="product-info mb-10">
-                                                                    <div class="product_category">
-                                                                        <span>
-                                                                            <%= pdt.brandId ? pdt.brandId.brandName
-                                                                                : 'Unknown' %>
-                                                                        </span>
-                                                                    </div>
-                                                                    <div class="product_rating">
-                                                                        <a href="#"><i
-                                                                                class="fal fa-star start-color"></i></a>
-                                                                        <a href="#"><i
-                                                                                class="fal fa-star start-color"></i></a>
-                                                                        <a href="#"><i
-                                                                                class="fal fa-star start-color"></i></a>
-                                                                        <a href="#"><i class="fal fa-star"></i></a>
-                                                                        <a href="#"><i class="fal fa-star"></i></a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product__name">
-                                                                    <h4><a
-                                                                            href="/userhome/productdetail?id=<%= pdt._id %>">
-                                                                            <%=pdt.producttitle%>
-                                                                        </a></h4>
-                                                                    <div class="pro-price">
-                                                                        <% if(pdt.variants && pdt.variants.length> 0) {
-                                                                            %>
-                                                                            <p class="p-absoulute pr-1"><span>₹</span>
-                                                                                <%= pdt.variants[0].price %>
-                                                                            </p>
-                                                                            <% } else { %>
-                                                                                <!-- Fallback for old schema -->
-                                                                                <p class="p-absoulute pr-1">
-                                                                                    <span>₹</span>
-                                                                                    <%= pdt.price %>
-                                                                                </p>
-                                                                                <% } %>
-                                                                                    <a class="p-absoulute pr-2"
-                                                                                        href="#">add to cart</a>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="product__action">
-                                                                    <div class="inner__action">
-                                                                        <div class="wishlist">
-                                                                            <a href="#"><i class="fal fa-heart"></i></a>
+                                                                        <div class="product-info mb-10">
+                                                                            <div class="product_category">
+                                                                                <span>
+                                                                                    <%= pdt.brandId ?
+                                                                                        pdt.brandId.brandName
+                                                                                        : 'Unknown' %>
+                                                                                </span>
+                                                                            </div>
+                                                                            <div class="product_rating">
+                                                                                <a href="#"><i
+                                                                                        class="fal fa-star start-color"></i></a>
+                                                                                <a href="#"><i
+                                                                                        class="fal fa-star start-color"></i></a>
+                                                                                <a href="#"><i
+                                                                                        class="fal fa-star start-color"></i></a>
+                                                                                <a href="#"><i
+                                                                                        class="fal fa-star"></i></a>
+                                                                                <a href="#"><i
+                                                                                        class="fal fa-star"></i></a>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="view">
-                                                                            <a href="javascript:void(0)"><i
-                                                                                    class="fal fa-eye"></i></a>
+                                                                        <div class="product__name">
+                                                                            <h4><a
+                                                                                    href="/userhome/productdetail?id=<%= pdt._id %>">
+                                                                                    <%=pdt.producttitle%>
+                                                                                </a></h4>
+                                                                            <div class="pro-price">
+                                                                                <% if(pdt.variants &&
+                                                                                    pdt.variants.length> 0) {
+                                                                                    %>
+                                                                                    <p class="p-absoulute pr-1">
+                                                                                        <span>₹</span>
+                                                                                        <%= pdt.variants[0].price %>
+                                                                                    </p>
+                                                                                    <% } else { %>
+                                                                                        <!-- Fallback for old schema -->
+                                                                                        <p class="p-absoulute pr-1">
+                                                                                            <span>₹</span>
+                                                                                            <%= pdt.price %>
+                                                                                        </p>
+                                                                                        <% } %>
+                                                                                            <a class="p-absoulute pr-2"
+                                                                                                href="#">add to cart</a>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="layer">
-                                                                            <a href="#"><i
-                                                                                    class="fal fa-layer-group"></i></a>
+                                                                        <div class="product__action">
+                                                                            <div class="inner__action">
+                                                                                <div class="wishlist">
+                                                                                    <a href="#"><i
+                                                                                            class="fal fa-heart"></i></a>
+                                                                                </div>
+                                                                                <div class="view">
+                                                                                    <a href="javascript:void(0)"><i
+                                                                                            class="fal fa-eye"></i></a>
+                                                                                </div>
+                                                                                <div class="layer">
+                                                                                    <a href="#"><i
+                                                                                            class="fal fa-layer-group"></i></a>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                    <% }); %>
-                                                        <% }%>
+                                                            <% }); %>
+                                                                <% }%>
                                         </div>
                                     </div>
                                 </div>
@@ -590,9 +605,15 @@
                 // Extract brand name from the data attribute on the parent container
                 const productContainer = element.closest('[data-brand]');
                 let brandName = 'Unknown'; // Default
+                let productSizes = [];
+                let productColors = [];
 
                 if (productContainer) {
                     brandName = productContainer.getAttribute('data-brand');
+                    const sizesAttr = productContainer.getAttribute('data-sizes');
+                    const colorsAttr = productContainer.getAttribute('data-colors');
+                    productSizes = sizesAttr ? sizesAttr.split(',').map(s => s.trim()).filter(Boolean) : [];
+                    productColors = colorsAttr ? colorsAttr.split(',').map(c => c.trim().toLowerCase()).filter(Boolean) : [];
                     console.log('Found brand from data attribute:', brandName);
                 } else {
                     console.log('No data-brand attribute found, using fallback');
@@ -611,6 +632,8 @@
                     producttitle: producttitle,
                     price: element.querySelector('.pro-price p').textContent.replace('₹', '').trim(),
                     brandName: brandName,
+                    sizes: productSizes,
+                    colors: productColors,
                     description: producttitle, // Use title as description
                     primaryImage: primaryImage,
                     secondaryImage: secondaryImage,
@@ -619,7 +642,7 @@
                 return productData;
             });
 
-            console.log('Products loaded:', originalProducts); // Debug log
+            // console.log('Products loaded:', originalProducts); // Debug log
 
             // Load filters from URL parameters
             loadFiltersFromURL();
@@ -673,29 +696,32 @@
                     }
                 }
 
+                // Size filter
+                if (selectedSizes.length > 0) {
+                    console.log('Checking sizes:', product.sizes, 'against:', selectedSizes);
+                    if (!product.sizes.some(size => selectedSizes.includes(String(size)))) {
+                        return false;
+                    }
+                }
+
+                // Color filter
+                if (selectedColors.length > 0) {
+                    console.log('Checking colors:', product.colors, 'against:', selectedColors);
+                    if (!product.colors.some(color => selectedColors.includes(String(color).toLowerCase()))) {
+                        return false;
+                    }
+                }
+
                 // Price filter - FIXED: Handle edge cases properly
                 const minPriceNum = minPrice && minPrice.trim() !== '' ? parseFloat(minPrice) : null;
                 const maxPriceNum = maxPrice && maxPrice.trim() !== '' ? parseFloat(maxPrice) : null;
                 const productPriceNum = parseFloat(product.price);
 
-                console.log('Price filter check:', {
-                    productTitle: product.producttitle,
-                    productPrice: product.price,
-                    productPriceNum: productPriceNum,
-                    minPriceInput: minPrice,
-                    maxPriceInput: maxPrice,
-                    minPriceNum: minPriceNum,
-                    maxPriceNum: maxPriceNum,
-                    minPriceCheck: minPriceNum !== null && productPriceNum < minPriceNum,
-                    maxPriceCheck: maxPriceNum !== null && productPriceNum > maxPriceNum
-                });
 
                 if (minPriceNum !== null && productPriceNum < minPriceNum) {
-                    console.log('Failed min price filter:', productPriceNum, '<', minPriceNum);
                     return false;
                 }
                 if (maxPriceNum !== null && productPriceNum > maxPriceNum) {
-                    console.log('Failed max price filter:', productPriceNum, '>', maxPriceNum);
                     return false;
                 }
 

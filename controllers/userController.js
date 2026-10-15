@@ -194,6 +194,7 @@ const insertUser = async (req, res) => {
     let saltrounds = 13;
     const hashedpassword = await bcrypt.hash(password, saltrounds);
 
+
     const userIn = {
       name: req.body.name,
       email: req.body.email,
